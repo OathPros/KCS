@@ -417,3 +417,5 @@ body{margin:0}
 #kcs-app .stage-index{opacity:1}
 @media(min-width:1000px) and (max-height:850px){#kcs-app .legal-strip .text-button{min-height:28px}#kcs-app .walk-content{padding-top:12px}#kcs-app .walk-bottom{margin-top:12px}}
 @media(min-width:1000px) and (max-height:850px){#kcs-app .legal-strip .text-button{padding-top:6px;padding-bottom:6px}}
+#kcs-app .arrow-icon.icon-down-left{transform:rotate(180deg)}
+#kcs-app .arrow-icon.icon-up-left{transform:rotate(-90deg)}

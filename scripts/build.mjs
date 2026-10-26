@@ -19,7 +19,7 @@ for (const c of chapters) {
  const heading=html.indexOf('<h1>',start);
  html=html.slice(0,heading)+html.slice(heading).replace('<h1>',`<h1 id="title-${c.id}">`);
 }
-html=html.replaceAll('↗',arrowIcon);
+html=html.replaceAll('↗',arrowIcon).replaceAll('↙',arrowIcon.replace('arrow-icon','arrow-icon icon-down-left')).replaceAll('↖',arrowIcon.replace('arrow-icon','arrow-icon icon-up-left')).replaceAll('↵',arrowIcon.replace('arrow-icon','arrow-icon icon-down-left'));
 await writeFile('dist/index.html',html);
 await writeFile('dist/.nojekyll','');
 console.log('Built dependency-free static site in dist/');
