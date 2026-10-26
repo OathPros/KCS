@@ -20,10 +20,13 @@ jobs:
           node-version: 24
           cache: npm
       - run: npm ci
-      - run: npx playwright install --with-deps chromium
       - run: npm run build
-      - name: Find Playwright browser
-        run: echo "CHROMIUM_PATH=$(node -e "console.log(require('playwright').chromium.executablePath())")" >> "$GITHUB_ENV"
+      - name: Use the runner's installed browser
+        shell: bash
+        run: |
+          browser_executable="$(command -v chromium || command -v google-chrome || command -v google-chrome-stable)"
+          "$browser_executable" --version
+          echo "CHROMIUM_PATH=$browser_executable" >> "$GITHUB_ENV"
       - run: npm test
       - uses: actions/upload-pages-artifact@v3
         if: github.ref == 'refs/heads/main'

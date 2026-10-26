@@ -28,7 +28,7 @@ The static server runs on port 4173. Both the root route and `/KCS/` work locall
 npm test
 ```
 
-Playwright uses `/usr/bin/chromium` by default. Override `CHROMIUM_PATH` with an installed Chromium executable on another machine. CI installs a matching Playwright browser and sets this variable automatically.
+Playwright uses `/usr/bin/chromium` by default. Override `CHROMIUM_PATH` with an installed Chromium executable on another machine. CI uses the Chromium or Google Chrome already installed on the GitHub-hosted runner and sets this variable automatically, avoiding redundant browser and system-package downloads.
 
 The suite exercises all sections and tab states, all six walkthrough routes, backtracking, storage persistence and unavailable storage, export contents, keyboard navigation and dialog focus, reading/print modes, no-JavaScript content, mobile/tablet/desktop overflow, and automated WCAG 2.2 AA checks with axe. Automated checks do not replace human accessibility review.
 
