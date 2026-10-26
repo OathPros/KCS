@@ -1,16 +1,16 @@
-import { chapters, sources, arrowIcon, problemPanel, practicePanel, stagePanel, rolePanel, evidencePanel } from './content.js';
+import { chapters, sources, problems, practices, stages, roles, evidence, arrowIcon, problemPanel, practicePanel, stagePanel, rolePanel, evidencePanel } from './content.js';
 const root=document.querySelector('#kcs-app');
 const $=(s)=>root.querySelector(s);
 const $$=(s)=>[...root.querySelectorAll(s)];
 root.classList.add('js');
 let current=0,reading=false,toastTimer;
 const slides=$$('.slide');
-const escapeHTML=s=>String(s).replace(/[&<>"']/g,c=>({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[c]));
 function toast(message){$('#toast').textContent=message;$('#toast').hidden=false;clearTimeout(toastTimer);toastTimer=setTimeout(()=>$('#toast').hidden=true,4200);}
 function closeDialogs(){$$('dialog[open]').forEach(d=>d.close());}
 function goTo(index,{updateHash=true,focus=false}={}){
  if(index<0||index>=chapters.length)return;
  current=index;
+ root.dataset.theme=slides[index].dataset.theme;
  slides.forEach((s,i)=>{s.hidden=i!==index&&!reading;s.classList.remove('is-entering');});
  if(!reading) slides[index].classList.add('is-entering');
  if(updateHash)history.replaceState(null,'','#'+chapters[index].id);
@@ -23,7 +23,17 @@ function goTo(index,{updateHash=true,focus=false}={}){
  updateNotes();closeDialogs();
  if(focus){if(reading){slides[index].scrollIntoView({block:'start'});}else{$('#presentation').focus({preventScroll:true});window.scrollTo({top:0,behavior:'instant'});}}
 }
-function updateNotes(){const c=chapters[current];$('#presenter-notes').innerHTML=`<h3>${String(current+1).padStart(2,'0')} / ${c.label}</h3><p>${c.notes}</p><h3>Sources</h3><ul>${c.sources.map(key=>{const s=sources[key];return `<li>${s.url?`<a href="${s.url}" target="_blank" rel="noopener noreferrer">${s.label} ${arrowIcon}</a>`:`<strong>${s.label}</strong>`}<span>${s.detail}</span></li>`;}).join('')}</ul>`;}
+function extraNotes(id){
+ const entries={
+  'case-for-change':problems.map(p=>[p.label,`Today: ${p.before} With KCS: ${p.after} ${p.gain}`]),
+  method:practices.map(p=>[`${p.loop} Loop: ${p.label}`,`${p.body} Example: ${p.example}`]),
+  rollout:stages.map(s=>[`${s.label}: ${s.time} (${s.status})`,`${s.desc} Readiness: ${s.gate} ${s.note}`]),
+  'operating-model':roles.map(r=>[r.label,`${r.body} Contribution: ${r.output}`]),
+  evidence:evidence.map(e=>[e.label,`${e.question} ${e.decision} ${e.signals.join('; ')}. ${e.avoid}`])
+ }[id];
+ return entries?`<details class="notes-detail"><summary>Supporting detail</summary>${entries.map(([label,body])=>`<h3>${label}</h3><p>${body}</p>`).join('')}</details>`:'';
+}
+function updateNotes(){const c=chapters[current];$('#presenter-notes').innerHTML=`<h3>${String(current+1).padStart(2,'0')} / ${c.label}</h3><p>${c.notes}</p>${extraNotes(c.id)}<h3>Sources</h3><ul>${c.sources.map(key=>{const s=sources[key];return `<li>${s.url?`<a href="${s.url}" target="_blank" rel="noopener noreferrer">${s.label} ${arrowIcon}</a>`:`<strong>${s.label}</strong>`}<span>${s.detail}</span></li>`;}).join('')}</ul>`;}
 function fromHash(){const i=chapters.findIndex(c=>'#'+c.id===location.hash);goTo(i<0?0:i,{updateHash:false});}
 root.addEventListener('click',e=>{
  const goto=e.target.closest('[data-goto]');if(goto)goTo(Number(goto.dataset.goto),{focus:true});
@@ -35,15 +45,19 @@ $('#next-button').addEventListener('click',()=>goTo(current+1,{focus:true}));
 $('#overview-button').addEventListener('click',()=>$('#overview-dialog').showModal());
 $('#notes-button').addEventListener('click',()=>$('#notes-dialog').showModal());
 $('#help-button').addEventListener('click',()=>$('#help-dialog').showModal());
+$('#discussion-button').addEventListener('click',()=>$('#discussion-dialog').showModal());
 $$('dialog').forEach(d=>d.addEventListener('click',e=>{if(e.target===d){const r=d.getBoundingClientRect();if(e.clientX<r.left||e.clientX>r.right||e.clientY<r.top||e.clientY>r.bottom)d.close();}}));
-function toggleReading(){reading=!reading;root.classList.toggle('reading',reading);slides.forEach((s,i)=>s.hidden=!reading&&i!==current);$('#reading-button').textContent=reading?'Return to presentation →':'Reading & print view →';toast(reading?'Reading view: all sections and alternative states are available.':'Presentation view restored.');}
+function toggleReading(){closeDialogs();reading=!reading;$('#exit-reading').hidden=!reading;root.classList.toggle('reading',reading);slides.forEach((s,i)=>s.hidden=!reading&&i!==current);$('#reading-button').textContent=reading?'Return to presentation →':'Reading & print view →';toast(reading?'Reading view: all sections and alternative states are available.':'Presentation view restored.');}
 $('#reading-button').addEventListener('click',toggleReading);
+$('#exit-reading').addEventListener('click',toggleReading);
 async function fullscreen(){try{if(document.fullscreenElement)await document.exitFullscreen();else await root.requestFullscreen();closeDialogs();}catch{toast('Fullscreen is unavailable in this browser.');}}
 $('#fullscreen-button').addEventListener('click',fullscreen);
 window.addEventListener('hashchange',fromHash);
 document.addEventListener('keydown',e=>{
+ if(!e.target.closest('input,textarea,select,[contenteditable="true"]')&&(e.key==='PageDown'||e.key==='PageUp')){e.preventDefault();goTo(current+(e.key==='PageDown'?1:-1),{focus:true});return;}
  const interactive=e.target.closest('input,textarea,select,button,a,[role="tab"],[role="tabpanel"],[contenteditable="true"]');
  if(e.metaKey||e.ctrlKey||e.altKey||$('dialog[open]')||interactive)return;
+ if(e.code==='Space'){e.preventDefault();goTo(current+1,{focus:true});}
  if(e.key==='ArrowRight'){e.preventDefault();goTo(current+1,{focus:true});}
  if(e.key==='ArrowLeft'){e.preventDefault();goTo(current-1,{focus:true});}
  if(e.key==='Home'){e.preventDefault();goTo(0,{focus:true});}
@@ -69,7 +83,7 @@ $$('[role="tablist"]').forEach(list=>{
 });
 $$('[data-practice]').forEach(b=>b.addEventListener('click',()=>{$$('[data-practice]').forEach(x=>x.setAttribute('aria-pressed',String(x===b)));$('#practice-detail').innerHTML=practicePanel(Number(b.dataset.practice));}));
 // This demonstration performs no live Halo operations. Each choice is local.
-const routeLabels=['Review the ticket','Search for knowledge','Reuse or capture','Link to the ticket','Requester resolution','Confirm & resolve'];
+const routeLabels=['Review','Search','Reuse / capture','Link','Help','Resolve'];
 let walk={step:0,exists:null,update:null,selfSolve:null,completed:false},walkHistory=[];
 function choice(value,title,body){return `<button class="walk-choice" data-walk-choice="${value}"><strong>${title}<span aria-hidden="true">${arrowIcon}</span></strong><span>${body}</span></button>`;}
 function nextButton(text){return `<button class="button primary walk-continue" data-walk-next>${text} <span aria-hidden="true">→</span></button>`;}
@@ -79,19 +93,19 @@ function renderWalk(moveFocus=false){
  $('#walk-step-count').textContent=completed?'WALKTHROUGH COMPLETE':`STEP ${step+1} OF 6`;
  $('#walk-back').disabled=walkHistory.length===0;
  const route=[];if(exists!==null)route.push(exists?'Reuse existing':'Capture new');if(update===true)route.push('Improve or flag');if(selfSolve!==null)route.push(selfSolve?'Share safely':'Agent-assisted resolution');
- $('#walk-route-summary').textContent=route.length?route.join(' → '):'Make choices to follow a ticket from review to resolution.';
+ $('#walk-route-summary').textContent=route.length?route.join(' → '):'Proposed workflow · Demo only';
  let html='';
- if(step===0)html=`<span class="micro">Start with context</span><h2>A useful subject makes the next step easier.</h2><p>Review the issue and the requester’s context. Describe the service and the problem without exposing personal information.</p><div class="walk-ticket"><span class="micro">Meaningful ticket subject</span><p><del>Help with my account</del>Duo authentication fails after replacing a phone</p></div>${nextButton('Review & search')}`;
- if(step===1)html=`<span class="micro">Search early</span><h2>Does relevant knowledge exist?</h2><p>Search for “Duo” and “replacement phone”. Check that the article matches the requester’s issue and context.</p><div class="walk-choices">${choice('exists','Yes, a relevant article','Follow the knowledge and check whether it fits.')}${choice('missing','No relevant article','Investigate and capture what you learn.')}</div><div class="walk-note"><span aria-hidden="true">${arrowIcon}</span>Choose either path to explore the workflow.</div>`;
- if(step===2&&exists&&update===null)html=`<span class="micro">Follow the relevant article</span><h2>Does the knowledge need an update?</h2><p>Use the article while investigating. Reuse is review: verify the answer in the context of this interaction.</p><div class="walk-choices">${choice('update','Yes, there’s a gap','Improve it within your permissions, or flag it.')}${choice('current','No, it fits','Reuse the relevant answer as it stands.')}</div>`;
- if(step===2&&exists&&update!==null)html=update?`<span class="micro">Improve or flag</span><h2>Keep the answer useful for the next person.</h2><p>Make the correction or create an updated article version using the approved Halo workflow and your contributor rights. If you cannot change it, flag the gap.</p><div class="walk-result"><span aria-hidden="true">${arrowIcon}</span><p>A new phone setup step is missing. The useful correction stays connected to the original knowledge.</p></div>${nextButton('Continue to linking')}`:`<span class="micro">Reuse the answer</span><h2>A relevant answer is already available.</h2><p>Use the article to support the resolution. There is no need to create a duplicate just to record a contribution.</p><div class="walk-result"><span aria-hidden="true">✓</span><p>The issue and context match. The existing article helps this interaction.</p></div>${nextButton('Continue to linking')}`;
- if(step===2&&!exists)html=`<span class="micro">Capture & structure</span><h2>Turn the investigation into reusable knowledge.</h2><p>As the resolution becomes known, capture the issue, relevant context and resolution from the ticket using a simple shared structure.</p><div class="walk-result"><span aria-hidden="true">${arrowIcon}</span><p>Create within the approved pilot permissions. Coaching develops judgement; do not publish an unverified answer as trusted guidance.</p></div>${nextButton('Continue to linking')}`;
- if(step===3)html=`<span class="micro">Record useful reuse</span><h2>Link the knowledge to the ticket.</h2><p>Associate the ${exists?'relevant':'newly captured'} article with the ticket to record its contribution. Use the approved Halo linking workflow.</p><div class="walk-result"><span aria-hidden="true">${arrowIcon}</span><p>A useful relationship, not a quota. Link knowledge honestly when it helped the work.</p></div>${nextButton('Link & continue')}`;
- if(step===4&&selfSolve===null)html=`<span class="micro">Choose the resolution path</span><h2>Can the requester self-solve with this article?</h2><p>Check both whether the answer is suitable and whether the requester is permitted to access it. Internal agent access does not mean public access.</p><div class="walk-choices">${choice('self','Yes, suitable & accessible','Share approved knowledge with the requester.')}${choice('assisted','No, agent help is needed','Resolve the issue with the requester.')}</div>`;
- if(step===4&&selfSolve!==null)html=selfSolve?`<span class="micro">Share safely</span><h2>Send the knowledge with a clear next action.</h2><p>Explain what to do and how to get further help. Share only audience-appropriate, approved content through the permitted channel.</p><div class="walk-result"><span aria-hidden="true">${arrowIcon}</span><p>The pilot does not automatically open self-service to the York community. Check permissions before sharing.</p></div>${nextButton('Confirm the outcome')}`:`<span class="micro">Agent-assisted resolution</span><h2>Use the knowledge to resolve the request.</h2><p>Work with the requester using the relevant service procedure. Keep the knowledge linked even when the requester cannot self-solve.</p><div class="walk-result"><span aria-hidden="true">${arrowIcon}</span><p>The article supports the work. It does not replace the agent’s judgement or service controls.</p></div>${nextButton('Confirm the outcome')}`;
- if(step===5&&!completed)html=`<span class="micro">Follow service best practice</span><h2>Confirm the result. Keep the learning.</h2><p>Check the outcome with the requester, record an appropriate resolution and follow the relevant service procedure to resolve the ticket.</p><div class="walk-ticket"><span class="micro">The route you explored</span><p>${route.map(r=>`<span class="walk-route-chip">${r}</span>`).join('')}</p></div>${nextButton('Complete walkthrough')}`;
- if(completed)html=`<span class="micro">The next interaction starts further ahead</span><h2>One resolved ticket. Shared learning.</h2><p>You followed the ${exists?'reuse':'capture'} path${update?' with an improvement or flag':''}, linked the knowledge, and chose ${selfSolve?'safe requester self-solve':'agent-assisted resolution'}.</p><div class="walk-result"><span aria-hidden="true">✓</span><p>Search, reuse, improve and capture belong in the work. Coaching and feedback make the practice stronger.</p></div><button class="button primary walk-continue" data-walk-reset>Explore another route <span aria-hidden="true">↺</span></button>`;
- $('#walk-panel').innerHTML=html.replaceAll('↗',arrowIcon);
+ if(step===0)html=`<h2>Start with the issue.</h2><div class="walk-ticket"><p><del>Help with my account</del>Duo authentication fails after replacing a phone</p></div>${nextButton('Review & search')}`;
+ if(step===1)html=`<h2>Does relevant knowledge exist?</h2><p>Search “Duo” + “replacement phone”.</p><div class="walk-choices">${choice('exists','Yes. Reuse it.','Check the match.')}${choice('missing','No. Capture new.','Investigate. Keep the learning.')}</div>`;
+ if(step===2&&exists&&update===null)html=`<h2>Does it need an update?</h2><p>Reuse is review.</p><div class="walk-choices">${choice('update','Yes. Improve or flag.','Within your permissions.')}${choice('current','No. Use what works.','No duplicate needed.')}</div>`;
+ if(step===2&&exists&&update!==null)html=update?`<h2>Improve. Or flag.</h2><p>Correct within your permissions; otherwise flag the gap.</p>${nextButton('Continue to linking')}`:`<h2>Reuse what works.</h2><p>A useful answer. No duplicate needed.</p>${nextButton('Continue to linking')}`;
+ if(step===2&&!exists)html=`<h2>Keep what you learn.</h2><p>Capture issue, context and resolution in a shared structure.</p><div class="walk-note">Pilot permissions apply.</div>${nextButton('Continue to linking')}`;
+ if(step===3)html=`<h2>Link the article.</h2><p>Record knowledge that helped resolve the ticket.</p><div class="link-graphic" aria-hidden="true"><div>Knowledge</div><span>→</span><div>Ticket</div></div>${nextButton('Link & continue')}`;
+ if(step===4&&selfSolve===null)html=`<h2>Can the requester self-solve?</h2><p>Check suitability and audience access before sharing.</p><div class="walk-choices">${choice('self','Yes. Share safely.','Approved content. Permitted audience.')}${choice('assisted','No. Help them resolve.','Use knowledge with the requester.')}</div>`;
+ if(step===4&&selfSolve!==null)html=selfSolve?`<h2>Share a clear next step.</h2><p>Share approved content with a permitted audience.</p><div class="walk-note">Internal use does not authorize public access.</div>${nextButton('Confirm the outcome')}`:`<h2>Resolve it together.</h2><p>Use knowledge and the relevant service procedure.</p>${nextButton('Confirm the outcome')}`;
+ if(step===5&&!completed)html=`<h2>Confirm. Then resolve.</h2><p>Check the outcome. Keep the useful learning.</p><div class="walk-route-chips">${route.map(r=>`<span class="walk-route-chip">${r}</span>`).join('')}</div>${nextButton('Complete walkthrough')}`;
+ if(completed)html=`<h2>One resolution.<br>Shared learning.</h2><p>${exists?'Reuse':'Capture'} path · ${selfSolve?'Safe requester self-solve':'Agent-assisted resolution'}</p><button class="button primary walk-continue" data-walk-reset>Explore another route <span aria-hidden="true">↺</span></button>`;
+ $('#walk-panel').innerHTML=html;
  if(moveFocus){const heading=$('#walk-panel h2');heading.tabIndex=-1;heading.focus({preventScroll:true});}
 }
 function advanceWalk(action){walkHistory.push({...walk});
@@ -121,6 +135,6 @@ function summary(){return `KCS AT YORK | DIRECTOR DISCUSSION\nPlanning aid, not 
 $('#copy-summary').addEventListener('click',async()=>{try{await navigator.clipboard.writeText(summary());toast('Discussion summary copied.');}catch{toast('Clipboard unavailable. Use Download .txt to save the summary.');}});
 $('#download-notes').addEventListener('click',()=>{const u=URL.createObjectURL(new Blob([summary()],{type:'text/plain;charset=utf-8'}));const a=document.createElement('a');a.href=u;a.download='York-KCS-director-discussion.txt';a.click();setTimeout(()=>URL.revokeObjectURL(u),1000);toast('Discussion summary downloaded.');});
 $('#clear-notes').addEventListener('click',()=>{discussion={checked:[],notes:''};$$('[data-commitment]').forEach(c=>c.checked=false);$('#discussion-notes').value='';try{localStorage.removeItem(storageKey);}catch{}refreshCount();$('#save-status').textContent='Discussion cleared from this browser. No formal approval is recorded.';toast('Local discussion cleared.');});
-window.addEventListener('beforeprint',()=>{let p=$('.print-notes');if(!p){p=document.createElement('p');p.className='print-notes';$('.discussion').append(p);}p.textContent=summary();$('#discussion-notes').hidden=true;});
-window.addEventListener('afterprint',()=>{$('#discussion-notes').hidden=false;$('.print-notes')?.remove();});
+window.addEventListener('beforeprint',()=>{let p=$('.print-notes');if(!p){p=document.createElement('p');p.className='print-notes';$('.print-supplement').append(p);}p.textContent=summary();});
+window.addEventListener('afterprint',()=>{$('.print-notes')?.remove();});
 renderWalk();refreshCount();fromHash();

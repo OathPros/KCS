@@ -26,10 +26,10 @@ test('overview and presenter sources work with keyboard and focus return',async(
 });
 test('problem, role, evidence and rollout tabs all update their detail',async({page})=>{
  for(const [id,group,checks] of [
-  ['case-for-change','problems',['Expertise should','Solve the issue','Useful knowledge','An answer only']],
-  ['rollout','stages',['Open access','Let real work','Add teams','Open suitable']],
-  ['operating-model','roles',['Make knowledge','Develop judgement','Turn patterns','Keep the service','Protect the conditions']],
-  ['evidence','evidence',['Does knowledge','Can people','Is the practice']]
+  ['case-for-change','problems',['Use shared knowledge','Start with what’s known','Improve as you reuse','Find a useful answer']],
+  ['rollout','stages',['Open access','Learn from real work','Bring the next team','Open suitable']],
+  ['operating-model','roles',['Practise in real tickets','Build judgement','Turn patterns','Confirm service truth','Protect time']],
+  ['evidence','evidence',['Did it help','Can people find','Is the practice']]
  ]){
   await page.goto('./#'+id);
   const tabs=page.locator(`[data-tab="${group}"]`);
@@ -59,14 +59,14 @@ for(const article of ['missing','current','update'])for(const resolution of ['se
   if(article==='missing')await page.locator('[data-walk-choice="missing"]').click();
   else {await page.locator('[data-walk-choice="exists"]').click();await page.locator(`[data-walk-choice="${article}"]`).click();}
   await page.getByRole('button',{name:'Continue to linking'}).click();
-  await expect(page.locator('#walk-panel h2')).toHaveText('Link the knowledge to the ticket.');
+  await expect(page.locator('#walk-panel h2')).toHaveText('Link the article.');
   await page.getByRole('button',{name:'Link & continue'}).click();
   await page.locator(`[data-walk-choice="${resolution}"]`).click();
   if(resolution==='self')await expect(page.locator('#walk-panel')).toContainText('approved content');
   await page.getByRole('button',{name:'Confirm the outcome'}).click();await page.getByRole('button',{name:'Complete walkthrough'}).click();
   await expect(page.locator('#walk-step-count')).toHaveText('WALKTHROUGH COMPLETE');
-  await expect(page.locator('#walk-panel')).toContainText(article==='missing'?'capture path':'reuse path');
-  await expect(page.locator('#walk-panel')).toContainText(resolution==='self'?'safe requester self-solve':'agent-assisted resolution');
+  await expect(page.locator('#walk-panel')).toContainText(article==='missing'?'Capture path':'Reuse path');
+  await expect(page.locator('#walk-panel')).toContainText(resolution==='self'?'Safe requester self-solve':'Agent-assisted resolution');
   await page.getByRole('button',{name:'Explore another route'}).click();await expect(page.locator('#walk-step-count')).toHaveText('STEP 1 OF 6');
  });
 }
@@ -80,8 +80,9 @@ test('walkthrough backtracking restores decisions and restart clears route',asyn
 test('local discussion persists, exports exact text and clears',async({page})=>{
  await page.goto('./#decisions');
  await page.getByRole('checkbox',{name:'Confirm participation'}).check();await page.getByRole('checkbox',{name:'Protect capacity'}).check();
+ await page.getByRole('button',{name:'Capture next steps'}).click();
  await page.getByRole('textbox',{name:'Capture next steps'}).fill('Confirm coach capacity with service owners.');
- await page.reload();await expect(page.locator('#commitment-count')).toHaveText('2 of 3 marked for discussion');await expect(page.locator('#discussion-notes')).toHaveValue('Confirm coach capacity with service owners.');
+ await page.reload();await expect(page.locator('#commitment-count')).toHaveText('2 of 3 marked for discussion');await page.getByRole('button',{name:'Capture next steps'}).click();await expect(page.locator('#discussion-notes')).toHaveValue('Confirm coach capacity with service owners.');
  const [download]=await Promise.all([page.waitForEvent('download'),page.getByRole('button',{name:'Download .txt'}).click()]);
  expect(download.suggestedFilename()).toBe('York-KCS-director-discussion.txt');
  const stream=await download.createReadStream();let text='';for await(const c of stream)text+=c.toString();
@@ -90,10 +91,10 @@ test('local discussion persists, exports exact text and clears',async({page})=>{
 });
 test('unavailable local storage does not break the briefing',async({page})=>{
  await page.addInitScript(()=>{Object.defineProperty(window,'localStorage',{get(){throw new Error('unavailable');}});});
- await page.goto('./#decisions');await page.locator('#discussion-notes').fill('Unsaved notes');await expect(page.locator('#save-status')).toContainText('storage is unavailable');
+ await page.goto('./#decisions');await page.getByRole('button',{name:'Capture next steps'}).click();await page.locator('#discussion-notes').fill('Unsaved notes');await expect(page.locator('#save-status')).toContainText('storage is unavailable');
 });
 test('reading and print modes include all alternative states',async({page})=>{
- await page.goto('./');await page.getByRole('button',{name:'Reading & print view'}).click();
+ await page.goto('./');await page.getByRole('button',{name:'Keyboard shortcuts and help'}).click();await page.getByRole('button',{name:'Reading & print view'}).click();
  await expect(page.locator('.slide:visible')).toHaveCount(8);await expect(page.locator('.print-supplement')).toBeVisible();
  await expect(page.locator('.print-supplement')).toContainText('Agent walkthrough: every path');
  await page.getByRole('button',{name:'Return to presentation'}).click();await page.emulateMedia({media:'print'});await expect(page.locator('.slide:visible')).toHaveCount(8);await expect(page.locator('.print-supplement')).toBeVisible();
@@ -120,4 +121,47 @@ for(const width of [375,768,1366])test(`responsive layout at ${width}px has no h
 test('static HTML remains readable without JavaScript',async({browser})=>{
  const context=await browser.newContext({javaScriptEnabled:false});const page=await context.newPage();await page.goto('http://127.0.0.1:4173/KCS/');
  await expect(page.locator('.slide:visible')).toHaveCount(8);await expect(page.locator('.noscript')).toBeVisible();await context.close();
+});
+
+test('default slides have a presentation-sized word budget',async({page})=>{
+ for(const id of ids){
+  await page.goto('./#'+id);
+  const words=(await page.locator('.slide:visible').innerText()).trim().split(/\s+/).length;
+  expect(words,`${id}: ${words} on-screen words`).toBeLessThanOrEqual(65);
+ }
+});
+for(const size of [{width:1366,height:768},{width:1920,height:1080}])test(`slides fit the ${size.width}×${size.height} presentation viewport`,async({page})=>{
+ await page.setViewportSize(size);
+ for(const id of ids){
+  await page.goto('./#'+id);
+  expect(await page.evaluate(()=>document.documentElement.scrollHeight<=window.innerHeight+1),id).toBe(true);
+  const fits=await page.locator('.slide:visible').evaluate(e=>e.scrollHeight<=e.clientHeight+1&&e.scrollWidth<=e.clientWidth+1);
+  expect(fits,`${id} should not need scrolling`).toBe(true);
+ }
+});
+test('presentation remote and space navigation work after interactions',async({page})=>{
+ await page.goto('./#rollout');await page.locator('#stages-tab-1').click();
+ await page.keyboard.press('PageDown');await expect(page.locator('#operating-model')).toBeVisible();
+ await page.keyboard.press('PageUp');await expect(page.locator('#rollout')).toBeVisible();
+ await page.locator('#presentation').focus();await page.keyboard.press('Space');await expect(page.locator('#operating-model')).toBeVisible();
+});
+test('discussion stays out of the slideshow until requested',async({page})=>{
+ await page.goto('./#decisions');await expect(page.locator('#discussion-notes')).toBeHidden();
+ await page.getByRole('button',{name:'Capture next steps'}).click();await expect(page.locator('#discussion-notes')).toBeVisible();
+ await page.keyboard.press('Escape');await expect(page.locator('#discussion-button')).toBeFocused();
+});
+test('mobile controls and discussion dialog pass accessibility checks',async({page})=>{
+ await page.setViewportSize({width:375,height:850});
+ await page.goto('./#decisions');
+ for(const open of [false,true]){
+  if(open)await page.getByRole('button',{name:'Capture next steps'}).click();
+  const result=await new AxeBuilder({page}).withTags(['wcag2a','wcag2aa','wcag21aa','wcag22aa']).analyze();
+  expect(result.violations).toEqual([]);
+ }
+});
+test('fullscreen opens and closes from the presentation toolbar',async({page})=>{
+ await page.goto('./');await page.getByRole('button',{name:'Toggle fullscreen'}).click();
+ await expect.poll(()=>page.evaluate(()=>document.fullscreenElement?.id)).toBe('kcs-app');
+ await page.getByRole('button',{name:'Toggle fullscreen'}).click();
+ await expect.poll(()=>page.evaluate(()=>document.fullscreenElement===null)).toBe(true);
 });

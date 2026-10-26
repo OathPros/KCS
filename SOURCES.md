@@ -35,3 +35,9 @@ KCS® is a service mark of the Consortium for Service Innovation™. The source 
 ## Visual guidance
 
 The main `cio-page-creator` skill was available and applied for York red, scoped styles, plain language, factual restraint, source notes and accessible interactions. Its linked reference files and HTML audit script were not accessible through the skill provider. Independent browser and accessibility testing is used; no claim is made that the unavailable audit ran. This is a bespoke interactive presentation, rather than a WordPress initiative page.
+
+## Slideshow redesign
+
+The user requested a substantially leaner live-presentation format and supplied `lukegaglairdi.com` and `lukegagliardi.ca` as visual references. The repository homepage and CNAME confirm the first reference as **lukegagliardi.com**, backed by [OathPros/AUTO-TRIAGE-PRESENTATION](https://github.com/OathPros/AUTO-TRIAGE-PRESENTATION). Its HTML, style rules and rendered presentation were inspected directly. Full-screen dark/red/white colour fields, oversized headlines and process-led diagrams informed this original redesign; no Auto Triage results or operational claims were imported into KCS content. The `.ca` site was not accessible from the environment and was not treated as a verified source.
+
+The eight default slide views were reduced from 850 to 315 words, a 63% reduction measured from visible slide text, including control labels and attribution. Supporting methodology, qualifications and operational details remain in presenter notes, the expandable supporting-detail sections, and complete reading/print content. The discussion form opens on demand, keeping the leadership ask focused on three commitments. Original stable section links and all six agent walkthrough paths are preserved.
