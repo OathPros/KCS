@@ -81,7 +81,25 @@ $$('[role="tablist"]').forEach(list=>{
   e.preventDefault();tabs[next].focus();selectTab(tabs[next]);
  });
 });
-$$('[data-practice]').forEach(b=>b.addEventListener('click',()=>{$$('[data-practice]').forEach(x=>x.setAttribute('aria-pressed',String(x===b)));$('#practice-detail').innerHTML=practicePanel(Number(b.dataset.practice));}));
+function selectPractice(button){
+ const index=button.dataset.practice;
+ $$('[data-practice]').forEach(node=>node.setAttribute('aria-pressed',String(node===button)));
+ $$('[data-loop-highlight]').forEach(arc=>arc.dataset.selected=String(arc.dataset.loopHighlight===index));
+ $$('.learning-loop').forEach(loop=>loop.dataset.selected=String(loop.contains(button)));
+ $('#practice-detail').innerHTML=practicePanel(Number(index));
+}
+$$('[data-practice]').forEach(button=>button.addEventListener('click',()=>selectPractice(button)));
+$$('.loop-practices').forEach(group=>group.addEventListener('keydown',event=>{
+ const buttons=[...group.querySelectorAll('[data-practice]')];
+ const index=buttons.indexOf(document.activeElement);if(index<0)return;
+ let next=index;
+ if(event.key==='ArrowRight'||event.key==='ArrowDown')next=(index+1)%buttons.length;
+ else if(event.key==='ArrowLeft'||event.key==='ArrowUp')next=(index-1+buttons.length)%buttons.length;
+ else if(event.key==='Home')next=0;
+ else if(event.key==='End')next=buttons.length-1;
+ else return;
+ event.preventDefault();buttons[next].focus();selectPractice(buttons[next]);
+}));
 // This demonstration performs no live Halo operations. Each choice is local.
 const routeLabels=['Review','Search','Reuse / capture','Link','Help','Resolve'];
 let walk={step:0,exists:null,update:null,selfSolve:null,completed:false},walkHistory=[];
