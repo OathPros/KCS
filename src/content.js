@@ -67,6 +67,23 @@ export function practicePanel(i=0){const p=practices[i],[title,body]=concise.pra
 export function stagePanel(i=0){const s=stages[i],[title,gate,scope]=concise.stages[i];return `<div class="stage-takeaway"><span class="micro">${s.status}</span><h2>${title}</h2><p>${scope}</p></div><div class="readiness"><span class="gate-mark" aria-hidden="true">${arrowIcon}</span><div><span class="micro">Readiness gate</span><p>${gate}</p></div></div>`;}
 export function rolePanel(i=2){return `<span class="micro">${roles[i].label}</span><h2>${concise.roles[i]}</h2>`;}
 export function evidencePanel(i=0){const [question,signals]=concise.evidence[i];return `<div class="evidence-question"><span class="micro">The question that matters</span><h2>${question}</h2></div><ul class="evidence-signals">${signals.map(s=>`<li><span aria-hidden="true">${arrowIcon}</span>${s}</li>`).join('')}</ul>`;}
+// Independent circles retain their geometry at every viewport size. Arrowheads show
+// feedback, while the caption explicitly avoids imposing a fixed practice sequence.
+function renderLearningLoop(loop,offset){
+ const title=loop==='solve'?'Solve':'Evolve';
+ const coordinate=(angle)=>{const radians=angle*Math.PI/180;return [210+175*Math.cos(radians),210+175*Math.sin(radians)].map(n=>n.toFixed(3)).join(' ');};
+ const sectors=[-135,-45,45,135].map((angle,i)=>`<path class="loop-highlight" data-loop-highlight="${offset+i}" data-selected="${offset+i===0}" d="M${coordinate(angle-34)}A175 175 0 0 1 ${coordinate(angle+34)}"/>`).join('');
+ return `<div class="learning-loop" data-loop="${loop}" data-selected="${offset===0}">
+ <svg class="learning-track" viewBox="0 0 420 420" aria-hidden="true">
+ <defs><marker id="${loop}-arrow" markerWidth="8" markerHeight="8" refX="6" refY="4" orient="auto" markerUnits="strokeWidth"><path class="loop-arrowhead" d="M1 1 7 4 1 7z"/></marker></defs>
+ <circle class="loop-orbit" cx="210" cy="210" r="175"/>
+ ${sectors}
+ <g class="loop-flow" marker-end="url(#${loop}-arrow)"><path d="M194 35h32"/><path d="M385 194v32"/><path d="M226 385h-32"/><path d="M35 226v-32"/></g>
+ </svg>
+ <div class="learning-title"><strong>${title}</strong><span>${offset===0?'In each interaction':'Across interactions'}</span></div>
+ <div class="loop-practices" role="group" aria-label="${title} Loop practices">${practices.slice(offset,offset+4).map((p,i)=>`<button aria-pressed="${offset+i===0}" aria-controls="practice-detail" data-practice="${offset+i}" class="practice-node node-${i}">${p.label}</button>`).join('')}</div>
+ </div>`;
+}
 export function renderSlides(){return [
 section('opportunity','ink',`
  <div class="hero-copy"><p class="eyebrow">Knowledge-Centered Success</p><h1 id="title-opportunity">Every answer.<br><span>A head start.</span></h1><p class="hero-subtitle">KCS at York</p><p class="hero-lead">Capture in the work.<br>Reuse in the next.</p><button class="button primary" data-next>Start briefing ${arrowIcon}</button></div>
@@ -76,7 +93,12 @@ section('case-for-change','red',`
  <div class="case-intro">${heading('02','Why change','Stop starting<br>from zero.')}<div class="problem-picker" role="tablist" aria-label="problems" aria-orientation="vertical">${problems.map((p,i)=>`<button role="tab" id="problems-tab-${i}" aria-controls="problems-panel" aria-selected="${i===0}" tabindex="${i===0?0:-1}" data-tab="problems" data-index="${i}">${p.label}<span aria-hidden="true">${arrowIcon}</span></button>`).join('')}</div></div><div id="problems-panel" role="tabpanel" aria-labelledby="problems-tab-0" tabindex="0">${problemPanel()}</div>`,'case-slide'),
 section('method','white',`
  ${heading('03','The KCS method','Two loops. One system.')}
- <div class="double-loop" aria-label="Connected Solve and Evolve practices"><svg class="loop-track" viewBox="0 0 1100 300" preserveAspectRatio="none" aria-hidden="true"><path d="M550 150C400-18 78-18 78 150s322 168 472 0S1022-18 1022 150 700 318 550 150"/></svg><div class="loop-centre solve-centre"><strong>Solve</strong><span>In the interaction</span></div><div class="loop-centre evolve-centre"><strong>Evolve</strong><span>Across interactions</span></div>${practices.map((p,i)=>`<button aria-pressed="${i===0}" data-practice="${i}" class="practice-node practice-${i}">${p.label}<span aria-hidden="true">${arrowIcon}</span></button>`).join('')}</div>
+ <div class="double-loop" aria-label="Solve and Evolve are connected learning cycles">
+ ${renderLearningLoop('solve',0)}
+ <div class="loop-exchange" aria-label="Patterns from the work inform improvements to the system"><span>Patterns</span><svg viewBox="0 0 160 80" preserveAspectRatio="none" aria-hidden="true"><path d="M5 22h145m-12-10 12 10-12 10M155 58H10m12-10L10 58l12 10"/></svg><span>Improvements</span></div>
+ ${renderLearningLoop('evolve',4)}
+ </div>
+ <p class="loop-caption">Practices overlap. They are not a fixed sequence.</p>
  <div class="practice-detail" id="practice-detail" role="region" aria-label="Selected KCS practice" aria-live="polite">${practicePanel()}</div>`,'method-slide'),
 section('daily-practice','ink',`
  ${heading('04','An illustrative ticket','The agent Solve Loop')}

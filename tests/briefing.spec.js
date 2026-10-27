@@ -99,12 +99,10 @@ test('reading and print modes include all alternative states',async({page})=>{
  await expect(page.locator('.print-supplement')).toContainText('Agent walkthrough: every path');
  await page.getByRole('button',{name:'Return to presentation'}).click();await page.emulateMedia({media:'print'});await expect(page.locator('.slide:visible')).toHaveCount(8);await expect(page.locator('.print-supplement')).toBeVisible();
 });
-test('every section passes automated WCAG 2.2 AA checks',async({page})=>{
- for(const id of ids){
-  await page.goto('./#'+id);await page.emulateMedia({reducedMotion:'reduce'});
-  const results=await new AxeBuilder({page}).withTags(['wcag2a','wcag2aa','wcag21aa','wcag22aa']).analyze();
-  expect(results.violations,JSON.stringify(results.violations.map(v=>({id:v.id,nodes:v.nodes.map(n=>n.target)})))).toEqual([]);
- }
+for(const id of ids)test(`WCAG 2.2 AA: ${id}`,async({page})=>{
+ await page.goto('./#'+id);await page.emulateMedia({reducedMotion:'reduce'});
+ const results=await new AxeBuilder({page}).withTags(['wcag2a','wcag2aa','wcag21aa','wcag22aa']).analyze();
+ expect(results.violations,JSON.stringify(results.violations.map(v=>({id:v.id,nodes:v.nodes.map(n=>n.target)})))).toEqual([]);
 });
 test('walkthrough branch choices and dialogs are accessible',async({page})=>{
  await page.goto('./#daily-practice');await page.getByRole('button',{name:'Review & search'}).click();
@@ -130,7 +128,7 @@ test('default slides have a presentation-sized word budget',async({page})=>{
   expect(words,`${id}: ${words} on-screen words`).toBeLessThanOrEqual(65);
  }
 });
-for(const size of [{width:1366,height:768},{width:1920,height:1080}])test(`slides fit the ${size.width}×${size.height} presentation viewport`,async({page})=>{
+for(const size of [{width:1280,height:720},{width:1366,height:768},{width:1600,height:900},{width:1920,height:1080},{width:2560,height:1440}])test(`slides fit the ${size.width}×${size.height} presentation viewport`,async({page})=>{
  await page.setViewportSize(size);
  for(const id of ids){
   await page.goto('./#'+id);
@@ -164,4 +162,60 @@ test('fullscreen opens and closes from the presentation toolbar',async({page})=>
  await expect.poll(()=>page.evaluate(()=>document.fullscreenElement?.id)).toBe('kcs-app');
  await page.getByRole('button',{name:'Toggle fullscreen'}).click();
  await expect.poll(()=>page.evaluate(()=>document.fullscreenElement===null)).toBe(true);
+});
+for(const size of [{width:1280,height:720},{width:1920,height:1080}])test(`Solve and Evolve render complete circular loops at ${size.width}px`,async({page})=>{
+ await page.setViewportSize(size);await page.goto('./#method');await page.evaluate(()=>document.fonts.ready);
+ const loops=page.locator('.learning-loop');await expect(loops).toHaveCount(2);
+ for(const loop of await loops.all()){
+  await expect(loop.locator('.learning-track')).toBeVisible();
+  const bounds=await loop.locator('.loop-orbit').boundingBox();
+  expect(bounds.width).toBeGreaterThan(240);expect(Math.abs(bounds.width-bounds.height)).toBeLessThan(1);
+  expect(await loop.locator('.loop-flow path').count()).toBe(4);
+  await expect(loop.locator('.loop-flow')).toHaveAttribute('marker-end',/url\(#(?:solve|evolve)-arrow\)/);
+  const buttons=await loop.locator('[data-practice]').all();expect(buttons).toHaveLength(4);
+  const boxes=await Promise.all(buttons.map(b=>b.boundingBox()));
+  for(let i=0;i<boxes.length;i++)for(let j=i+1;j<boxes.length;j++){
+   const a=boxes[i],b=boxes[j];
+   const overlap=Math.min(a.x+a.width,b.x+b.width)-Math.max(a.x,b.x)>0&&Math.min(a.y+a.height,b.y+b.height)-Math.max(a.y,b.y)>0;
+   expect(overlap,'Practice labels must not overlap').toBe(false);
+  }
+ }
+ await expect(page.locator('.loop-exchange')).toContainText('Patterns');await expect(page.locator('.loop-exchange')).toContainText('Improvements');
+ await expect(page.locator('.loop-caption')).toContainText('not a fixed sequence');
+});
+test('practice selection highlights the matching circular track and supports keyboard navigation',async({page})=>{
+ await page.setViewportSize({width:1920,height:1080});await page.goto('./#method');
+ for(let i=0;i<8;i++){
+  await page.locator(`[data-practice="${i}"]`).click();
+  await expect(page.locator('.loop-highlight[data-selected="true"]')).toHaveCount(1);
+  await expect(page.locator('.loop-highlight[data-selected="true"]')).toHaveAttribute('data-loop-highlight',String(i));
+  await expect(page.locator('.loop-highlight[data-selected="true"]')).toHaveCSS('opacity','1');
+  await expect(page.locator('.learning-loop[data-selected="true"]')).toHaveAttribute('data-loop',i<4?'solve':'evolve');
+ }
+ await page.locator('[data-practice="0"]').focus();await page.keyboard.press('ArrowRight');
+ await expect(page.locator('[data-practice="1"]')).toBeFocused();await expect(page.locator('[data-practice="1"]')).toHaveAttribute('aria-pressed','true');
+ await page.keyboard.press('End');await expect(page.locator('[data-practice="3"]')).toBeFocused();
+ await page.keyboard.press('ArrowRight');await expect(page.locator('[data-practice="0"]')).toBeFocused();
+ await expect(page.locator('#method')).toBeVisible();
+});
+test('desktop presentation type grows for a full-HD screen',async({page})=>{
+ await page.setViewportSize({width:1920,height:1080});await page.goto('./#method');
+ expect(await page.locator('#method h1').evaluate(e=>parseFloat(getComputedStyle(e).fontSize))).toBeGreaterThanOrEqual(88);
+ expect(await page.locator('[data-practice="0"]').evaluate(e=>parseFloat(getComputedStyle(e).fontSize))).toBeGreaterThanOrEqual(20);
+ expect(await page.locator('#practice-detail p').evaluate(e=>parseFloat(getComputedStyle(e).fontSize))).toBeGreaterThanOrEqual(27);
+ await page.goto('./#rollout');expect(await page.locator('.stage-time').first().evaluate(e=>parseFloat(getComputedStyle(e).fontSize))).toBeGreaterThanOrEqual(27);
+});
+test('desktop reading view remains legible with all slides in normal document flow',async({page})=>{
+ await page.setViewportSize({width:1920,height:1080});await page.goto('./');
+ await page.keyboard.press('r');await expect(page.locator('.slide:visible')).toHaveCount(8);
+ for(const slide of await page.locator('.slide').all()){
+  const size=await slide.locator('h1').evaluate(e=>parseFloat(getComputedStyle(e).fontSize));expect(size).toBeGreaterThan(30);
+  const box=await slide.boundingBox();expect(box.height).toBeGreaterThan(300);
+ }
+ expect(await page.evaluate(()=>document.documentElement.scrollHeight)).toBeGreaterThan(4000);
+});
+test('desktop scaling keeps discussion dialog actions full-sized',async({page})=>{
+ await page.setViewportSize({width:1920,height:1080});await page.goto('./#decisions');
+ await page.getByRole('button',{name:'Capture next steps'}).click();
+ const action=await page.locator('#copy-summary').boundingBox();expect(action.height).toBeGreaterThanOrEqual(44);
 });
