@@ -4,25 +4,17 @@ A slideshow for directors on York University's KCS rollout. Built as a static Gi
 
 ## Experience
 
-Twelve full-screen slides cover the case for change, benefits by entity and time horizon, the two KCS loops, a complete agent Solve flow, launch permissions, rollout gates, communications and support, ownership, evidence, leadership questions and director commitments. Black, white and warm neutral fields, York-red accents, large type and diagrams support live delivery. Default slides have a 65-word budget, with allowances of 130 words for the requested complete communications/website register and 120 for coaching/council/director participation, and 160 for the three complete success aims; detailed methodology and caveats live in presenter notes and the complete reading/print view.
+Twelve slides cover purpose, the agent Solve flow, launch permissions, the rollout, communications and websites, coaching and council, participation and recognition, benefits, success aims and questions, plus the KCS practice basis for coaching, shared standards and the council. The opening contains the interactive Solve/Evolve diagram. Large type, black/white/warm neutral surfaces and York-red accents support live delivery.
 
-Desktop presentation is the primary layout: type, controls and diagrams scale to the available slide area from 720p through QHD. Solve and Evolve use independently closed circular tracks with direction arrows and a two-way feedback connection. Selecting a practice highlights its corresponding arc; arrow keys move between practices within each loop. Phones retain the compact two-column practice layout.
+The latest user-edited `KCS-leadership-review (1).html` is the content baseline. Its deletions are preserved, the separate methodology slide is removed, and the voice is one director speaking with peers. Presenter notes, note controls, the notes keyboard shortcut and the print companion are removed from the source and HTML export. Reading and print views contain the slides only. The final commitments slide, its capture button and the now-unused local discussion form are removed. The deck ends with questions for discussion.
 
-Use the fullscreen toolbar button, arrow keys, Space or a presentation remote (Page Up / Page Down). Section links remain stable. The director discussion form opens on demand; notes remain local with text export.
+Use fullscreen, arrow keys, Space or a presentation remote (Page Up / Page Down). Section links remain stable. The opening loop supports mouse and keyboard selection of its eight practices. Desktop presentation scales from 720p through QHD; smaller screens use a scrolling document layout.
 
-The benefits explorer covers Our customers, Our agents and Our institution across launch/pilot, winter/spring 2027, and summer 2027 onward. The user’s annotated screenshots guide the benefits: ticket-based resolution sharing, consistency, community self-service, less repeated agent work, cross-team knowledge, knowledge maintenance, evidence of service gaps and future automation. These are expected benefits to validate, not measured savings. A complete matrix and validation prompts are included in reading/print view.
+Benefits cover Our customers, Our agents and York across launch/pilot, winter/spring 2027 and summer 2027 onward. These are expected benefits, not measured York savings. The roadmap follows the supplied planning PDFs: 19 November 2026 agent launch, onboarded pilot authors in SSB/OUR/CTS/CS, winter refinement, spring adoption waves and readiness-based summer community self-service. See [SOURCES.md](SOURCES.md) for provenance and planning limitations.
 
-The agent walkthrough includes all six combinations of missing/current/improvable knowledge and requester self-solve/agent-assisted resolution. Backtracking and restart support exploration. It performs no live Halo actions. The presentation shows the complete flow directly on the Solve Loop slide. The interactive walkthrough is preserved on its own page at `solve-loop.html`, with all six paths, backtracking and restart.
+The communications register lists the pilot-manager briefing, all-agent announcement and pilot invitation. Three linked websites show their distinct purposes: announce the change and tool, explain the methodology and prepare pilots. Coaching develops judgement through real tickets; the council brings evidence together to co-create the standard and remove workflow barriers. The recognition slide pairs four desired behaviours with practical recognition, then asks us to name contributions, explain their impact and thank people in team meetings and one-to-ones. The success slide shows Better support, Healthy knowledge and Sustainable adoption together.
 
-The roadmap follows the supplied leadership and communications PDFs: planned 19 November 2026 agent launch; onboarded pilot authors in SSB, OUR, CTS and CS; winter refinement; spring adoption waves; conditional summer community self-service. Training sessions, named support and launch approval still require confirmation.
-
-**Dates and local operating details are proposed.** See [SOURCES.md](SOURCES.md) before presenting as an approved plan.
-
-The communications slide shows the executive, pilot-manager, all-agent and pilot-participant messages, their timing and purpose, plus linked KB project, KCS @ York and Pilot Hub websites. Website roles reflect the supplied communications draft, not a live-site audit.
-
-The coaching slide explains how coaches develop judgement using real work and how the Knowledge Council uses frontline evidence to co-create the shared content standard and address cross-team barriers. Its director call to action opens the existing local-only discussion form.
-
-The success slide displays Better support, Healthy knowledge and Sustainable adoption together. Each aim includes its question, evidence to review and the improvement decision it informs. Full measurement cautions remain in notes and print view.
+The static Solve slide shows every main branch. The interactive agent walkthrough is preserved independently at `solve-loop.html`, with all six routes, backtracking and restart. It performs no live Halo actions.
 
 ## Develop
 
@@ -44,7 +36,7 @@ npm test
 
 Playwright uses `/usr/bin/chromium` by default. Override `CHROMIUM_PATH` with an installed Chromium executable on another machine. CI uses the Chromium or Google Chrome already installed on the GitHub-hosted runner and sets this variable automatically, avoiding redundant browser and system-package downloads.
 
-The suite exercises all sections and tab states, the three-group benefits matrix, leadership Q&A, the static Solve flow, all six walkthrough routes, backtracking, storage persistence and unavailable storage, export contents, keyboard navigation and dialog focus, reading/print modes, no-JavaScript content, mobile/tablet/desktop overflow, fullscreen and presentation-remote controls, 1280×720 through 2560×1440 slide fit, true circular loop geometry, label separation, selected-arc highlighting, desktop reading-view legibility, the presentation word budgets, and automated WCAG 2.2 AA checks with axe. Automated checks do not replace human accessibility review.
+The suite checks slide navigation, tab states, keyboard controls, all six standalone walkthrough routes, responsive layouts, desktop slide fit, reading/print views, no-JavaScript content and automated WCAG 2.2 AA accessibility. Regression checks ensure uploaded deletions remain removed and presenter notes are absent from HTML, controls and printing. Automated checks do not replace human accessibility review.
 
 ## Export a portable briefing
 
@@ -58,12 +50,12 @@ The `Validate and deploy briefing` workflow tests pull requests and builds, test
 
 Expected site address: `https://oathpros.github.io/KCS/`. Deployment success and the actual public HTTP response must be checked before treating that address as live.
 
-GitHub Pages publishes this briefing. Keep future edits suitable for public access. Browser discussion notes remain on the viewer's device; clearing them affects only that browser. They are not a formal approval record.
+GitHub Pages publishes this briefing. Keep future edits suitable for public access.
 
 ## Content and implementation
 
-- `src/content.js`: presentation text, source references, interactive state content, and static templates.
-- `src/app.js`: navigation, accessibility behaviours, and local notes.
+- `src/content.js`: presentation text, interactive state content and static templates.
+- `src/app.js`: navigation, tab interactions and accessibility behaviours.
 - `src/solve-walkthrough.js`: standalone interactive walkthrough state and keyboard focus.
 - `src/styles.css`: scoped responsive styles, reduced motion and print layout.
 - `scripts/build.mjs`: creates the static output, versions the presentation module graph and stylesheet for cache-safe updates, and bundles locally served open-source fonts with licenses.
@@ -73,8 +65,10 @@ GitHub Pages publishes this briefing. Keep future edits suitable for public acce
 
 DM Sans and Instrument Serif are distributed with their OFL licenses in the built font directory. KCS® is a service mark of the Consortium for Service Innovation™. This is a York rollout briefing, not a Consortium-certified product.
 
-Presentation copy uses direct leadership language throughout. Demo labels, placeholder prompts, unresolved-field messages and repeated approval disclaimers are omitted from slides, notes, print output and discussion exports. Source provenance and unresolved planning details remain documented in SOURCES.md.
+Presentation copy uses short titles without periods and a director-to-director voice. The palette uses York red (#E31837) and dark red (#B5122B) accents with white, warm neutral and black fields. Benefits sit immediately before evidence. No slide uses a full red background.
 
-The opening slide contains only “Knowledge is coming to Halo” and “November 19” on its left half. Its right half adapts the supplied curved-arrow Solve/Evolve component with keyboard-accessible loop and practice buttons. Slide and panel titles use short descriptive wording without periods.
+Generate the current review with `npm run build` then `node scripts/export.mjs artifacts/KCS-director-review.html`. Exporting does not commit, publish or push changes.
 
-Benefits sit immediately before the success/evidence slide. The palette uses York red (#E31837) for accents and dark red (#B5122B) where small text needs more contrast, with white, warm neutral and black fields. No slide uses a full red background.
+The coaching slide now has the requested “Committing to future success” title and no capture button. The following slide links three KCS practice facts to how we will apply them and asks whether protected coaching/improvement time improves service outcomes relative to the capacity invested. These are practice recommendations, not an empirical estimate of individual intervention ROI. The FAQs discuss local responsibility, limited authoring, existing documentation, possible errors, expansion delays and the absence of measured York savings or a launch AI commitment. The first FAQ and user-supplied Copenhagen example are retained.
+
+The benefits tabs share a single continuous baseline; the active third is red, and the horizon panels have no duplicate top rules. The communications and website registers share intrinsic grid rows so their matching rows align. Both layouts adapt on phones.

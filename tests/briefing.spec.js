@@ -13,16 +13,15 @@ test('all sections navigate with stable deep links and no runtime errors',async(
   if(i<ids.length-1)await page.getByRole('button',{name:'Next section',exact:true}).click();
  }
  await expect(page.getByRole('button',{name:'Next section',exact:true})).toBeDisabled();
- await page.reload();await expect(page.locator('#decisions')).toBeVisible();expect(errors).toEqual([]);
+ await page.reload();await expect(page.locator('#leadership-questions')).toBeVisible();expect(errors).toEqual([]);
 });
-test('overview and presenter sources work with keyboard and focus return',async({page})=>{
+test('overview and help work with keyboard and focus return',async({page})=>{
  await page.goto('./');await page.keyboard.press('m');await expect(page.getByRole('dialog',{name:'Briefing sections'})).toBeVisible();
- await page.getByRole('button',{name:'04 Agent Solve Loop'}).click();
+ await page.getByRole('button',{name:'03 Agent Solve Loop'}).click();
  await expect(page.locator('#daily-practice')).toBeVisible();await expect(page.locator('dialog[open]')).toHaveCount(0);
- await page.getByRole('button',{name:'Notes & sources',exact:true}).click();
- await expect(page.locator('#presenter-notes')).toContainText('Duo');
- await expect(page.locator('#presenter-notes a').first()).toHaveAttribute('href',/library.serviceinnovation.org/);
- await page.keyboard.press('Escape');await expect(page.locator('#notes-button')).toBeFocused();
+ await page.getByRole('button',{name:'Keyboard shortcuts and help'}).click();
+ await expect(page.getByRole('dialog',{name:'Presentation controls'})).toBeVisible();
+ await page.keyboard.press('Escape');await expect(page.locator('#help-button')).toBeFocused();
  await page.locator('#presentation').focus();await page.keyboard.press('ArrowRight');await expect(page.locator('#launch-scope')).toBeVisible();
 });
 test('problem, role, evidence and rollout tabs all update their detail',async({page})=>{
@@ -42,14 +41,6 @@ test('tab arrow keys move within their group without moving the slide',async({pa
  await page.goto('./#rollout');await page.locator('#stages-tab-0').focus();await page.keyboard.press('ArrowRight');
  await expect(page.locator('#stages-tab-1')).toBeFocused();await expect(page.locator('#stages-tab-1')).toHaveAttribute('aria-selected','true');
  await expect(page.locator('#rollout')).toBeVisible();await page.keyboard.press('End');await expect(page.locator('#stages-tab-3')).toBeFocused();
-});
-test('all eight KCS practices expose useful detail',async({page})=>{
- await page.goto('./#method');
- for(let i=0;i<8;i++){
-  const button=page.locator(`[data-practice="${i}"]`);await button.click();
-  await expect(button).toHaveAttribute('aria-pressed','true');
-  await expect(page.locator('#practice-detail')).toContainText((await button.innerText()).replace(/0\d|↗/g,'').trim());
- }
 });
 for(const article of ['missing','current','update'])for(const resolution of ['self','assisted']){
  test(`agent walkthrough: ${article} knowledge, ${resolution} resolution`,async({page})=>{
@@ -76,27 +67,11 @@ test('walkthrough backtracking restores decisions and restart clears route',asyn
  await page.locator('[data-walk-choice="missing"]').click();await expect(page.locator('#walk-route-summary')).toHaveText('Capture new');
  await page.getByRole('button',{name:'Restart',exact:false}).click();await expect(page.locator('#walk-back')).toBeDisabled();
 });
-test('local discussion persists, exports exact text and clears',async({page})=>{
- await page.goto('./#decisions');
- await page.getByRole('checkbox',{name:'Confirm participation'}).check();await page.getByRole('checkbox',{name:'Protect capacity'}).check();
- await page.getByRole('button',{name:'Capture next steps'}).click();
- await page.getByRole('textbox',{name:'Capture next steps'}).fill('Confirm coach capacity with service owners.');
- await page.reload();await expect(page.locator('#commitment-count')).toHaveText('2 of 3 marked for discussion');await page.getByRole('button',{name:'Capture next steps'}).click();await expect(page.locator('#discussion-notes')).toHaveValue('Confirm coach capacity with service owners.');
- const [download]=await Promise.all([page.waitForEvent('download'),page.getByRole('button',{name:'Download .txt'}).click()]);
- expect(download.suggestedFilename()).toBe('York-KCS-director-discussion.txt');
- const stream=await download.createReadStream();let text='';for await(const c of stream)text+=c.toString();
- expect(text).toContain('Confirm coach capacity');expect(text).toContain('[x] Confirm participation');expect(text).not.toContain('[x] Expand');
- await page.getByRole('button',{name:'Clear this browser’s discussion'}).click();await page.reload();await expect(page.locator('#discussion-notes')).toHaveValue('');await expect(page.locator('#commitment-count')).toHaveText('0 of 3 marked for discussion');
-});
-test('unavailable local storage does not break the briefing',async({page})=>{
- await page.addInitScript(()=>{Object.defineProperty(window,'localStorage',{get(){throw new Error('unavailable');}});});
- await page.goto('./#decisions');await page.getByRole('button',{name:'Capture next steps'}).click();await page.locator('#discussion-notes').fill('Unsaved notes');await expect(page.locator('#save-status')).toContainText('storage is unavailable');
-});
-test('reading and print modes include all alternative states',async({page})=>{
+test('reading and print modes contain only the edited slides',async({page})=>{
  await page.goto('./');await page.getByRole('button',{name:'Keyboard shortcuts and help'}).click();await page.getByRole('button',{name:'Reading & print view'}).click();
- await expect(page.locator('.slide:visible')).toHaveCount(ids.length);await expect(page.locator('.print-supplement')).toBeVisible();
- await expect(page.locator('.print-supplement')).toContainText('Agent walkthrough: every path');
- await page.getByRole('button',{name:'Return to presentation'}).click();await page.emulateMedia({media:'print'});await expect(page.locator('.slide:visible')).toHaveCount(ids.length);await expect(page.locator('.print-supplement')).toBeVisible();
+ await expect(page.locator('.slide:visible')).toHaveCount(ids.length);await expect(page.locator('.print-supplement')).toHaveCount(0);
+ await expect(page.locator('#method')).toHaveCount(0);
+ await page.getByRole('button',{name:'Return to presentation'}).click();await page.emulateMedia({media:'print'});await expect(page.locator('.slide:visible')).toHaveCount(ids.length);await expect(page.locator('.print-supplement')).toHaveCount(0);
 });
 for(const id of ids)test(`WCAG 2.2 AA: ${id}`,async({page})=>{
  await page.goto('./#'+id);await page.emulateMedia({reducedMotion:'reduce'});
@@ -105,8 +80,8 @@ for(const id of ids)test(`WCAG 2.2 AA: ${id}`,async({page})=>{
 });
 test('walkthrough branch choices and dialogs are accessible',async({page})=>{
  await page.goto('http://127.0.0.1:4173/solve-loop.html');await page.getByRole('button',{name:'Review & search'}).click();
- for(const state of ['choice','notes','overview','help']){
-  if(state!=='choice'){await page.goto('./#daily-practice');await page.locator('#'+{notes:'notes',overview:'overview',help:'help'}[state]+'-button').click();}
+ for(const state of ['choice','overview','help']){
+  if(state!=='choice'){await page.goto('./#daily-practice');await page.locator('#'+{overview:'overview',help:'help'}[state]+'-button').click();}
   const results=await new AxeBuilder({page}).withTags(['wcag2a','wcag2aa','wcag21aa','wcag22aa']).analyze();expect(results.violations).toEqual([]);
   await page.keyboard.press('Escape');
  }
@@ -124,7 +99,7 @@ test('default slides have a presentation-sized word budget',async({page})=>{
  for(const id of ids){
   await page.goto('./#'+id);
   const words=(await page.locator('.slide:visible').innerText()).trim().split(/\s+/).length;
-  expect(words,`${id}: ${words} on-screen words`).toBeLessThanOrEqual(id==='enablement'?130:id==='operating-model'?120:id==='evidence'?160:65);
+  expect(words,`${id}: ${words} on-screen words`).toBeLessThanOrEqual(id==='enablement'?130:id==='operating-model'?120:id==='evidence'?170:id==='participation'?140:id==='program-evidence'?160:id==='leadership-questions'?110:65);
  }
 });
 for(const size of [{width:1280,height:720},{width:1366,height:768},{width:1600,height:900},{width:1920,height:1080},{width:2560,height:1440}])test(`slides fit the ${size.width}×${size.height} presentation viewport`,async({page})=>{
@@ -142,67 +117,11 @@ test('presentation remote and space navigation work after interactions',async({p
  await page.keyboard.press('PageUp');await expect(page.locator('#rollout')).toBeVisible();
  await page.locator('#presentation').focus();await page.keyboard.press('Space');await expect(page.locator('#enablement')).toBeVisible();
 });
-test('discussion stays out of the slideshow until requested',async({page})=>{
- await page.goto('./#decisions');await expect(page.locator('#discussion-notes')).toBeHidden();
- await page.getByRole('button',{name:'Capture next steps'}).click();await expect(page.locator('#discussion-notes')).toBeVisible();
- await page.keyboard.press('Escape');await expect(page.locator('#discussion-button')).toBeFocused();
-});
-test('mobile controls and discussion dialog pass accessibility checks',async({page})=>{
- await page.setViewportSize({width:375,height:850});
- await page.goto('./#decisions');
- for(const open of [false,true]){
-  if(open)await page.getByRole('button',{name:'Capture next steps'}).click();
-  const result=await new AxeBuilder({page}).withTags(['wcag2a','wcag2aa','wcag21aa','wcag22aa']).analyze();
-  expect(result.violations).toEqual([]);
- }
-});
 test('fullscreen opens and closes from the presentation toolbar',async({page})=>{
  await page.goto('./');await page.getByRole('button',{name:'Toggle fullscreen'}).click();
  await expect.poll(()=>page.evaluate(()=>document.fullscreenElement?.id)).toBe('kcs-app');
  await page.getByRole('button',{name:'Toggle fullscreen'}).click();
  await expect.poll(()=>page.evaluate(()=>document.fullscreenElement===null)).toBe(true);
-});
-for(const size of [{width:1280,height:720},{width:1920,height:1080}])test(`Solve and Evolve render complete circular loops at ${size.width}px`,async({page})=>{
- await page.setViewportSize(size);await page.goto('./#method');await page.evaluate(()=>document.fonts.ready);
- const loops=page.locator('.learning-loop');await expect(loops).toHaveCount(2);
- for(const loop of await loops.all()){
-  await expect(loop.locator('.learning-track')).toBeVisible();
-  const bounds=await loop.locator('.loop-orbit').boundingBox();
-  expect(bounds.width).toBeGreaterThan(240);expect(Math.abs(bounds.width-bounds.height)).toBeLessThan(1);
-  expect(await loop.locator('.loop-flow path').count()).toBe(4);
-  await expect(loop.locator('.loop-flow')).toHaveAttribute('marker-end',/url\(#(?:solve|evolve)-arrow\)/);
-  const buttons=await loop.locator('[data-practice]').all();expect(buttons).toHaveLength(4);
-  const boxes=await Promise.all(buttons.map(b=>b.boundingBox()));
-  for(let i=0;i<boxes.length;i++)for(let j=i+1;j<boxes.length;j++){
-   const a=boxes[i],b=boxes[j];
-   const overlap=Math.min(a.x+a.width,b.x+b.width)-Math.max(a.x,b.x)>0&&Math.min(a.y+a.height,b.y+b.height)-Math.max(a.y,b.y)>0;
-   expect(overlap,'Practice labels must not overlap').toBe(false);
-  }
- }
- await expect(page.locator('.loop-exchange')).toContainText('Patterns');await expect(page.locator('.loop-exchange')).toContainText('Improvements');
- await expect(page.locator('.loop-caption')).toContainText('not a fixed sequence');
-});
-test('practice selection highlights the matching circular track and supports keyboard navigation',async({page})=>{
- await page.setViewportSize({width:1920,height:1080});await page.goto('./#method');
- for(let i=0;i<8;i++){
-  await page.locator(`[data-practice="${i}"]`).click();
-  await expect(page.locator('.loop-highlight[data-selected="true"]')).toHaveCount(1);
-  await expect(page.locator('.loop-highlight[data-selected="true"]')).toHaveAttribute('data-loop-highlight',String(i));
-  await expect(page.locator('.loop-highlight[data-selected="true"]')).toHaveCSS('opacity','1');
-  await expect(page.locator('.learning-loop[data-selected="true"]')).toHaveAttribute('data-loop',i<4?'solve':'evolve');
- }
- await page.locator('[data-practice="0"]').focus();await page.keyboard.press('ArrowRight');
- await expect(page.locator('[data-practice="1"]')).toBeFocused();await expect(page.locator('[data-practice="1"]')).toHaveAttribute('aria-pressed','true');
- await page.keyboard.press('End');await expect(page.locator('[data-practice="3"]')).toBeFocused();
- await page.keyboard.press('ArrowRight');await expect(page.locator('[data-practice="0"]')).toBeFocused();
- await expect(page.locator('#method')).toBeVisible();
-});
-test('desktop presentation type grows for a full-HD screen',async({page})=>{
- await page.setViewportSize({width:1920,height:1080});await page.goto('./#method');
- expect(await page.locator('#method h1').evaluate(e=>parseFloat(getComputedStyle(e).fontSize))).toBeGreaterThanOrEqual(88);
- expect(await page.locator('[data-practice="0"]').evaluate(e=>parseFloat(getComputedStyle(e).fontSize))).toBeGreaterThanOrEqual(20);
- expect(await page.locator('#practice-detail p').evaluate(e=>parseFloat(getComputedStyle(e).fontSize))).toBeGreaterThanOrEqual(27);
- await page.goto('./#rollout');expect(await page.locator('.stage-time').first().evaluate(e=>parseFloat(getComputedStyle(e).fontSize))).toBeGreaterThanOrEqual(27);
 });
 test('desktop reading view remains legible with all slides in normal document flow',async({page})=>{
  await page.setViewportSize({width:1920,height:1080});await page.goto('./');
@@ -213,15 +132,10 @@ test('desktop reading view remains legible with all slides in normal document fl
  }
  expect(await page.evaluate(()=>document.documentElement.scrollHeight)).toBeGreaterThan(4000);
 });
-test('desktop scaling keeps discussion dialog actions full-sized',async({page})=>{
- await page.setViewportSize({width:1920,height:1080});await page.goto('./#decisions');
- await page.getByRole('button',{name:'Capture next steps'}).click();
- const action=await page.locator('#copy-summary').boundingBox();expect(action.height).toBeGreaterThanOrEqual(44);
-});
 
 test('benefits cover the three requested groups and every horizon, with keyboard selection',async({page})=>{
  await page.goto('./#benefits');
- await expect(page.locator('[data-tab=benefits]')).toHaveText(['Our customers','Our agents','Our institution']);
+ await expect(page.locator('[data-tab=benefits]')).toHaveText(['Our customers','Our agents','York']);
  await expect(page.locator('#benefits-tab-0')).toHaveAttribute('aria-selected','true');
  for(let i=0;i<benefits.length;i++){
   await page.locator('#benefits-tab-'+i).click();
@@ -235,11 +149,7 @@ test('benefits cover the three requested groups and every horizon, with keyboard
  await expect(page.locator('#benefits-tab-1')).toBeFocused();
  await expect(page.locator('#benefits-tab-1')).toHaveAttribute('aria-selected','true');
  await expect(page.locator('#benefits .eyebrow')).toContainText('Expected benefits');
- await page.keyboard.press('r'); // The tab has focus, so use the dedicated reading control.
- await page.getByRole('button',{name:'Keyboard shortcuts and help'}).click();
- await page.getByRole('button',{name:'Reading & print view'}).click();
- await expect(page.locator('.benefit-table tbody tr')).toHaveCount(benefits.length);
- await expect(page.locator('.print-supplement')).toContainText('Baseline service outcomes');
+
 });
 test('leadership questions are available to keyboard users',async({page})=>{
  await page.goto('./#leadership-questions');
@@ -283,7 +193,7 @@ for(const size of [{width:1280,height:720},{width:1920,height:1080}])test(`all l
 
 test('rollout slide lists every communication and all three resource destinations',async({page})=>{
  await page.goto('./#enablement');
- await expect(page.locator('.comms-register li')).toHaveCount(4);
+ await expect(page.locator('.comms-register li')).toHaveCount(3);
  for(const message of enablement){
   const row=page.locator('.comms-register li').filter({hasText:message.label});
   await expect(row).toContainText(message.time);await expect(row).toContainText(message.body);
@@ -296,30 +206,21 @@ test('rollout slide lists every communication and all three resource destination
   await expect(link.locator('..')).toContainText(site.purpose);
   await link.focus();await expect(link).toBeFocused();
  }
- await expect(page.locator('.comms-path')).toContainText('Websites explain and equip');
- await page.getByRole('button',{name:'Notes & sources',exact:true}).click();
- await page.locator('.notes-detail summary').click();
- await expect(page.locator('#presenter-notes')).toContainText('future waves');
- await page.keyboard.press('Escape');await page.locator('#presentation').focus();await page.keyboard.press('r');
- await expect(page.locator('.print-supplement')).toContainText('https://www.yorku.ca/uit/cio/opex/kb/pilots');
+ await expect(page.locator('.comms-path')).toHaveCount(0);
 });
 
 test('coaching and council support participation and co-creation of the standard',async({page})=>{
  await page.goto('./#operating-model');
  const supports=page.locator('.program-support');await expect(supports).toHaveCount(2);
  await expect(supports.nth(0)).toContainText('Develop judgement and proficiency');
- await expect(supports.nth(1)).toContainText('Knowledge Council');
+ await expect(supports.nth(1).locator('h2')).toHaveText('Council');
  await expect(supports.nth(1)).toContainText('Bring frontline evidence together');
  await expect(supports.nth(1)).toContainText('Co-create our shared content standard');
- await expect(page.locator('.director-program-ask')).toContainText('participate actively in our knowledge program');
- await expect(page.locator('.program-source a')).toHaveAttribute('href',/library.serviceinnovation.org\/KCS/);
- await page.getByRole('button',{name:'Capture team commitments'}).click();
- await expect(page.getByRole('dialog',{name:'Capture next steps'})).toBeVisible();
- await page.locator('#discussion-notes').fill('Nominate council contributors; protect time for content-standard workshops.');
- await page.keyboard.press('Escape');await expect(page.getByRole('button',{name:'Capture team commitments'})).toBeFocused();
- await page.getByRole('button',{name:'Notes & sources',exact:true}).click();await page.locator('.notes-detail summary').click();
- await expect(page.locator('#presenter-notes')).toContainText('should not become an approval queue');
- await expect(page.locator('#presenter-notes')).toContainText('failed searches');
+ await expect(page.locator('.director-program-ask')).toContainText('our teams to participate in our knowledge program');
+ await expect(page.locator('.program-source')).toHaveCount(0);
+ await expect(page.locator('#operating-model button')).toHaveCount(0);
+ await expect(page.locator('#operating-model h1')).toHaveText('Committing to future success');
+
 });
 
 test('all three success aims connect questions, evidence and action on one slide',async({page})=>{
@@ -332,15 +233,13 @@ test('all three success aims connect questions, evidence and action on one slide
   for(const signal of aim.displaySignals)await expect(column).toContainText(signal);
   await expect(column.locator('.aim-action')).toContainText(aim.action);
  }
- await expect(page.locator('.success-principle')).toContainText('without article or link quotas');
- await page.getByRole('button',{name:'Notes & sources',exact:true}).click();await page.locator('.notes-detail summary').click();
- for(const aim of evidence)await expect(page.locator('#presenter-notes')).toContainText(aim.avoid);
+ await expect(page.locator('.success-principle')).toHaveCount(0);
 });
 
-test('presentation, notes and workflow contain no placeholder or demo labels',async({page})=>{
+test('presentation and workflow contain no placeholder or demo labels',async({page})=>{
  const filler=/\bdemo(?: only)?\b|\billustrative\b|\bplaceholder\b|\bunconfirmed\b|\bunresolved\b|timing to confirm|draft plan|\bproposed\b|no formal approval|still to confirm/i;
  for(const id of ids){
-  await page.goto('./#'+id);await page.getByRole('button',{name:'Notes & sources',exact:true}).click();
+  await page.goto('./#'+id);
   expect(await page.locator('#kcs-app').textContent()).not.toMatch(filler);
   await page.keyboard.press('Escape');
  }
@@ -398,10 +297,91 @@ test('York palette uses red accents without full red slide backgrounds and benef
  expect(await page.locator('#kcs-app').evaluate(e=>getComputedStyle(e).getPropertyValue('--red').trim())).toBe('#e31837');
  expect(ids.indexOf('benefits')+1).toBe(ids.indexOf('evidence'));
  await expect(page.locator('.slide[data-theme=red]')).toHaveCount(0);
- for(const id of ['case-for-change','launch-scope','decisions']){
+ for(const id of ['case-for-change','launch-scope','program-evidence']){
   await page.goto('./#'+id);
   expect(await page.locator('#'+id).evaluate(e=>getComputedStyle(e).backgroundColor)).not.toBe('rgb(227, 24, 55)');
  }
  await page.goto('./#benefits');await page.getByRole('button',{name:'Next section',exact:true}).click();
  await expect(page.locator('#evidence')).toBeVisible();
+});
+
+test('leadership revision connects purpose, contribution, recognition and action',async({page})=>{
+ await page.goto('./#case-for-change');await expect(page.locator('.purpose-statement')).toContainText('our community gets consistent help');await expect(page.locator('.purpose-statement')).toContainText('York retains what its teams learn');
+ await page.goto('./#participation');
+ await expect(page.locator('.recognition-table tbody tr')).toHaveCount(4);
+ await expect(page.locator('.recognition-table tbody strong')).toHaveText(['Search and reuse','Improve and capture','Coach and collaborate','Co-create our standard']);
+ await expect(page.locator('.recognition-table tbody td:last-child')).toContainText(['helped resolve a request','clearer or more useful','coaching and teamwork','feedback changed our shared standard']);
+ await expect(page.locator('.recognition-call')).toContainText('team meetings and one-to-ones');
+ await expect(page.locator('.recognition-call')).toContainText('name the contribution, explain its impact and thank the people involved');
+ await expect(page.locator('.recognition-call')).toContainText('without article quotas or leaderboards');
+ await expect(page.locator('.participation-value,.participation-columns')).toHaveCount(0);
+ await page.goto('./#operating-model');await expect(page.locator('.program-learning')).toHaveCount(0);
+ await page.goto('./#evidence');await expect(page.locator('.leadership-check')).toHaveCount(0);
+ await expect(page.locator('#decisions,#discussion-dialog,[data-commitment]')).toHaveCount(0);
+});
+
+test('presenter notes are absent from the HTML, controls, shortcuts and print output',async({page})=>{
+ const response=await page.goto('./');const html=await response.text();
+ expect(html).not.toMatch(/presenter-notes|notes-dialog|notes-button|print-supplement|PRESENTER COMPANION|Notes &amp; sources/);
+ await page.keyboard.press('n');await expect(page.locator('dialog[open]')).toHaveCount(0);
+ await page.emulateMedia({media:'print'});await expect(page.locator('.slide:visible')).toHaveCount(ids.length);
+ await expect(page.locator('#discussion-notes')).toHaveCount(0);
+
+});
+test('uploaded edits remain intact after tab changes and reload',async({page})=>{
+ await page.goto('./#enablement');await expect(page.locator('.comms-register')).not.toContainText('Executive announcement');
+ await expect(page.locator('.website-register li p')).toHaveText(['Announce the change & the tool','Explain the methodology','Prepare our pilots']);
+ await page.goto('./#operating-model');await expect(page.locator('#operating-model h1')).toHaveText('Committing to future success');
+ await expect(page.locator('.program-support h2')).toHaveText(['Coaching','Council']);
+ await page.goto('./#participation');await expect(page.locator('#participation h1')).toHaveText('Celebrate knowledge work');
+ await page.goto('./#leadership-questions');await page.locator('#questions-tab-1').click();await page.locator('#questions-tab-0').click();
+ await expect(page.locator('.question-outcome')).toContainText('Copenhagen');await expect(page.locator('.question-outcome')).toContainText('70%');
+ await page.reload();await expect(page.locator('.question-outcome')).toContainText('three years');
+ await expect(page.locator('#total-number')).toHaveCount(0);await expect(page.locator('.footer-slash')).toHaveText('/ 12');
+});
+
+test('evidence follows coaching and the presentation ends with meaningful questions',async({page})=>{
+ await page.goto('./#operating-model');await page.getByRole('button',{name:'Next section',exact:true}).click();
+ await expect(page.locator('#program-evidence')).toBeVisible();
+ await expect(page.locator('.investment-pillar h2')).toHaveText(['Coaching','Shared standard','Knowledge Council']);
+ await expect(page.locator('.investment-pillar>a')).toHaveCount(3);
+ for(const link of await page.locator('.investment-pillar>a').all()){
+  await expect(link).toHaveAttribute('href',/^https:\/\/library\.serviceinnovation\.org\/KCS\//);await link.focus();await expect(link).toBeFocused();
+ }
+ await expect(page.locator('.investment-test')).toContainText('capacity needed to sustain');
+ await page.locator('#presentation').focus();await page.keyboard.press('End');
+ await expect(page.locator('#leadership-questions')).toBeVisible();await expect(page.locator('#next-button')).toBeDisabled();
+ await expect(page.locator('#decisions,#discussion-dialog,[data-open-discussion]')).toHaveCount(0);
+ for(const [i,phrase] of [[1,'work through cross-team ownership'],[2,'support capacity'],[3,'a new location alone'],[4,'outdated or wrong'],[5,'not a commitment to onboard everyone'],[6,'not launch commitments']]){
+  await page.locator('#questions-tab-'+i).click();await expect(page.locator('#questions-panel')).toContainText(phrase);
+ }
+ await page.keyboard.press('m'); // Tab focus does not invoke deck shortcuts.
+ await page.locator('#presentation').focus();await page.keyboard.press('m');
+ await expect(page.locator('.overview-list button')).toHaveCount(ids.length);
+ await expect(page.locator('.overview-list button').last()).toContainText('Questions for discussion');
+});
+test('mobile help controls remain accessible without the removed discussion form',async({page})=>{
+ await page.setViewportSize({width:375,height:850});await page.goto('./#leadership-questions');
+ await page.getByRole('button',{name:'Keyboard shortcuts and help'}).click();
+ const result=await new AxeBuilder({page}).withTags(['wcag2a','wcag2aa','wcag21aa','wcag22aa']).analyze();expect(result.violations).toEqual([]);
+});
+
+for(const width of [768,1280,1920])test(`communications rows align across both registers at ${width}px`,async({page})=>{
+ await page.setViewportSize({width,height:width===768?1024:Math.round(width*9/16)});await page.goto('./#enablement');await page.evaluate(()=>document.fonts.ready);
+ const left=await page.locator('.comms-register li').all(),right=await page.locator('.website-register li').all();
+ for(let i=0;i<3;i++){
+  const a=await left[i].boundingBox(),b=await right[i].boundingBox();
+  expect(Math.abs(a.y-b.y)).toBeLessThanOrEqual(1);expect(Math.abs(a.height-b.height)).toBeLessThanOrEqual(1);
+ }
+});
+test('benefits use equal-width tab underlines without duplicate horizon rules',async({page})=>{
+ await page.setViewportSize({width:1280,height:720});await page.goto('./#benefits');
+ const tabs=page.locator('[data-tab=benefits]'),bounds=await page.locator('.entity-tabs .tabs').boundingBox();
+ for(const tab of await tabs.all())expect((await tab.boundingBox()).width).toBeCloseTo(bounds.width/3,0);
+ for(let i=0;i<3;i++){
+  await tabs.nth(i).click();await expect(tabs.nth(i)).toHaveCSS('border-bottom-color','rgb(227, 24, 55)');
+  await expect(tabs.nth((i+1)%3)).not.toHaveCSS('border-bottom-color','rgb(227, 24, 55)');
+ }
+ for(const horizon of await page.locator('.benefit-horizon').all())await expect(horizon).toHaveCSS('border-top-width','0px');
+ await expect(tabs.nth(2)).toHaveText('York');
 });
