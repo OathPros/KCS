@@ -1135,3 +1135,15 @@ body{margin:0}
  #kcs-app .comms-register,#kcs-app .website-register{display:block;grid-row:auto;grid-column:auto}
  #kcs-app .rollout-resources ul{display:block;grid-row:auto}
 }
+
+/* Completed launch preparation is distinct from future readiness gates. */
+#kcs-app .stage-audiences span{display:block}
+#kcs-app .stage-audiences span+span{margin-top:6px}
+#kcs-app .readiness[data-state=complete] .gate-mark{color:#18713d}
+#kcs-app .readiness[data-state=complete] .micro{color:#18713d;font-weight:600}
+#kcs-app .readiness-check{width:1em;height:1em;display:block;fill:none;stroke:currentColor;stroke-width:3;stroke-linecap:round;stroke-linejoin:round}
+#kcs-app .readiness[data-state=complete] p{font-size:20px;letter-spacing:-.2px;line-height:1.45}
+@media screen and (min-width:1000px){
+ #kcs-app .readiness[data-state=complete] p{font-size:calc(1.7 * var(--du));letter-spacing:calc(-.02 * var(--du))}
+ #kcs-app .stage-audiences span+span{margin-top:calc(.45 * var(--du))}
+}

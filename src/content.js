@@ -118,12 +118,13 @@ export const practices = [
 ];
 export const stages = [
   {
-    "label": "Start",
+    "label": "Launch",
     "time": "19 Nov 2026",
-    "status": "Planned"
+    "status": "Launch + pilot",
+    "preparationComplete": true
   },
   {
-    "label": "Learn",
+    "label": "Pilot",
     "time": "Winter 2027",
     "status": "Refine the practice"
   },
@@ -135,7 +136,7 @@ export const stages = [
   {
     "label": "Self-service",
     "time": "Summer 2027",
-    "status": "Separate target"
+    "status": "Big win"
   }
 ];
 export const programSupports = [
@@ -379,13 +380,19 @@ const section=(id,theme,body,classes='')=>`<section class="slide ${classes}" dat
 const tabs=(group,items,selected=0)=>`<div class="tabs" role="tablist" aria-label="${group}">${items.map((x,i)=>`<button role="tab" id="${group}-tab-${i}" aria-controls="${group}-panel" aria-selected="${i===selected}" tabindex="${i===selected?0:-1}" data-tab="${group}" data-index="${i}">${x.label}</button>`).join('')}</div>`;
 export const concise = {
  problems:[['Individual expertise','Shared knowledge'],['Repeated investigation','Reuse proven answers'],['Outdated answers','Improve during reuse'],['Scattered guidance','Find relevant knowledge']],
- stages:[['Open access and start the pilot','Workflow + permissions + coaches','All agents: reuse. Onboarded pilot: author.'],['Refine through real work','Evidence to continue or adjust','Pilot teams + working group'],['Onboard additional teams','Relevant knowledge + coaching capacity','Supported adoption waves'],['Release community self-service','Content + audience + service readiness','Separate publication decision']],
+ stages:[['Launch KB module &amp; begin the pilot','Workflow + draft standard + pilot onboarding information + live training',['All agents: reuse knowledge','Onboarded pilot agents: create and update knowledge']],['Refine through real work','Evidence to continue or adjust','Pilot teams + working group'],['Onboard additional teams','Relevant knowledge + coaching capacity','Supported adoption waves'],['Release community self-service','Content + audience + service readiness','Our community can search and follow our approved and maintained knowledge.']],
 
 };
 const person='<svg class="person-icon" viewBox="0 0 80 90" aria-hidden="true"><circle cx="40" cy="24" r="15"/><path d="M12 80V65c0-18 56-18 56 0v15"/></svg>';
 const article='<svg class="article-icon" viewBox="0 0 80 90" aria-hidden="true"><path d="M16 5h33l16 16v63H16zM49 5v18h16M27 40h26M27 52h26M27 64h17"/></svg>';
 export function problemPanel(i=0){const [before,after]=concise.problems[i];return `<div class="comparison"><div class="before"><span class="micro">Today</span><div class="comparison-art">${person}<span class="broken-connection" aria-hidden="true"></span>${person}</div><h2>${before}</h2></div><div class="after"><span class="micro">With KCS</span><div class="comparison-art">${article}<span class="solid-connection" aria-hidden="true">→</span>${person}</div><h2>${after}</h2></div></div>`;}
-export function stagePanel(i=0){const s=stages[i],[title,gate,scope]=concise.stages[i];return `<div class="stage-takeaway"><span class="micro">${s.status}</span><h2>${title}</h2><p>${scope}</p></div><div class="readiness"><span class="gate-mark" aria-hidden="true">${arrowIcon}</span><div><span class="micro">Readiness gate</span><p>${gate}</p></div></div>`;}
+export function stagePanel(i=0){
+ const s=stages[i],[title,gate,scope]=concise.stages[i];
+ const complete=s.preparationComplete===true;
+ const mark=complete?'<svg class="readiness-check" viewBox="0 0 32 32" aria-hidden="true"><path d="m5 16 7 7L27 8"/></svg>':arrowIcon;
+ const audience=Array.isArray(scope)?`<p class="stage-audiences">${scope.map(line=>`<span>${line}</span>`).join('')}</p>`:`<p>${scope}</p>`;
+ return `<div class="stage-takeaway"><span class="micro">${s.status}</span><h2>${title}</h2>${audience}</div><div class="readiness" data-state="${complete?'complete':'pending'}"><span class="gate-mark" aria-hidden="true">${mark}</span><div><span class="micro">${complete?'Launch preparation complete':'Readiness gate'}</span><p>${gate}</p></div></div>`;
+}
 export function benefitPanel(i=0){return `<div class="benefit-horizons">${benefits[i].outcomes.map(([title,body],n)=>`<div class="benefit-horizon"><span class="horizon-number" aria-hidden="true">0${n+1}</span><p class="micro">${horizons[n].label}</p><p class="horizon-time">${horizons[n].time}</p><h2>${title}</h2><p class="horizon-description">${body}</p></div>`).join('')}</div>`;}
 export function questionPanel(i=0){const q=questions[i];return `<span class="micro">Leadership question / ${String(i+1).padStart(2,'0')}</span><h2>${q.question}</h2><p>${q.answer}</p>${q.reportedOutcome?`<p class="question-outcome">${q.reportedOutcome}</p>`:''}`;}
 export function renderSlides(){return [
@@ -404,7 +411,7 @@ section('launch-scope','white',`
  `,'launch-slide'),
 section('rollout','white',`
  ${heading('rollout','York’s rollout','Rollout roadmap')}
- <div class="timeline" role="tablist" aria-label="stages">${stages.map((s,i)=>`<button role="tab" id="stages-tab-${i}" aria-controls="stages-panel" aria-selected="${i===0}" tabindex="${i===0?0:-1}" data-tab="stages" data-index="${i}"><span class="milestone-dot" aria-hidden="true"></span><span class="stage-index">0${i+1}</span><strong>${s.label}</strong><span class="stage-time">${s.time}</span>${i===0||i===3?`<span class="stage-qualifier">${i===0?'Planned':'Target'}</span>`:''}</button>`).join('')}</div>
+ <div class="timeline" role="tablist" aria-label="stages">${stages.map((s,i)=>`<button role="tab" id="stages-tab-${i}" aria-controls="stages-panel" aria-selected="${i===0}" tabindex="${i===0?0:-1}" data-tab="stages" data-index="${i}"><span class="milestone-dot" aria-hidden="true"></span><span class="stage-index">0${i+1}</span><strong>${s.label}</strong><span class="stage-time">${s.time}</span></button>`).join('')}</div>
  <div id="stages-panel" class="stage-panel" role="tabpanel" aria-labelledby="stages-tab-0" tabindex="0">${stagePanel()}</div>`,'rollout-slide'),
 section('enablement','white',`
  ${heading('enablement','Communications & rollout resources','Rollout communications')}

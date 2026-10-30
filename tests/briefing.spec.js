@@ -27,7 +27,7 @@ test('overview and help work with keyboard and focus return',async({page})=>{
 test('problem, role, evidence and rollout tabs all update their detail',async({page})=>{
  for(const [id,group,checks] of [
   ['case-for-change','problems',['Shared knowledge','Reuse proven answers','Improve during reuse','Find relevant knowledge']],
-  ['rollout','stages',['Open access','Refine through real work','Onboard additional teams','Release community self-service']],
+  ['rollout','stages',['Launch KB module','Refine through real work','Onboard additional teams','Release community self-service']],
  ]){
   await page.goto('./#'+id);
   const tabs=page.locator(`[data-tab="${group}"]`);
@@ -180,9 +180,9 @@ test('launch permissions remain distinct and Solve slide shows the full flow',as
  await expect(page.locator('.solve-flow')).toContainText('Continue agent-led');
 });
 
-for(const size of [{width:1280,height:720},{width:1920,height:1080}])test(`all leadership alternative states fit at ${size.width}px`,async({page})=>{
+for(const size of [{width:1280,height:720},{width:1920,height:1080}])test(`all interactive slide states fit at ${size.width}px`,async({page})=>{
  await page.setViewportSize(size);
- for(const [id,group] of [['benefits','benefits'],['leadership-questions','questions']]){
+ for(const [id,group] of [['benefits','benefits'],['leadership-questions','questions'],['rollout','stages']]){
   await page.goto('./#'+id);
   for(const tab of await page.locator(`[data-tab="${group}"]`).all()){
    await tab.click();
@@ -384,4 +384,19 @@ test('benefits use equal-width tab underlines without duplicate horizon rules',a
  }
  for(const horizon of await page.locator('.benefit-horizon').all())await expect(horizon).toHaveCSS('border-top-width','0px');
  await expect(tabs.nth(2)).toHaveText('York');
+});
+
+test('roadmap distinguishes completed launch preparation from future self-service readiness',async({page})=>{
+ await page.goto('./#rollout');await expect(page.locator('.timeline strong')).toHaveText(['Launch','Pilot','Expand','Self-service']);
+ await expect(page.locator('.stage-qualifier')).toHaveCount(0);
+ await expect(page.locator('.stage-audiences span')).toHaveText(['All agents: reuse knowledge','Onboarded pilot agents: create and update knowledge']);
+ await expect(page.locator('.readiness')).toHaveAttribute('data-state','complete');
+ await expect(page.locator('.readiness .micro')).toHaveText('Launch preparation complete');
+ await expect(page.locator('.readiness-check')).toBeVisible();await expect(page.locator('.gate-mark')).toHaveCSS('color','rgb(24, 113, 61)');
+ await expect(page.locator('.readiness p')).toHaveText('Workflow + draft standard + pilot onboarding information + live training');
+ await page.locator('#stages-tab-3').click();await expect(page.locator('.stage-takeaway .micro')).toHaveText('Big win');
+ await expect(page.locator('.stage-takeaway')).toContainText('Our community can search and follow our approved and maintained knowledge');
+ await expect(page.locator('.readiness')).toHaveAttribute('data-state','pending');await expect(page.locator('.readiness-check')).toHaveCount(0);
+ await expect(page.locator('.readiness .micro')).toHaveText('Readiness gate');
+ await page.locator('#stages-tab-0').click();await expect(page.locator('.readiness-check')).toBeVisible();
 });

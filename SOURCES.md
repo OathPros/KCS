@@ -145,3 +145,10 @@ After reviewing the recognition and annotated layout changes, the user explicitl
 ## Shared-link naming
 
 The page title, social-sharing metadata and default HTML filename now identify the presentation as Halo KB Launch & Pilot Announcement. Audience-role labels are removed from metadata, code identifiers, package names and source documentation. The slideshow content and public URL remain the same.
+
+
+## Annotated roadmap update
+
+The latest user-supplied screenshots rename Start/Learn to Launch/Pilot and remove Planned/Target timeline badges. They explicitly state that preparation is done and request a green check, with workflow, draft standard, pilot onboarding information and live training as the completed preparation. This is the user-provided status update for the launch readiness panel, not a claim that the 19 November release or future rollout phases have happened. The two audience lines preserve the distinction between all-agent reuse and onboarded pilot authoring.
+
+The self-service panel keeps the planned summer milestone and content/audience/service readiness gate, adds the requested “Big win” emphasis, and describes the outcome as our community searching and following approved and maintained knowledge. The annotations supersede the older launch-preparation status in the planning PDFs; no other future gate is marked complete.

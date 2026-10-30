@@ -74,3 +74,5 @@ The coaching slide now has the requested “Committing to future success” titl
 The benefits tabs share a single continuous baseline; the active third is red, and the horizon panels have no duplicate top rules. The communications and website registers share intrinsic grid rows so their matching rows align. Both layouts adapt on phones.
 
 The browser title and Open Graph/Twitter metadata use “Halo KB Launch & Pilot Announcement” so shared links identify the launch and pilot. Audience-role labels have been removed from presentation metadata, source code and documentation.
+
+The roadmap uses Launch, Pilot, Expand and Self-service without timeline badges. The launch panel separates all-agent reuse from onboarded pilot authoring and marks launch preparation complete with a green check. Community self-service is framed as the big win: our community can search and follow approved, maintained knowledge. Future readiness gates remain distinct.
