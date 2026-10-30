@@ -1,0 +1,16 @@
+import { readFile,writeFile,mkdir } from 'node:fs/promises';
+import {arrowIcon} from '../src/content.js';
+const font=await readFile('dist/fonts/dm-sans-latin-wght-normal.woff2');
+const license=await readFile('dist/fonts/DM-Sans-LICENSE.txt','utf8');
+let css=(await readFile('src/styles.css','utf8')).split('\n').filter(l=>!l.startsWith(':root')&&!l.startsWith('body{')&&!l.trimStart().startsWith('@page')).join('\n');
+css=css.replaceAll('#kcs-app','#kcs-solve-walkthrough').replaceAll('DM Sans','KCS Solve Sans').replace("url('./fonts/dm-sans-latin-wght-normal.woff2')",`url('data:font/woff2;base64,${font.toString('base64')}')`);
+css+=`\n#kcs-solve-walkthrough.js{display:block;height:auto;min-height:0;overflow:visible}#kcs-solve-walkthrough .slide{height:auto;overflow:visible;--du:clamp(10px,1vw,15px)}#kcs-solve-walkthrough .slide-inner{height:auto;max-width:1100px}#kcs-solve-walkthrough .walk-slide h1{font-size:clamp(32px,4vw,54px)}#kcs-solve-walkthrough .standalone-lead{color:#c6c6d0;font-size:18px;margin:16px 0 28px}#kcs-solve-walkthrough .walk-route{margin-top:20px}`;
+const logic=(await readFile('src/solve-walkthrough.js','utf8')).replace(/^import .*\n/,'').replace('export function','function');
+const markup=`<div id="kcs-solve-walkthrough" class="js"><section class="slide walk-slide" data-theme="ink" aria-labelledby="interactive-solve-title"><div class="slide-inner"><p class="eyebrow">KCS at York / Agent practice</p><h1 id="interactive-solve-title">The agent Solve Loop</h1><p class="standalone-lead">Follow a ticket through search, reuse, improvement and resolution.</p><div class="walkthrough" aria-label="Interactive agent Solve walkthrough"><nav class="walk-route" aria-label="Walkthrough progress"><ol id="walk-route-list"></ol></nav><div class="walk-content"><div class="walk-topline"><span class="micro" id="walk-step-count">STEP 1 OF 6</span><button class="text-button" id="walk-restart">Restart ↺</button></div><div id="walk-panel" aria-live="polite"></div><div class="walk-bottom"><button id="walk-back" class="text-button" disabled>← Back a step</button><span id="walk-route-summary">Agent knowledge workflow</span></div></div></div><noscript><p>Review the ticket and search. Reuse existing knowledge and improve or flag gaps, or capture missing knowledge. Link the article, share suitable guidance or assist the requester, then verify the outcome and resolve.</p></noscript></div></section></div>`;
+const embed=`<!-- DM Sans font license\n${license.replaceAll('-->','-- >')}\n-->\n<style>${css}</style>\n${markup}\n<script>(()=>{const arrowIcon=${JSON.stringify(arrowIcon)};${logic}\ninitSolveWalkthrough(document.getElementById('kcs-solve-walkthrough'));})();</script>`;
+const html=`<!doctype html><html lang="en-CA"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1"><title>KCS at York | Interactive Solve Loop</title></head><body style="margin:0;min-height:100svh;background:#111113"><main>${embed}</main></body></html>`;
+await mkdir('artifacts',{recursive:true});
+await writeFile('dist/solve-loop.html',html);
+await writeFile('artifacts/KCS-solve-loop-interactive.html',html);
+await writeFile('artifacts/KCS-solve-loop-embed.html',embed);
+console.log('Built standalone and embeddable interactive Solve Loop HTML');

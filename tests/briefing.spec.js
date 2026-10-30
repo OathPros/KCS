@@ -1,6 +1,6 @@
 import { test, expect } from '@playwright/test';
 import AxeBuilder from '@axe-core/playwright';
-import { chapters, benefits, questions } from '../src/content.js';
+import { chapters, benefits, questions, enablement, rolloutWebsites, evidence } from '../src/content.js';
 const ids=chapters.map(c=>c.id);
 test('all sections navigate with stable deep links and no runtime errors',async({page})=>{
  const errors=[];page.on('pageerror',e=>errors.push(e.message));
@@ -16,8 +16,8 @@ test('all sections navigate with stable deep links and no runtime errors',async(
  await page.reload();await expect(page.locator('#decisions')).toBeVisible();expect(errors).toEqual([]);
 });
 test('overview and presenter sources work with keyboard and focus return',async({page})=>{
- await page.goto('./');await page.keyboard.press('m');await expect(page.getByRole('dialog',{name:'The briefing, at a glance.'})).toBeVisible();
- await page.getByRole('button',{name:'05 Agent Solve walkthrough'}).click();
+ await page.goto('./');await page.keyboard.press('m');await expect(page.getByRole('dialog',{name:'Briefing sections'})).toBeVisible();
+ await page.getByRole('button',{name:'04 Agent Solve Loop'}).click();
  await expect(page.locator('#daily-practice')).toBeVisible();await expect(page.locator('dialog[open]')).toHaveCount(0);
  await page.getByRole('button',{name:'Notes & sources',exact:true}).click();
  await expect(page.locator('#presenter-notes')).toContainText('Duo');
@@ -27,10 +27,8 @@ test('overview and presenter sources work with keyboard and focus return',async(
 });
 test('problem, role, evidence and rollout tabs all update their detail',async({page})=>{
  for(const [id,group,checks] of [
-  ['case-for-change','problems',['Use shared knowledge','Start with what’s known','Improve as you reuse','Find a useful answer']],
-  ['rollout','stages',['Open access','Learn from real work','Bring the next team','Open suitable']],
-  ['operating-model','roles',['Practise in real tickets','Build judgement','Turn patterns','Confirm service truth','Protect time']],
-  ['evidence','evidence',['Did it help','Can people find','Is the practice']]
+  ['case-for-change','problems',['Shared knowledge','Reuse proven answers','Improve during reuse','Find relevant knowledge']],
+  ['rollout','stages',['Open access','Refine through real work','Onboard additional teams','Release community self-service']],
  ]){
   await page.goto('./#'+id);
   const tabs=page.locator(`[data-tab="${group}"]`);
@@ -55,12 +53,12 @@ test('all eight KCS practices expose useful detail',async({page})=>{
 });
 for(const article of ['missing','current','update'])for(const resolution of ['self','assisted']){
  test(`agent walkthrough: ${article} knowledge, ${resolution} resolution`,async({page})=>{
-  await page.goto('./#daily-practice');
+  await page.goto('http://127.0.0.1:4173/solve-loop.html');
   await page.getByRole('button',{name:'Review & search'}).click();
   if(article==='missing')await page.locator('[data-walk-choice="missing"]').click();
   else {await page.locator('[data-walk-choice="exists"]').click();await page.locator(`[data-walk-choice="${article}"]`).click();}
   await page.getByRole('button',{name:'Continue to linking'}).click();
-  await expect(page.locator('#walk-panel h2')).toHaveText('Link the article.');
+  await expect(page.locator('#walk-panel h2')).toHaveText('Link the article');
   await page.getByRole('button',{name:'Link & continue'}).click();
   await page.locator(`[data-walk-choice="${resolution}"]`).click();
   if(resolution==='self')await expect(page.locator('#walk-panel')).toContainText('approved content');
@@ -72,7 +70,7 @@ for(const article of ['missing','current','update'])for(const resolution of ['se
  });
 }
 test('walkthrough backtracking restores decisions and restart clears route',async({page})=>{
- await page.goto('./#daily-practice');await page.getByRole('button',{name:'Review & search'}).click();await page.locator('[data-walk-choice="exists"]').click();await page.locator('[data-walk-choice="update"]').click();
+ await page.goto('http://127.0.0.1:4173/solve-loop.html');await page.getByRole('button',{name:'Review & search'}).click();await page.locator('[data-walk-choice="exists"]').click();await page.locator('[data-walk-choice="update"]').click();
  await page.getByRole('button',{name:'Back a step'}).click();await expect(page.locator('#walk-panel h2')).toContainText('need an update');
  await page.getByRole('button',{name:'Back a step'}).click();await expect(page.locator('#walk-panel h2')).toContainText('knowledge exist');
  await page.locator('[data-walk-choice="missing"]').click();await expect(page.locator('#walk-route-summary')).toHaveText('Capture new');
@@ -106,9 +104,9 @@ for(const id of ids)test(`WCAG 2.2 AA: ${id}`,async({page})=>{
  expect(results.violations,JSON.stringify(results.violations.map(v=>({id:v.id,nodes:v.nodes.map(n=>n.target)})))).toEqual([]);
 });
 test('walkthrough branch choices and dialogs are accessible',async({page})=>{
- await page.goto('./#daily-practice');await page.getByRole('button',{name:'Review & search'}).click();
+ await page.goto('http://127.0.0.1:4173/solve-loop.html');await page.getByRole('button',{name:'Review & search'}).click();
  for(const state of ['choice','notes','overview','help']){
-  if(state!=='choice')await page.locator('#'+{notes:'notes',overview:'overview',help:'help'}[state]+'-button').click();
+  if(state!=='choice'){await page.goto('./#daily-practice');await page.locator('#'+{notes:'notes',overview:'overview',help:'help'}[state]+'-button').click();}
   const results=await new AxeBuilder({page}).withTags(['wcag2a','wcag2aa','wcag21aa','wcag22aa']).analyze();expect(results.violations).toEqual([]);
   await page.keyboard.press('Escape');
  }
@@ -126,7 +124,7 @@ test('default slides have a presentation-sized word budget',async({page})=>{
  for(const id of ids){
   await page.goto('./#'+id);
   const words=(await page.locator('.slide:visible').innerText()).trim().split(/\s+/).length;
-  expect(words,`${id}: ${words} on-screen words`).toBeLessThanOrEqual(65);
+  expect(words,`${id}: ${words} on-screen words`).toBeLessThanOrEqual(id==='enablement'?130:id==='operating-model'?120:id==='evidence'?160:65);
  }
 });
 for(const size of [{width:1280,height:720},{width:1366,height:768},{width:1600,height:900},{width:1920,height:1080},{width:2560,height:1440}])test(`slides fit the ${size.width}×${size.height} presentation viewport`,async({page})=>{
@@ -237,14 +235,13 @@ test('benefits cover the three requested groups and every horizon, with keyboard
  await expect(page.locator('#benefits-tab-1')).toBeFocused();
  await expect(page.locator('#benefits-tab-1')).toHaveAttribute('aria-selected','true');
  await expect(page.locator('#benefits .eyebrow')).toContainText('Expected benefits');
- await expect(page.locator('.benefit-caveat')).toContainText('requires readiness');
  await page.keyboard.press('r'); // The tab has focus, so use the dedicated reading control.
  await page.getByRole('button',{name:'Keyboard shortcuts and help'}).click();
  await page.getByRole('button',{name:'Reading & print view'}).click();
  await expect(page.locator('.benefit-table tbody tr')).toHaveCount(benefits.length);
- await expect(page.locator('.print-supplement')).toContainText('No York percentage saving');
+ await expect(page.locator('.print-supplement')).toContainText('Baseline service outcomes');
 });
-test('leadership questions and enablement states are available to keyboard users',async({page})=>{
+test('leadership questions are available to keyboard users',async({page})=>{
  await page.goto('./#leadership-questions');
  for(let i=0;i<questions.length;i++){
   await page.locator('#questions-tab-'+i).click();
@@ -253,35 +250,158 @@ test('leadership questions and enablement states are available to keyboard users
  }
  await page.locator('#questions-tab-0').focus();await page.keyboard.press('ArrowDown');
  await expect(page.locator('#questions-tab-1')).toBeFocused();
- await page.goto('./#enablement');
- for(const [i,text] of ['Brief managers','Make the first ticket','Coach with real work'].entries()){
-  await page.locator('#enablement-tab-'+i).click();await expect(page.locator('#enablement-panel')).toContainText(text);
- }
+
 });
-test('launch permissions remain distinct and workflow map opens with focus return',async({page})=>{
+test('launch permissions remain distinct and Solve slide shows the full flow',async({page})=>{
  await page.goto('./#launch-scope');
  await expect(page.locator('.launch-everyone')).toContainText('All Halo agents');
  await expect(page.locator('.launch-authors')).toContainText('Onboarded pilot participants');
  await expect(page.locator('.pilot-roster')).toHaveText('SSB / OUR / CTS / CS');
- await page.goto('./#daily-practice');await page.getByRole('button',{name:'View workflow map'}).click();
- await expect(page.getByRole('dialog',{name:'Every route keeps the learning'})).toBeVisible();
- await expect(page.locator('.workflow-map')).toBeVisible();
- const overlaps=await page.locator('.workflow-map').evaluate(svg=>{
-  const boxes=[...svg.querySelectorAll('.map-node rect')].map(e=>({x:e.x.baseVal.value,y:e.y.baseVal.value,w:e.width.baseVal.value,h:e.height.baseVal.value}));
+ await page.goto('./#daily-practice');
+ await expect(page.locator('.solve-flow svg')).toBeVisible();
+ await expect(page.locator('#walk-panel')).toHaveCount(0);
+ await expect(page.locator('#daily-practice button')).toHaveCount(0);
+ const overlaps=await page.locator('.solve-flow svg').evaluate(svg=>{
+  const boxes=[...svg.querySelectorAll('.solve-node rect')].map(e=>({x:e.x.baseVal.value,y:e.y.baseVal.value,w:e.width.baseVal.value,h:e.height.baseVal.value}));
   return boxes.some((a,i)=>boxes.slice(i+1).some(b=>Math.min(a.x+a.w,b.x+b.w)>Math.max(a.x,b.x)&&Math.min(a.y+a.h,b.y+b.h)>Math.max(a.y,b.y)));
  });
- expect(overlaps,'Workflow nodes must remain separate').toBe(false);
- const result=await new AxeBuilder({page}).withTags(['wcag2a','wcag2aa','wcag21aa','wcag22aa']).analyze();expect(result.violations).toEqual([]);
- await page.keyboard.press('Escape');await expect(page.locator('#workflow-button')).toBeFocused();
+ expect(overlaps,'Flow nodes must remain separate').toBe(false);
+ await expect(page.locator('.solve-flow')).toContainText('capture and create');
+ await expect(page.locator('.solve-flow')).toContainText('Continue agent-led');
 });
 
 for(const size of [{width:1280,height:720},{width:1920,height:1080}])test(`all leadership alternative states fit at ${size.width}px`,async({page})=>{
  await page.setViewportSize(size);
- for(const [id,group] of [['benefits','benefits'],['leadership-questions','questions'],['enablement','enablement']]){
+ for(const [id,group] of [['benefits','benefits'],['leadership-questions','questions']]){
   await page.goto('./#'+id);
   for(const tab of await page.locator(`[data-tab="${group}"]`).all()){
    await tab.click();
    expect(await page.locator('.slide:visible').evaluate(e=>e.scrollHeight<=e.clientHeight+1&&e.scrollWidth<=e.clientWidth+1),await tab.innerText()).toBe(true);
   }
  }
+});
+
+test('rollout slide lists every communication and all three resource destinations',async({page})=>{
+ await page.goto('./#enablement');
+ await expect(page.locator('.comms-register li')).toHaveCount(4);
+ for(const message of enablement){
+  const row=page.locator('.comms-register li').filter({hasText:message.label});
+  await expect(row).toContainText(message.time);await expect(row).toContainText(message.body);
+ }
+ await expect(page.locator('.website-register a')).toHaveCount(3);
+ for(const site of rolloutWebsites){
+  const link=page.getByRole('link',{name:new RegExp(site.label)});
+  await expect(link).toHaveAttribute('href','https://www.yorku.ca'+site.path);
+  await expect(link).toHaveAttribute('rel','noopener noreferrer');
+  await expect(link.locator('..')).toContainText(site.purpose);
+  await link.focus();await expect(link).toBeFocused();
+ }
+ await expect(page.locator('.comms-path')).toContainText('Websites explain and equip');
+ await page.getByRole('button',{name:'Notes & sources',exact:true}).click();
+ await page.locator('.notes-detail summary').click();
+ await expect(page.locator('#presenter-notes')).toContainText('future waves');
+ await page.keyboard.press('Escape');await page.locator('#presentation').focus();await page.keyboard.press('r');
+ await expect(page.locator('.print-supplement')).toContainText('https://www.yorku.ca/uit/cio/opex/kb/pilots');
+});
+
+test('coaching and council support participation and co-creation of the standard',async({page})=>{
+ await page.goto('./#operating-model');
+ const supports=page.locator('.program-support');await expect(supports).toHaveCount(2);
+ await expect(supports.nth(0)).toContainText('Develop judgement and proficiency');
+ await expect(supports.nth(1)).toContainText('Knowledge Council');
+ await expect(supports.nth(1)).toContainText('Bring frontline evidence together');
+ await expect(supports.nth(1)).toContainText('Co-create our shared content standard');
+ await expect(page.locator('.director-program-ask')).toContainText('participate actively in our knowledge program');
+ await expect(page.locator('.program-source a')).toHaveAttribute('href',/library.serviceinnovation.org\/KCS/);
+ await page.getByRole('button',{name:'Capture team commitments'}).click();
+ await expect(page.getByRole('dialog',{name:'Capture next steps'})).toBeVisible();
+ await page.locator('#discussion-notes').fill('Nominate council contributors; protect time for content-standard workshops.');
+ await page.keyboard.press('Escape');await expect(page.getByRole('button',{name:'Capture team commitments'})).toBeFocused();
+ await page.getByRole('button',{name:'Notes & sources',exact:true}).click();await page.locator('.notes-detail summary').click();
+ await expect(page.locator('#presenter-notes')).toContainText('should not become an approval queue');
+ await expect(page.locator('#presenter-notes')).toContainText('failed searches');
+});
+
+test('all three success aims connect questions, evidence and action on one slide',async({page})=>{
+ await page.goto('./#evidence');await expect(page.locator('.success-aim')).toHaveCount(3);
+ await expect(page.locator('#evidence [role=tab]')).toHaveCount(0);
+ for(const [i,aim] of evidence.entries()){
+  const column=page.locator('.success-aim').nth(i);
+  await expect(column.getByRole('heading',{name:aim.label,exact:true})).toBeVisible();
+  await expect(column).toContainText(aim.question);
+  for(const signal of aim.displaySignals)await expect(column).toContainText(signal);
+  await expect(column.locator('.aim-action')).toContainText(aim.action);
+ }
+ await expect(page.locator('.success-principle')).toContainText('without article or link quotas');
+ await page.getByRole('button',{name:'Notes & sources',exact:true}).click();await page.locator('.notes-detail summary').click();
+ for(const aim of evidence)await expect(page.locator('#presenter-notes')).toContainText(aim.avoid);
+});
+
+test('presentation, notes and workflow contain no placeholder or demo labels',async({page})=>{
+ const filler=/\bdemo(?: only)?\b|\billustrative\b|\bplaceholder\b|\bunconfirmed\b|\bunresolved\b|timing to confirm|draft plan|\bproposed\b|no formal approval|still to confirm/i;
+ for(const id of ids){
+  await page.goto('./#'+id);await page.getByRole('button',{name:'Notes & sources',exact:true}).click();
+  expect(await page.locator('#kcs-app').textContent()).not.toMatch(filler);
+  await page.keyboard.press('Escape');
+ }
+ await expect(page.locator('textarea[placeholder]')).toHaveCount(0);
+ await page.goto('http://127.0.0.1:4173/solve-loop.html');
+ expect(await page.locator('#kcs-solve-walkthrough').textContent()).not.toMatch(filler);
+});
+
+test('standalone walkthrough is responsive and self-contained',async({page})=>{
+ const assets=[];page.on('request',r=>assets.push(r.url()));
+ await page.setViewportSize({width:375,height:850});await page.goto('http://127.0.0.1:4173/solve-loop.html');
+ await expect(page.locator('#walk-panel h2')).toHaveText('Review the issue');
+ expect(await page.evaluate(()=>document.documentElement.scrollWidth<=innerWidth)).toBe(true);
+ expect(assets.filter(u=>!u.endsWith('/solve-loop.html'))).toEqual([]);
+ const results=await new AxeBuilder({page}).withTags(['wcag2a','wcag2aa','wcag21aa','wcag22aa']).analyze();expect(results.violations).toEqual([]);
+});
+
+test('opening contains only the announcement and date on the left and a working double loop on the right',async({page})=>{
+ await page.goto('./');
+ await expect(page.locator('.hero-copy h1')).toHaveText('Knowledge iscoming to Halo');
+ await expect(page.locator('.hero-date')).toHaveText('November 19');
+ expect((await page.locator('.hero-copy').innerText()).replace(/\s+/g,' ').trim()).toBe('Knowledge is coming to Halo November 19');
+ await expect(page.locator('.hero-copy button')).toHaveCount(0);
+ const region=page.locator('#hero-loop-detail');
+ for(const [loop,text] of [['solve','Solve Loop'],['evolve','Evolve Loop']]){
+  await page.locator(`[data-hero-loop="${loop}"]`).click();await expect(region.locator('h2')).toHaveText(text);
+ }
+ for(let i=0;i<8;i++){
+  const button=page.locator(`[data-hero-practice="${i}"]`);await button.click();
+  await expect(button).toHaveAttribute('aria-pressed','true');await expect(region.locator('h2')).toHaveText(await button.innerText());
+ }
+ await page.locator('[data-hero-loop=solve]').focus();await page.keyboard.press('ArrowDown');
+ await expect(page.locator('[data-hero-practice="0"]')).toBeFocused();
+ await expect(page.locator('[data-hero-practice="0"]')).toHaveAttribute('aria-pressed','true');
+ await page.locator('[data-hero-overview]').click();await expect(region.locator('h2')).toHaveText('Solve and Evolve');
+ const result=await new AxeBuilder({page}).withTags(['wcag2a','wcag2aa','wcag21aa','wcag22aa']).analyze();expect(result.violations).toEqual([]);
+});
+test('briefing headings use direct titles without periods',async({page})=>{
+ await page.goto('./');
+ const headings=await page.locator('#kcs-app h1,#kcs-app h2,#kcs-app h3').allTextContents();
+ expect(headings.filter(h=>h.includes('.'))).toEqual([]);
+});
+for(const viewport of [{width:1280,height:720},{width:1920,height:1080},{width:375,height:850}])test(`opening practice explanations fit inside the loop at ${viewport.width}px`,async({page})=>{
+ await page.setViewportSize(viewport);await page.goto('./');
+ for(let i=0;i<8;i++){
+  await page.locator(`[data-hero-practice="${i}"]`).click();
+  expect(await page.locator('.hero-loop-centre').evaluate(e=>e.scrollHeight<=e.clientHeight+1&&e.scrollWidth<=e.clientWidth+1)).toBe(true);
+ }
+ const svg=page.locator('.hero-loop-wheel>svg'),bounds=await svg.boundingBox();
+ await svg.click({position:{x:bounds.width*.9,y:bounds.height*.5}});await expect(page.locator('#hero-loop-detail h2')).toHaveText('Solve Loop');
+});
+
+test('York palette uses red accents without full red slide backgrounds and benefits lead into evidence',async({page})=>{
+ await page.goto('./');
+ expect(await page.locator('#kcs-app').evaluate(e=>getComputedStyle(e).getPropertyValue('--red').trim())).toBe('#e31837');
+ expect(ids.indexOf('benefits')+1).toBe(ids.indexOf('evidence'));
+ await expect(page.locator('.slide[data-theme=red]')).toHaveCount(0);
+ for(const id of ['case-for-change','launch-scope','decisions']){
+  await page.goto('./#'+id);
+  expect(await page.locator('#'+id).evaluate(e=>getComputedStyle(e).backgroundColor)).not.toBe('rgb(227, 24, 55)');
+ }
+ await page.goto('./#benefits');await page.getByRole('button',{name:'Next section',exact:true}).click();
+ await expect(page.locator('#evidence')).toBeVisible();
 });

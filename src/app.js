@@ -1,4 +1,4 @@
-import { chapters, sources, problems, practices, stages, roles, evidence, arrowIcon, problemPanel, practicePanel, stagePanel, rolePanel, evidencePanel, benefits, horizons, enablement, questions, benefitPanel, enablementPanel, questionPanel } from './content.js';
+import { chapters, sources, problems, practices, stages, roles, evidence, arrowIcon, problemPanel, practicePanel, stagePanel, benefits, horizons, enablement, rolloutWebsites, programSupports, questions, benefitPanel, questionPanel } from './content.js';
 const root=document.querySelector('#kcs-app');
 const $=(s)=>root.querySelector(s);
 const $$=(s)=>[...root.querySelectorAll(s)];
@@ -27,12 +27,12 @@ function extraNotes(id){
  const entries={
   'case-for-change':problems.map(p=>[p.label,`Today: ${p.before} With KCS: ${p.after} ${p.gain}`]),
   benefits:benefits.map(b=>[b.label,b.outcomes.map(([title,body],i)=>`${horizons[i].label}: ${title}. ${body}`).join(' ')+' How to validate: '+b.proof]),
-  'launch-scope':[['All Halo agents','Search, see suggestions, reuse, share suitable guidance and link articles available to them.'],['Onboarded pilot participants','SSB, OUR, CTS and CS create and improve after onboarding. Actual Halo permissions and launch readiness must be checked.']],
-  enablement:enablement.map(e=>[e.label,e.detail]),
+  'launch-scope':[['All Halo agents','Search, see suggestions, reuse, share suitable guidance and link articles available to them.'],['Onboarded pilot participants','SSB, OUR, CTS and CS create and improve after onboarding. Authoring follows onboarding.']],
+  enablement:[...enablement.map(e=>[e.label,`${e.time}. ${e.detail}`]),...rolloutWebsites.map(w=>[w.label,`${w.purpose} ${w.detail} https://www.yorku.ca${w.path}`])],
   'leadership-questions':questions.map(q=>[q.question,q.answer+' '+q.detail]),
   method:practices.map(p=>[`${p.loop} Loop: ${p.label}`,`${p.body} Example: ${p.example}`]),
   rollout:stages.map(s=>[`${s.label}: ${s.time} (${s.status})`,`${s.desc} Readiness: ${s.gate} ${s.note}`]),
-  'operating-model':roles.map(r=>[r.label,`${r.body} Contribution: ${r.output}`]),
+  'operating-model':[...programSupports.map(p=>[p.label,p.detail]),...roles.map(r=>[r.label,`${r.body} Contribution: ${r.output}`])],
   evidence:evidence.map(e=>[e.label,`${e.question} ${e.decision} ${e.signals.join('; ')}. ${e.avoid}`])
  }[id];
  return entries?`<details class="notes-detail"><summary>Supporting detail</summary>${entries.map(([label,body])=>`<h3>${label}</h3><p>${body}</p>`).join('')}</details>`:'';
@@ -40,6 +40,7 @@ function extraNotes(id){
 function updateNotes(){const c=chapters[current];$('#presenter-notes').innerHTML=`<h3>${String(current+1).padStart(2,'0')} / ${c.label}</h3><p>${c.notes}</p>${extraNotes(c.id)}<h3>Sources</h3><ul>${c.sources.map(key=>{const s=sources[key];return `<li>${s.url?`<a href="${s.url}" target="_blank" rel="noopener noreferrer">${s.label} ${arrowIcon}</a>`:`<strong>${s.label}</strong>`}<span>${s.detail}</span></li>`;}).join('')}</ul>`;}
 function fromHash(){const i=chapters.findIndex(c=>'#'+c.id===location.hash);goTo(i<0?0:i,{updateHash:false});}
 root.addEventListener('click',e=>{
+ if(e.target.closest('[data-open-discussion]'))$('#discussion-dialog').showModal();
  const goto=e.target.closest('[data-goto]');if(goto)goTo(Number(goto.dataset.goto),{focus:true});
  if(e.target.closest('[data-next]'))goTo(current+1,{focus:true});
  if(e.target.closest('[data-close]'))e.target.closest('dialog').close();
@@ -49,7 +50,6 @@ $('#next-button').addEventListener('click',()=>goTo(current+1,{focus:true}));
 $('#overview-button').addEventListener('click',()=>$('#overview-dialog').showModal());
 $('#notes-button').addEventListener('click',()=>$('#notes-dialog').showModal());
 $('#help-button').addEventListener('click',()=>$('#help-dialog').showModal());
-$('#workflow-button').addEventListener('click',()=>$('#workflow-dialog').showModal());
 $('#discussion-button').addEventListener('click',()=>$('#discussion-dialog').showModal());
 $$('dialog').forEach(d=>d.addEventListener('click',e=>{if(e.target===d){const r=d.getBoundingClientRect();if(e.clientX<r.left||e.clientX>r.right||e.clientY<r.top||e.clientY>r.bottom)d.close();}}));
 function toggleReading(){closeDialogs();reading=!reading;$('#exit-reading').hidden=!reading;root.classList.toggle('reading',reading);slides.forEach((s,i)=>s.hidden=!reading&&i!==current);$('#reading-button').textContent=reading?'Return to presentation →':'Reading & print view →';toast(reading?'Reading view: all sections and alternative states are available.':'Presentation view restored.');}
@@ -73,7 +73,7 @@ document.addEventListener('keydown',e=>{
  if(e.key.toLowerCase()==='r')toggleReading();
  if(e.key.toLowerCase()==='p'){e.preventDefault();window.print();}
 });
-const panels={problems:problemPanel,stages:stagePanel,roles:rolePanel,evidence:evidencePanel,benefits:benefitPanel,enablement:enablementPanel,questions:questionPanel};
+const panels={problems:problemPanel,stages:stagePanel,benefits:benefitPanel,questions:questionPanel};
 function selectTab(tab){const group=tab.dataset.tab;const list=tab.closest('[role="tablist"]');list.querySelectorAll('[role="tab"]').forEach(b=>{b.setAttribute('aria-selected',String(b===tab));b.tabIndex=b===tab?0:-1;});const panel=$('#'+group+'-panel');panel.innerHTML=panels[group](Number(tab.dataset.index));panel.setAttribute('aria-labelledby',tab.id);}
 $$('[role="tablist"]').forEach(list=>{
  list.addEventListener('click',e=>{const t=e.target.closest('[role="tab"]');if(t)selectTab(t);});
@@ -105,59 +105,46 @@ $$('.loop-practices').forEach(group=>group.addEventListener('keydown',event=>{
  else return;
  event.preventDefault();buttons[next].focus();selectPractice(buttons[next]);
 }));
-// This demonstration performs no live Halo operations. Each choice is local.
-const routeLabels=['Review','Search','Reuse / capture','Link','Help','Resolve'];
-let walk={step:0,exists:null,update:null,selfSolve:null,completed:false},walkHistory=[];
-function choice(value,title,body){return `<button class="walk-choice" data-walk-choice="${value}"><strong>${title}<span aria-hidden="true">${arrowIcon}</span></strong><span>${body}</span></button>`;}
-function nextButton(text){return `<button class="button primary walk-continue" data-walk-next>${text} <span aria-hidden="true">→</span></button>`;}
-function renderWalk(moveFocus=false){
- const {step,exists,update,selfSolve,completed}=walk;
- $('#walk-route-list').innerHTML=routeLabels.map((s,i)=>`<li class="${i===step?'current':i<step?'done':''}" ${i===step?'aria-current="step"':''}><span aria-hidden="true">${i<step?'✓':String(i+1).padStart(2,'0')}</span><span>${s}</span><span class="sr-only">${i===step?'Current step':i<step?'Completed':''}</span></li>`).join('');
- $('#walk-step-count').textContent=completed?'WALKTHROUGH COMPLETE':`STEP ${step+1} OF 6`;
- $('#walk-back').disabled=walkHistory.length===0;
- const route=[];if(exists!==null)route.push(exists?'Reuse existing':'Capture new');if(update===true)route.push('Improve or flag');if(selfSolve!==null)route.push(selfSolve?'Share safely':'Agent-assisted resolution');
- $('#walk-route-summary').textContent=route.length?route.join(' → '):'Proposed workflow · Demo only';
- let html='';
- if(step===0)html=`<h2>Start with the issue.</h2><div class="walk-ticket"><p><del>Help with my account</del>Duo authentication fails after replacing a phone</p></div>${nextButton('Review & search')}`;
- if(step===1)html=`<h2>Does relevant knowledge exist?</h2><p>Search “Duo” + “replacement phone”.</p><div class="walk-choices">${choice('exists','Yes. Reuse it.','Check the match.')}${choice('missing','No. Capture new.','Investigate. Keep the learning.')}</div>`;
- if(step===2&&exists&&update===null)html=`<h2>Does it need an update?</h2><p>Reuse is review.</p><div class="walk-choices">${choice('update','Yes. Improve or flag.','Within your permissions.')}${choice('current','No. Use what works.','No duplicate needed.')}</div>`;
- if(step===2&&exists&&update!==null)html=update?`<h2>Improve. Or flag.</h2><p>Correct within your permissions; otherwise flag the gap.</p>${nextButton('Continue to linking')}`:`<h2>Reuse what works.</h2><p>A useful answer. No duplicate needed.</p>${nextButton('Continue to linking')}`;
- if(step===2&&!exists)html=`<h2>Keep what you learn.</h2><p>Capture issue, context and resolution in a shared structure.</p><div class="walk-note">Pilot permissions apply.</div>${nextButton('Continue to linking')}`;
- if(step===3)html=`<h2>Link the article.</h2><p>Record knowledge that helped resolve the ticket.</p><div class="link-graphic" aria-hidden="true"><div>Knowledge</div><span>→</span><div>Ticket</div></div>${nextButton('Link & continue')}`;
- if(step===4&&selfSolve===null)html=`<h2>Can the requester self-solve?</h2><p>Check suitability and audience access before sharing.</p><div class="walk-choices">${choice('self','Yes. Share safely.','Approved content. Permitted audience.')}${choice('assisted','No. Help them resolve.','Use knowledge with the requester.')}</div>`;
- if(step===4&&selfSolve!==null)html=selfSolve?`<h2>Share a clear next step.</h2><p>Share approved content with a permitted audience.</p><div class="walk-note">Internal use does not authorize public access.</div>${nextButton('Confirm the outcome')}`:`<h2>Resolve it together.</h2><p>Use knowledge and the relevant service procedure.</p>${nextButton('Confirm the outcome')}`;
- if(step===5&&!completed)html=`<h2>Confirm. Then resolve.</h2><p>Check the outcome. Keep the useful learning.</p><div class="walk-route-chips">${route.map(r=>`<span class="walk-route-chip">${r}</span>`).join('')}</div>${nextButton('Complete walkthrough')}`;
- if(completed)html=`<h2>One resolution.<br>Shared learning.</h2><p>${exists?'Reuse':'Capture'} path · ${selfSolve?'Safe requester self-solve':'Agent-assisted resolution'}</p><button class="button primary walk-continue" data-walk-reset>Explore another route <span aria-hidden="true">↺</span></button>`;
- $('#walk-panel').innerHTML=html;
- if(moveFocus){const heading=$('#walk-panel h2');heading.tabIndex=-1;heading.focus({preventScroll:true});}
+const heroLoop=$('.hero-double-loop');
+function selectHeroLoop({practice=null,loop=null}={}){
+ const selected=practice===null?null:practices[practice];
+ const active=selected?selected.loop.toLowerCase():loop;
+ heroLoop.dataset.active=active||'overview';
+ heroLoop.querySelectorAll('[data-hero-practice]').forEach(b=>b.setAttribute('aria-pressed',String(Boolean(selected)&&Number(b.dataset.heroPractice)===practice)));
+ heroLoop.querySelectorAll('[data-hero-loop]').forEach(b=>b.setAttribute('aria-pressed',String(!selected&&b.dataset.heroLoop===loop)));
+ const heading=selected?selected.label:loop==='solve'?'Solve Loop':loop==='evolve'?'Evolve Loop':'Solve and Evolve';
+ const summaries=['Search early, reuse relevant knowledge and link it to the ticket.','Correct useful knowledge as you reuse it, or flag gaps.','Capture the issue, context and resolution during the interaction.','Use consistent titles and clear issue, environment and resolution details.','Use reuse, failed searches and feedback to prioritise content improvements.','Make knowledge work part of ticket handling and service delivery.','Review service outcomes, content quality and observed practice together.','Build participation through coaching, leadership support and shared learning.'];
+ const body=selected?summaries[practice]:loop==='solve'?'Reuse, improve, capture and structure knowledge while resolving requests.':loop==='evolve'?'Use patterns across interactions to improve content, processes and adoption.':'Use knowledge in each ticket. Improve the system through shared learning.';
+ $('#hero-loop-detail').innerHTML=`<p class="hero-loop-kicker">${selected?selected.loop+' Loop':'KCS'}</p><h2>${heading}</h2><p>${body}</p>`;
 }
-function advanceWalk(action){walkHistory.push({...walk});
- if(action==='exists'||action==='missing'){walk.exists=action==='exists';walk.step=2;}
- else if(action==='update'||action==='current'){walk.update=action==='update';}
- else if(action==='self'||action==='assisted'){walk.selfSolve=action==='self';}
- else if(walk.step===5)walk.completed=true;
- else walk.step++;
- renderWalk(true);
-}
-function resetWalk(){walk={step:0,exists:null,update:null,selfSolve:null,completed:false};walkHistory=[];renderWalk(true);}
-$('#walk-panel').addEventListener('click',e=>{const choice=e.target.closest('[data-walk-choice]');if(choice)advanceWalk(choice.dataset.walkChoice);if(e.target.closest('[data-walk-next]'))advanceWalk('next');if(e.target.closest('[data-walk-reset]'))resetWalk();});
-$('#walk-back').addEventListener('click',()=>{if(walkHistory.length)walk=walkHistory.pop();renderWalk(true);});
-$('#walk-restart').addEventListener('click',resetWalk);
+heroLoop.addEventListener('click',e=>{
+ const practice=e.target.closest('[data-hero-practice]');if(practice)selectHeroLoop({practice:Number(practice.dataset.heroPractice)});
+ const loop=e.target.closest('[data-hero-loop],[data-hero-arc]');if(loop)selectHeroLoop({loop:loop.dataset.heroLoop||loop.dataset.heroArc});
+ if(e.target.closest('[data-hero-overview]'))selectHeroLoop();
+});
+heroLoop.querySelectorAll('.hero-loop-practices').forEach(group=>group.addEventListener('keydown',e=>{
+ const buttons=[...group.querySelectorAll('button')],i=buttons.indexOf(document.activeElement);if(i<0)return;
+ let next=i;
+ if(e.key==='ArrowDown'||e.key==='ArrowRight')next=(i+1)%buttons.length;
+ else if(e.key==='ArrowUp'||e.key==='ArrowLeft')next=(i-1+buttons.length)%buttons.length;
+ else if(e.key==='Home')next=0;else if(e.key==='End')next=buttons.length-1;else return;
+ e.preventDefault();buttons[next].focus();buttons[next].click();
+}));
 // Versioned local-only storage. Invalid or unavailable storage never prevents use.
 const storageKey='york-kcs-discussion-v1';
-const commitmentLabels={participation:'Confirm participation: identify pilot teams, working-group representatives and coaches.',capacity:'Protect capacity: make time for coaching, practice and supported onboarding.',readiness:'Expand on evidence: agree readiness gates and the next-wave decision owner.'};
+const commitmentLabels={participation:'Confirm participation: identify pilot teams, Knowledge Council contributors and coaches; co-create the shared content standard.',capacity:'Protect capacity: make time for coaching, practice and supported onboarding.',readiness:'Expand on evidence: agree readiness gates and the next-wave decision owner.'};
 let discussion={checked:[],notes:''};
 try{const stored=JSON.parse(localStorage.getItem(storageKey)||'null');if(stored&&Array.isArray(stored.checked)&&typeof stored.notes==='string')discussion={checked:stored.checked.filter(k=>k in commitmentLabels),notes:stored.notes.slice(0,10000)};}catch{/* Safe fallback when storage is blocked. */}
 $$('[data-commitment]').forEach(c=>c.checked=discussion.checked.includes(c.dataset.commitment));
 $('#discussion-notes').value=discussion.notes;
 function refreshCount(){const n=discussion.checked.length;$('#commitment-count').textContent=`${n} of 3 marked for discussion`;$('#commitment-fill').style.width=(n/3*100)+'%';}
-function saveDiscussion(){discussion={checked:$$('[data-commitment]:checked').map(c=>c.dataset.commitment),notes:$('#discussion-notes').value};try{localStorage.setItem(storageKey,JSON.stringify(discussion));$('#save-status').textContent='Saved in this browser only. No formal approval is recorded.';}catch{$('#save-status').textContent='Browser storage is unavailable. Copy or download your notes to keep them.';}refreshCount();}
+function saveDiscussion(){discussion={checked:$$('[data-commitment]:checked').map(c=>c.dataset.commitment),notes:$('#discussion-notes').value};try{localStorage.setItem(storageKey,JSON.stringify(discussion));$('#save-status').textContent='Saved in this browser.';}catch{$('#save-status').textContent='Browser storage is unavailable. Copy or download your notes to keep them.';}refreshCount();}
 $$('[data-commitment]').forEach(c=>c.addEventListener('change',saveDiscussion));
 $('#discussion-notes').addEventListener('input',saveDiscussion);
-function summary(){return `KCS AT YORK | DIRECTOR DISCUSSION\nPlanning aid, not a formal approval record.\n\nCOMMITMENTS MARKED FOR DISCUSSION\n${discussion.checked.length?discussion.checked.map(k=>'[x] '+commitmentLabels[k]).join('\n'):'None marked.'}\n\nNEXT STEPS & NOTES\n${discussion.notes||'No notes entered.'}\n\nSTILL TO CONFIRM\nLaunch readiness; individual pilot participants; training sessions; named support and coach coverage; working-group mandate; Halo permissions.\n\nPlanned Halo KB go-live: 19 November 2026 (planned; release approval not recorded here).\nPilot groups: SSB, OUR, CTS and CS; authoring follows onboarding.\nSelf-service: separate summer 2027 target, subject to readiness.\n`;}
+function summary(){return `KCS AT YORK | DIRECTOR DISCUSSION\n\nTEAM COMMITMENTS\n${discussion.checked.map(k=>'[x] '+commitmentLabels[k]).join('\n')}\n\nNEXT STEPS & NOTES\n${discussion.notes}\n\nROLLOUT\nPlanned agent launch: 19 November 2026.\nPilot groups: SSB, OUR, CTS and CS; authoring follows onboarding.\nCommunity self-service: summer 2027, following readiness review.\n`;}
 $('#copy-summary').addEventListener('click',async()=>{try{await navigator.clipboard.writeText(summary());toast('Discussion summary copied.');}catch{toast('Clipboard unavailable. Use Download .txt to save the summary.');}});
 $('#download-notes').addEventListener('click',()=>{const u=URL.createObjectURL(new Blob([summary()],{type:'text/plain;charset=utf-8'}));const a=document.createElement('a');a.href=u;a.download='York-KCS-director-discussion.txt';a.click();setTimeout(()=>URL.revokeObjectURL(u),1000);toast('Discussion summary downloaded.');});
-$('#clear-notes').addEventListener('click',()=>{discussion={checked:[],notes:''};$$('[data-commitment]').forEach(c=>c.checked=false);$('#discussion-notes').value='';try{localStorage.removeItem(storageKey);}catch{}refreshCount();$('#save-status').textContent='Discussion cleared from this browser. No formal approval is recorded.';toast('Local discussion cleared.');});
+$('#clear-notes').addEventListener('click',()=>{discussion={checked:[],notes:''};$$('[data-commitment]').forEach(c=>c.checked=false);$('#discussion-notes').value='';try{localStorage.removeItem(storageKey);}catch{}refreshCount();$('#save-status').textContent='Discussion cleared from this browser.';toast('Local discussion cleared.');});
 window.addEventListener('beforeprint',()=>{let p=$('.print-notes');if(!p){p=document.createElement('p');p.className='print-notes';$('.print-supplement').append(p);}p.textContent=summary();});
 window.addEventListener('afterprint',()=>{$('.print-notes')?.remove();});
-renderWalk();refreshCount();fromHash();
+refreshCount();fromHash();
