@@ -221,8 +221,10 @@ test('desktop scaling keeps discussion dialog actions full-sized',async({page})=
  const action=await page.locator('#copy-summary').boundingBox();expect(action.height).toBeGreaterThanOrEqual(44);
 });
 
-test('benefits cover every entity and horizon, with keyboard selection',async({page})=>{
+test('benefits cover the three requested groups and every horizon, with keyboard selection',async({page})=>{
  await page.goto('./#benefits');
+ await expect(page.locator('[data-tab=benefits]')).toHaveText(['Our customers','Our agents','Our institution']);
+ await expect(page.locator('#benefits-tab-0')).toHaveAttribute('aria-selected','true');
  for(let i=0;i<benefits.length;i++){
   await page.locator('#benefits-tab-'+i).click();
   for(const [title,body] of benefits[i].outcomes){

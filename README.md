@@ -10,7 +10,7 @@ Desktop presentation is the primary layout: type, controls and diagrams scale to
 
 Use the fullscreen toolbar button, arrow keys, Space or a presentation remote (Page Up / Page Down). Section links remain stable. The director discussion form opens on demand; notes remain local with text export.
 
-The benefits explorer covers students, faculty and staff, IT agents, IT teams (including local faculty/unit teams), service owners and York leadership across launch/pilot, winter/spring 2027, and summer 2027 onward. These are expected benefits to validate, not measured savings. A complete matrix and validation prompts are included in reading/print view.
+The benefits explorer covers Our customers, Our agents and Our institution across launch/pilot, winter/spring 2027, and summer 2027 onward. The user’s annotated screenshots guide the benefits: ticket-based resolution sharing, consistency, community self-service, less repeated agent work, cross-team knowledge, knowledge maintenance, evidence of service gaps and future automation. These are expected benefits to validate, not measured savings. A complete matrix and validation prompts are included in reading/print view.
 
 The agent walkthrough includes all six combinations of missing/current/improvable knowledge and requester self-solve/agent-assisted resolution. Backtracking and restart support exploration. It performs no live Halo actions. A keyboard-accessible workflow-map dialog shows the complete branching process.
 
@@ -38,7 +38,7 @@ npm test
 
 Playwright uses `/usr/bin/chromium` by default. Override `CHROMIUM_PATH` with an installed Chromium executable on another machine. CI uses the Chromium or Google Chrome already installed on the GitHub-hosted runner and sets this variable automatically, avoiding redundant browser and system-package downloads.
 
-The suite exercises all sections and tab states, the six-entity benefits matrix, leadership Q&A, the workflow-map dialog, all six walkthrough routes, backtracking, storage persistence and unavailable storage, export contents, keyboard navigation and dialog focus, reading/print modes, no-JavaScript content, mobile/tablet/desktop overflow, fullscreen and presentation-remote controls, 1280×720 through 2560×1440 slide fit, true circular loop geometry, label separation, selected-arc highlighting, desktop reading-view legibility, a 65-word default-slide budget, and automated WCAG 2.2 AA checks with axe. Automated checks do not replace human accessibility review.
+The suite exercises all sections and tab states, the three-group benefits matrix, leadership Q&A, the workflow-map dialog, all six walkthrough routes, backtracking, storage persistence and unavailable storage, export contents, keyboard navigation and dialog focus, reading/print modes, no-JavaScript content, mobile/tablet/desktop overflow, fullscreen and presentation-remote controls, 1280×720 through 2560×1440 slide fit, true circular loop geometry, label separation, selected-arc highlighting, desktop reading-view legibility, a 65-word default-slide budget, and automated WCAG 2.2 AA checks with axe. Automated checks do not replace human accessibility review.
 
 ## Export a portable briefing
 

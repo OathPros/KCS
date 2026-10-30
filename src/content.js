@@ -9,13 +9,14 @@ export const chapters = [
   {id:'decisions', label:'What directors need to do', short:'Director ask', notes:'Use the checklist to prepare a discussion summary. Selections and notes are stored in this browser only and are never sent to a server by this application. This is not a formal approval record. Director commitments are participation, protected coaching capacity, and readiness-based expansion. Confirm launch readiness, pilot onboarding, named support and protected time through the appropriate York governance route. SSB, OUR, CTS and CS are the stated pilot groups; individual participants and the working-group mandate still need confirmation.', sources:['york','guide']}
 ];
 const additions = [
- {before:'method', id:'benefits', label:'Benefits by entity and horizon', short:'Benefits', notes:'Expected benefits are qualitative hypotheses, not measured York results or promised savings. Entity means the audience or accountable group affected: students; faculty and staff; IT agents; IT teams including local faculty and administrative-unit teams; service owners; York leadership. Immediate means launch and the pilot, short term means winter/spring 2027 adoption, and long term means summer 2027 onward if readiness permits. Requesters benefit first through agent-assisted support. Direct community self-service is a later, separate release. Validate each benefit through the evidence suggested in the complete reading view.', sources:['york','comms','measurement']},
+ {before:'method', id:'benefits', label:'Benefits by entity and horizon', short:'Benefits', notes:'Expected benefits are qualitative hypotheses, not measured York results or promised savings. The three groups follow the user’s annotated screenshots: Our customers (students, faculty and staff); Our agents (including local and central IT teams); Our institution (including service owners and leadership). Customer benefits progress from resolution steps shared directly in tickets, to consistent practice and resolution, to a separate community self-service portal. Agent benefits progress from in-ticket knowledge, to less repetitive work, to broader cross-team knowledge. Institutional benefits progress from knowledge as a maintained practice, to evidence of gaps and unsupported services, to knowledge and metrics that can inform orchestration and automation. Immediate means launch and the pilot, short term means winter/spring 2027 adoption, and long term means summer 2027 onward if readiness permits. Requesters benefit first through agent-assisted support. Direct community self-service is a later, separate release. Validate each benefit through the evidence suggested in the complete reading view.', sources:['annotations','york','comms','measurement']},
  {before:'rollout', id:'launch-scope', label:'What changes at launch', short:'Launch scope', notes:'The two supplied PDFs consistently distinguish all-agent reuse from pilot authoring. All Halo agents can search knowledge available to them, see suggestions, reuse, share suitable guidance and link articles to tickets. Only onboarded pilot participants in SSB, OUR, CTS and CS create and edit articles at launch. Do not expand these abbreviations without an authoritative source. Training completion and configured permissions are prerequisites, not assumed facts. Community self-service is outside the November launch.', sources:['york','comms']},
  {before:'operating-model', id:'enablement', label:'How people will be prepared', short:'Enablement', notes:'The supplied communications draft proposes an all-agent message for 4 November 2026; the sender remains unresolved. Managers are briefed before participant announcements and training. Pilot training and live coaching take place before the planned 19 November launch, but session dates and links are blank. The leadership PDF identifies a draft standard, basic KCS/KB training and hypercare at launch. More mature examples, reporting and working agreements develop through the pilot. The support model below is proposed; confirm named support and escalation coverage before release. The Pilot Hub and KCS resources are identified in the communications draft. Confirm their availability with the launch team.', sources:['comms','york']},
  {before:'decisions', id:'leadership-questions', label:'Leadership questions', short:'Questions', notes:'These answers combine the two supplied planning documents with the established KCS principles recorded in SOURCES.md. Capacity, local accountability, permission boundaries, migration and expansion need explicit decisions. No headcount, time allocation, numeric service gain, approved AI capability or guaranteed self-service date is established by the supplied documents. The optional migration/automation work mentioned in the communications draft is not a dependency or committed deliverable for the November launch.', sources:['york','comms','guide','measurement']}
 ];
 for (const {before,...chapter} of additions) chapters.splice(chapters.findIndex(c=>c.id===before),0,chapter);
 export const sources = {
+  annotations:{label:'Annotated benefits screenshots',detail:'User-supplied annotations: three groups; ticket-based resolution sharing; consistency; community self-service; less repetition; cross-team knowledge; knowledge maintenance; service-gap evidence; future orchestration and automation.',url:null},
   york:{label:'York leadership rollout', detail:'Halo_KB_Leadership_Rollout.pdf, supplied by the user. Source for launch scope, roadmap, readiness and leadership expectations. Planning material, not evidence of approval.',url:null},
   comms:{label:'Launch communications draft', detail:'KB Pilot + Production Launch Coms .pdf, supplied by the user. Source for audience-specific launch messages, pilot responsibilities, training and support. Sender, executive timing and training fields remain unresolved.',url:null},
   guide:{label:'KCS Practices Guide',detail:'Consortium for Service Innovation · Knowledge-Centered Success Practices Guide',url:'https://library.serviceinnovation.org/KCS/Knowledge-Centered_Success_Practices_Guide'},
@@ -62,36 +63,21 @@ export const horizons = [
  {label:'Long term', time:'Summer 2027 onward'}
 ];
 export const benefits = [
- {label:'Students', outcomes:[
-  ['Better assisted answers','Agents build on shared guidance.'],
-  ['More consistent help','Useful answers improve through reuse.'],
-  ['More ways to self-solve','Suitable guidance, when community access is ready.']
- ], proof:'Sample repeat student issues and resolution experience; later validate whether students can complete self-service tasks.'},
- {label:'Faculty & staff', outcomes:[
-  ['Less repeated explanation','Agents can reuse relevant service context.'],
-  ['More dependable guidance','Teams improve answers used in real work.'],
-  ['Help within reach','Approved self-service supports work and teaching.']
- ], proof:'Review recurring work/teaching support cases and requester feedback; test audience-appropriate guidance before community release.'},
- {label:'IT agents', outcomes:[
-  ['Start further ahead','Search and suggestions in Halo.'],
-  ['Less rediscovery','Reuse and improve proven answers.'],
-  ['Experience that stays','Reusable expertise supports onboarding.']
- ], proof:'Observe relevant search and reuse; sample time spent on recurring issues and onboarding experience once baselines exist.'},
- {label:'IT teams', outcomes:[
-  ['Shared answers across teams','Reuse available knowledge beyond individual memory.'],
-  ['Less dependence on experts','Coaching builds capability across local teams.'],
-  ['More resilient support','Knowledge survives staff transitions and demand peaks.']
- ], proof:'Include central, faculty and administrative-unit teams in pilot feedback. Review cross-team reuse, specialist dependency and coaching capacity. Team-specific access and service responsibilities remain in force.'},
- {label:'Service owners', outcomes:[
-  ['Visible knowledge gaps','Ticket reuse exposes unclear service guidance.'],
-  ['Healthier service knowledge','Demand directs fixes and ownership decisions.'],
-  ['Safer self-service','Review audience, accuracy and service readiness.']
- ], proof:'Sample service accuracy, stale guidance and duplicate content. Check that gaps reach an accountable owner and that publication controls work.'},
- {label:'York leadership', outcomes:[
-  ['A bounded first step','All-agent reuse with supported pilot authoring.'],
-  ['Evidence for expansion','Review service outcomes, quality and capacity.'],
-  ['Institutional capability','Retained knowledge supports self-service and future automation.']
- ], proof:'Review balanced pilot evidence and readiness decisions. No cost saving or automation outcome is yet quantified; governed knowledge is a prerequisite, not proof of AI readiness.'}
+ {label:'Our customers', outcomes:[
+  ['Resolutions in tickets','Share suitable steps in one click.'],
+  ['Consistent resolutions','Shared knowledge improves practice and resolution.'],
+  ['Self-service portal','Our best knowledge, available for self-service.']
+ ], proof:'Students, faculty and staff first receive suitable resolution steps directly in their tickets, shared by an agent in a single click. Reuse and improvement build consistency in both practice and resolution. Later, a community self-service portal makes our best suitable knowledge available directly, subject to content and audience readiness. Sample requester experience and resolution consistency; validate self-service task completion before wider release.'},
+ {label:'Our agents', outcomes:[
+  ['Start further ahead','Search and suggestions inside Halo tickets.'],
+  ['Less repetition','Reuse answers instead of repeating investigations.'],
+  ['The bigger picture','Access knowledge across teams and departments.']
+ ], proof:'Agents start with search and article suggestions in Halo. Reusing documented resolutions reduces repeated investigation and time spent remembering steps. Access to shared knowledge across teams and departments builds a broader understanding, within audience permissions. Observe relevant reuse and recurring-ticket effort, and review cross-team knowledge access and coaching feedback. These are expected benefits, not measured time savings.'},
+ {label:'Our institution', outcomes:[
+  ['Knowledge as practice','A shared mechanism to maintain knowledge.'],
+  ['Evidence for improvement','Reveal knowledge gaps and unsupported services.'],
+  ['Better automation','Knowledge and service links inform orchestration.']
+ ], proof:'KCS establishes a working practice and mechanism for maintaining and sharing institutional knowledge. Knowledge gaps, unsupported services and usage patterns provide evidence for service improvement. In the longer term, consistent, consumable institutional knowledge, usage metrics and links between knowledge and services can inform better orchestration and automation. Review knowledge health, service gaps and useful ticket/article links before selecting automation opportunities. No automation capability, saving or delivery date is promised.'}
 ];
 export const enablement = [
  {label:'Prepare', title:'Brief managers. Equip the pilot', body:'Protect time; confirm onboarding, training and support.', detail:'Managers are briefed before participants. The all-agent communication is drafted for 4 November. Confirm the sender, executive communication timing, session dates and links. Pilot participants need basic KCS/KB training and access before authoring.'},
@@ -155,8 +141,8 @@ section('case-for-change','red',`
  <div class="case-intro">${heading('case-for-change','Why change','Stop starting<br>from zero.')}<div class="problem-picker" role="tablist" aria-label="problems" aria-orientation="vertical">${problems.map((p,i)=>`<button role="tab" id="problems-tab-${i}" aria-controls="problems-panel" aria-selected="${i===0}" tabindex="${i===0?0:-1}" data-tab="problems" data-index="${i}">${p.label}<span aria-hidden="true">${arrowIcon}</span></button>`).join('')}</div></div><div id="problems-panel" role="tabpanel" aria-labelledby="problems-tab-0" tabindex="0">${problemPanel()}</div>`,'case-slide'),
 section('benefits','white',`
  ${heading('benefits','Expected benefits','Shared knowledge. Wider benefit')}
- <div class="entity-tabs">${tabs('benefits',benefits,2)}</div>
- <div id="benefits-panel" role="tabpanel" aria-labelledby="benefits-tab-2" tabindex="0">${benefitPanel(2)}</div>
+ <div class="entity-tabs">${tabs('benefits',benefits)}</div>
+ <div id="benefits-panel" role="tabpanel" aria-labelledby="benefits-tab-0" tabindex="0">${benefitPanel()}</div>
  <p class="benefit-caveat">Validate in pilot; later access requires readiness.</p>`,'benefits-slide'),
 section('method','white',`
  ${heading('method','The KCS method','Two loops. One system.')}

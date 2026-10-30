@@ -28,7 +28,11 @@ The presentation retains these qualifications:
 
 ## Benefits interpretation
 
-The user confirmed six entity groups: students; faculty and staff; IT agents; IT teams including local faculty and administrative-unit teams; service owners; York leadership. Immediate means launch and pilot. Short term means winter/spring 2027. Long term means summer 2027 onward, conditional on readiness. Each group has three expected benefits and a validation prompt in the complete reading/print view. Local service accountability and audience access remain distinct from shared knowledge ownership.
+The user’s latest annotated screenshots replace the previous six-entity breakdown with exactly three groups: **Our customers**, **Our agents**, and **Our institution**. Customers include students, faculty and staff; agents include central and local IT teams; institutional benefits include service ownership and leadership needs.
+
+The annotations specify ticket-based sharing of suitable resolution steps in one click; consistency in practice and resolution; later self-service access to our best knowledge; less repetitive agent work; knowledge across teams and departments; a mechanism to maintain and share knowledge; evidence of knowledge gaps and unsupported services; and consistent, consumable knowledge, usage and service-linkage metrics to inform future orchestration and automation. The supplied launch communications support the one-click sharing capability. Future portal access and automation remain conditional, expected benefits rather than completed or guaranteed capabilities.
+
+Immediate means launch and pilot. Short term means winter/spring 2027. Long term means summer 2027 onward, conditional on readiness. Each group has three expected benefits and a validation prompt in the complete reading/print view. Local service accountability and audience access remain distinct from shared knowledge ownership.
 
 ## Official KCS guidance
 
@@ -57,8 +61,8 @@ The skill provider did not expose `scripts/audit_cio_html.py`; that audit is not
 
 ## Leadership revision
 
-The deck now has twelve slides. Four additions cover benefits by entity/time horizon, launch scope, communications/training/support and leadership questions. Existing section IDs remain stable. Default live slides keep a 65-word budget; all six benefits states and all leadership answers are available interactively, in presenter notes and in the full reading/print supplement.
+The deck now has twelve slides. Four additions cover benefits by entity/time horizon, launch scope, communications/training/support and leadership questions. Existing section IDs remain stable. Default live slides keep a 65-word budget; all three benefits states and all leadership answers are available interactively, in presenter notes and in the full reading/print supplement.
 
 A complete workflow map supplements the six-route interactive demonstration. It includes permission boundaries and safe sharing. The map is illustrative; KCS practices overlap in real work rather than forming a mandatory sequence of screens.
 
-Validation covers the full functional and automated WCAG 2.2 AA suite, desktop slide fit from 1280×720 through 2560×1440, mobile/tablet overflow, circular loop geometry, keyboard navigation and dialog focus, local notes and text export, no-JavaScript content, the complete six-entity matrix, reading/print modes and rendered visual review. Automated checks do not replace human accessibility review or York’s operational launch review.
+Validation covers the full functional and automated WCAG 2.2 AA suite, desktop slide fit from 1280×720 through 2560×1440, mobile/tablet overflow, circular loop geometry, keyboard navigation and dialog focus, local notes and text export, no-JavaScript content, the complete three-group matrix, reading/print modes and rendered visual review. Automated checks do not replace human accessibility review or York’s operational launch review.
