@@ -1,4 +1,4 @@
-# Content and verification record
+# Halo KB Launch & Pilot Announcement: sources
 
 ## York-specific planning sources
 
@@ -61,7 +61,7 @@ The skill provider did not expose `scripts/audit_cio_html.py`; that audit is not
 
 ## Leadership revision
 
-The deck now has twelve slides. Four additions cover benefits by entity/time horizon, launch scope, communications/training/support and leadership questions. Existing section IDs remain stable. Default live slides keep a 65-word budget, with allowances of 130 words for the complete communications/website register and 120 words for coaching/council/director participation, and 160 words for the three complete success aims; all three benefits states and all leadership answers are available interactively. Presenter notes and the print supplement were removed in the latest user-directed revision.
+The deck now has twelve slides. Four additions cover benefits by entity/time horizon, launch scope, communications/training/support and leadership questions. Existing section IDs remain stable. Default live slides keep a 65-word budget, with allowances of 130 words for the complete communications/website register and 120 words for coaching/council/team participation, and 160 words for the three complete success aims; all three benefits states and all leadership answers are available interactively. Presenter notes and the print supplement were removed in the latest user-directed revision.
 
 A complete workflow map supplements the six-route interactive demonstration. It includes permission boundaries and safe sharing. The map is illustrative; KCS practices overlap in real work rather than forming a mandatory sequence of screens.
 
@@ -73,7 +73,7 @@ The generic Prepare/Launch/Reinforce tabs and proposed escalation route were rep
 
 ## Coaching and Knowledge Council revision
 
-The user requested visible coaching value, a Knowledge Council and a director call to action for active participation and co-creation of the shared content standard. The role tabs were replaced by two visible practice-support panels and a director commitment panel. The button opens the existing local-only discussion form without overwriting notes.
+The user requested visible coaching value, a Knowledge Council and a team call to action for active participation and co-creation of the shared content standard. The role tabs were replaced by two visible practice-support panels and a team commitment panel. The button opens the existing local-only discussion form without overwriting notes.
 
 Practice basis: the official guide’s roles/proficiency guidance (technique 6.4) and measurement guidance (7.1), documented in the existing verification record, support observation, feedback, demonstrated proficiency and evidence rather than activity quotas. Collective ownership and the Solve/Evolve feedback model support shared learning and a practical standard that develops through use. The Knowledge Council is a proposed York implementation bringing contributors, coaches and service owners together; its mandate, membership and cadence are not established by the supplied PDFs. It is described as an improvement forum, not an article approval queue. No quantified coaching benefit or measured York result is invented.
 
@@ -99,22 +99,22 @@ The user specified the exact opening announcement and date and supplied a WordPr
 
 ## Palette and sequence revision
 
-The user requested removal of full red backgrounds and annotated the benefits position in the section overview. The case-for-change, launch-scope and director-commitment slides now use white/warm neutral fields with York red (#E31837) accents, dark red (#B5122B) for selected small text, restrained rules and a black authoring panel. No gradients, ornamental motion or new decorative imagery were added. Benefits now sit immediately before the success/evidence slide in both the presentation and section overview; section IDs are unchanged.
+The user requested removal of full red backgrounds and annotated the benefits position in the section overview. The case-for-change, launch-scope and commitment slides now use white/warm neutral fields with York red (#E31837) accents, dark red (#B5122B) for selected small text, restrained rules and a black authoring panel. No gradients, ornamental motion or new decorative imagery were added. Benefits now sit immediately before the success/evidence slide in both the presentation and section overview; section IDs are unchanged.
 
 ## Leadership review revision
 
-At the user’s request, the next local revision prioritises purpose, participation, recognition and leadership accountability. It retains the exact opening and previous flow/benefits/success structure, adds one participation and recognition slide, and strengthens the purpose, feedback loop, leadership-support check and director commitments. The shared-standard example names titles, context, resolution and audience as workshop material. Recognition includes reuse, improving existing knowledge, coaching and cross-team service contribution. The discussion model now supports four commitments and preserves existing stored keys.
+At the user’s request, the next local revision prioritises purpose, participation, recognition and leadership accountability. It retains the exact opening and previous flow/benefits/success structure, adds one participation and recognition slide, and strengthens the purpose, feedback loop, leadership-support check and team commitments. The shared-standard example names titles, context, resolution and audience as workshop material. Recognition includes reuse, improving existing knowledge, coaching and cross-team service contribution. The discussion model now supports four commitments and preserves existing stored keys.
 
 This revision implements the recommendations from the content review and general KCS principles recorded above; the nine requested v6 pages remain inaccessible under the current network policy, and no new direct reading or quotation is claimed. No owner, staffing allocation, cadence, ROI percentage or achieved result is invented. The HTML review export is local and separate from publication. The user explicitly requested no automatic push.
 
 
-## User-edited director review
+## User-edited presentation review
 
 `KCS-leadership-review (1).html`, supplied on 30 October 2026, is the authoritative content baseline for the current local revision. Its rendered edits supersede earlier revision descriptions above: remove the separate methodology slide, executive announcement, repeated Solve/launch/comms captions, coaching/council heading and feedback line, participation workshop footer, practice-source line and leadership-check/baseline footer. Retain the three website purposes exactly as edited. The deck now contains twelve slides; numbering and the overview are rebuilt accordingly.
 
 The upload retained stale tab data and print material in its embedded script. The source models were reconciled with the visible edits so tab selection, reloads and printing cannot restore superseded content. Presenter notes, source-note metadata, the notes dialog/button/shortcut and print supplement are removed from the delivered HTML rather than visually hidden. The independent interactive agent walkthrough and optional local discussion capture remain. Discussion text is not injected into print output.
 
-The voice is a director speaking with fellow directors: our program, our teams, our commitments and questions for discussion. The coaching CTA asks us to protect participation and co-create our shared content standard. No new operational commitments were added.
+The voice is a colleague speaking with peers: our program, our teams, our commitments and questions for discussion. The coaching CTA asks us to protect participation and co-create our shared content standard. No new operational commitments were added.
 
 The user supplied a University of Copenhagen example reporting about a 70% reduction in average resolution time over three years. It is retained as an attributed external reported outcome, not a York result or target. The upload did not supply a citation for that figure, and independent verification is not claimed. The preceding answer describes our aim and learning investment without claiming guaranteed results.
 
@@ -132,11 +132,16 @@ FAQ changes retain the launch scope supported by the PDFs and make limits concre
 
 ## Behaviours, recognition and annotated layout revision
 
-The latest user request replaces the participation/motivation panels with four concrete behaviours paired with ways to recognise them: search/reuse, improve/capture, coach/collaborate, and co-create our standard. A visible director-to-director call asks us to name contributions, explain their impact and thank the people involved in team meetings and one-to-ones. Recognition focuses on useful work without quotas or leaderboards. These are practical recommendations consistent with the KCS purpose/participation principles above, not assertions of a new approved rewards program. No new metrics or achieved results are added.
+The latest user request replaces the participation/motivation panels with four concrete behaviours paired with ways to recognise them: search/reuse, improve/capture, coach/collaborate, and co-create our standard. A visible peer-to-peer call asks us to name contributions, explain their impact and thank the people involved in team meetings and one-to-ones. Recognition focuses on useful work without quotas or leaderboards. These are practical recommendations consistent with the KCS purpose/participation principles above, not assertions of a new approved rewards program. No new metrics or achieved results are added.
 
 The annotations also rename the institutional benefits tab to York, replace short tab underlines and repeated horizon rules with one continuous tab baseline, and align the three communications rows with the three website rows. The user-authorised scope includes all three annotated screenshots. The review remains local and is not pushed.
 
 
 ## Publication authorisation
 
-After reviewing the recognition and annotated layout changes, the user explicitly requested “Make and push the change.” That authorises committing and pushing the accumulated director-review revision to main and supersedes the earlier review-only restriction.
+After reviewing the recognition and annotated layout changes, the user explicitly requested “Make and push the change.” That authorises committing and pushing the accumulated presentation revision to main and supersedes the earlier review-only restriction.
+
+
+## Shared-link naming
+
+The page title, social-sharing metadata and default HTML filename now identify the presentation as Halo KB Launch & Pilot Announcement. Audience-role labels are removed from metadata, code identifiers, package names and source documentation. The slideshow content and public URL remain the same.

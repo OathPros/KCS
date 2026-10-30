@@ -3,7 +3,7 @@ import path from 'node:path';
 
 // Export the built presentation as one portable file with no external assets.
 // Source links remain links; no uploaded reference documents are redistributed.
-const output = process.argv[2] || 'artifacts/KCS-leadership-briefing.html';
+const output = process.argv[2] || 'artifacts/Halo-KB-Launch-and-Pilot-Announcement.html';
 let html = await readFile('dist/index.html', 'utf8');
 let css = await readFile('dist/styles.css', 'utf8');
 const font = await readFile('dist/fonts/dm-sans-latin-wght-normal.woff2');

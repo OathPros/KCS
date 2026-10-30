@@ -1,12 +1,12 @@
-# KCS at York
+# Halo KB Launch & Pilot Announcement
 
-A slideshow for directors on York University's KCS rollout. Built as a static GitHub Pages site, with no runtime framework, server API, analytics, or remote font requests.
+A slideshow announcing York University's Halo knowledge base launch and KCS pilot. Built as a static GitHub Pages site, with no runtime framework, server API, analytics, or remote font requests.
 
 ## Experience
 
 Twelve slides cover purpose, the agent Solve flow, launch permissions, the rollout, communications and websites, coaching and council, participation and recognition, benefits, success aims and questions, plus the KCS practice basis for coaching, shared standards and the council. The opening contains the interactive Solve/Evolve diagram. Large type, black/white/warm neutral surfaces and York-red accents support live delivery.
 
-The latest user-edited `KCS-leadership-review (1).html` is the content baseline. Its deletions are preserved, the separate methodology slide is removed, and the voice is one director speaking with peers. Presenter notes, note controls, the notes keyboard shortcut and the print companion are removed from the source and HTML export. Reading and print views contain the slides only. The final commitments slide, its capture button and the now-unused local discussion form are removed. The deck ends with questions for discussion.
+The latest user-edited `KCS-leadership-review (1).html` is the content baseline. Its deletions are preserved, the separate methodology slide is removed, and the voice is a colleague speaking with peers. Presenter notes, note controls, the notes keyboard shortcut and the print companion are removed from the source and HTML export. Reading and print views contain the slides only. The final commitments slide, its capture button and the now-unused local discussion form are removed. The deck ends with questions for discussion.
 
 Use fullscreen, arrow keys, Space or a presentation remote (Page Up / Page Down). Section links remain stable. The opening loop supports mouse and keyboard selection of its eight practices. Desktop presentation scales from 720p through QHD; smaller screens use a scrolling document layout.
 
@@ -40,7 +40,7 @@ The suite checks slide navigation, tab states, keyboard controls, all six standa
 
 ## Export a portable briefing
 
-After `npm run build`, run `node scripts/export.mjs` to create `artifacts/KCS-leadership-briefing.html`. The single file embeds the font, styles, script and diagram; it can be opened directly without a server. The adjacent DM Sans license accompanies distribution. The original uploaded PDFs and HTML examples are not bundled.
+After `npm run build`, run `node scripts/export.mjs` to create `artifacts/Halo-KB-Launch-and-Pilot-Announcement.html`. The single file embeds the font, styles, script and diagram; it can be opened directly without a server. The adjacent DM Sans license accompanies distribution. The original uploaded PDFs and HTML examples are not bundled.
 
 The build also produces `artifacts/KCS-solve-loop-interactive.html` (a self-contained page) and `artifacts/KCS-solve-loop-embed.html` (a scoped HTML/CSS/JS block to paste into a separate page). Both preserve the interactive model independently of the deck.
 
@@ -65,10 +65,12 @@ GitHub Pages publishes this briefing. Keep future edits suitable for public acce
 
 DM Sans and Instrument Serif are distributed with their OFL licenses in the built font directory. KCS® is a service mark of the Consortium for Service Innovation™. This is a York rollout briefing, not a Consortium-certified product.
 
-Presentation copy uses short titles without periods and a director-to-director voice. The palette uses York red (#E31837) and dark red (#B5122B) accents with white, warm neutral and black fields. Benefits sit immediately before evidence. No slide uses a full red background.
+Presentation copy uses short titles without periods and a peer-to-peer voice. The palette uses York red (#E31837) and dark red (#B5122B) accents with white, warm neutral and black fields. Benefits sit immediately before evidence. No slide uses a full red background.
 
-Generate the current review with `npm run build` then `node scripts/export.mjs artifacts/KCS-director-review.html`. Exporting does not commit, publish or push changes.
+Generate the current review with `npm run build` then `node scripts/export.mjs artifacts/Halo-KB-Launch-and-Pilot-Announcement.html`. Exporting does not commit, publish or push changes.
 
 The coaching slide now has the requested “Committing to future success” title and no capture button. The following slide links three KCS practice facts to how we will apply them and asks whether protected coaching/improvement time improves service outcomes relative to the capacity invested. These are practice recommendations, not an empirical estimate of individual intervention ROI. The FAQs discuss local responsibility, limited authoring, existing documentation, possible errors, expansion delays and the absence of measured York savings or a launch AI commitment. The first FAQ and user-supplied Copenhagen example are retained.
 
 The benefits tabs share a single continuous baseline; the active third is red, and the horizon panels have no duplicate top rules. The communications and website registers share intrinsic grid rows so their matching rows align. Both layouts adapt on phones.
+
+The browser title and Open Graph/Twitter metadata use “Halo KB Launch & Pilot Announcement” so shared links identify the launch and pilot. Audience-role labels have been removed from presentation metadata, source code and documentation.

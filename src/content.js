@@ -415,7 +415,7 @@ section('operating-model','ink',`
  ${heading('operating-model','Our knowledge program','Committing to future success')}
  <div class="program-supports">${programSupports.map((support,i)=>`<div class="program-support"><h2>${support.label}</h2><ul>${support.points.map(point=>`<li>${point}</li>`).join('')}</ul></div>`).join('')}</div>
 
- <div class="director-program-ask"><div><h2>Support active participation</h2><p>Let’s protect time for our teams to participate in our knowledge program and co-create our shared content standard</p></div></div>
+ <div class="program-participation-ask"><div><h2>Support active participation</h2><p>Let’s protect time for our teams to participate in our knowledge program and co-create our shared content standard</p></div></div>
 `,'ownership-slide'),
 section('program-evidence','white',`
  ${heading('program-evidence','KCS practice evidence','Why these supports matter')}

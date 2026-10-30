@@ -216,7 +216,7 @@ test('coaching and council support participation and co-creation of the standard
  await expect(supports.nth(1).locator('h2')).toHaveText('Council');
  await expect(supports.nth(1)).toContainText('Bring frontline evidence together');
  await expect(supports.nth(1)).toContainText('Co-create our shared content standard');
- await expect(page.locator('.director-program-ask')).toContainText('our teams to participate in our knowledge program');
+ await expect(page.locator('.program-participation-ask')).toContainText('our teams to participate in our knowledge program');
  await expect(page.locator('.program-source')).toHaveCount(0);
  await expect(page.locator('#operating-model button')).toHaveCount(0);
  await expect(page.locator('#operating-model h1')).toHaveText('Committing to future success');

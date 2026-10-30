@@ -793,10 +793,10 @@ body{margin:0}
 #kcs-app .program-support li{font-size:21px;color:#d2d2db;padding:8px 0 8px 22px;position:relative}
 #kcs-app .program-support li::before{content:'+';position:absolute;left:0;color:#ff8fa4}
 #kcs-app .program-learning{font-size:14px;color:#ffb0c0;margin-top:22px}
-#kcs-app .director-program-ask{display:flex;align-items:center;justify-content:space-between;gap:36px;background:#25252b;border-left:3px solid #ff607b;padding:22px 26px;margin-top:22px}
-#kcs-app .director-program-ask h2{font-size:24px}
-#kcs-app .director-program-ask p{font-size:18px;color:#d2d2db;margin-top:9px;max-width:66ch}
-#kcs-app .director-program-ask .button{flex-shrink:0}
+#kcs-app .program-participation-ask{display:flex;align-items:center;justify-content:space-between;gap:36px;background:#25252b;border-left:3px solid #ff607b;padding:22px 26px;margin-top:22px}
+#kcs-app .program-participation-ask h2{font-size:24px}
+#kcs-app .program-participation-ask p{font-size:18px;color:#d2d2db;margin-top:9px;max-width:66ch}
+#kcs-app .program-participation-ask .button{flex-shrink:0}
 #kcs-app .program-source{font-size:11px;color:#bcbcc6;margin-top:14px}
 #kcs-app .program-source a{text-underline-offset:3px}
 @media screen and (min-width:1000px){
@@ -807,9 +807,9 @@ body{margin:0}
  #kcs-app .program-support ul{margin-top:calc(1.4 * var(--du))}
  #kcs-app .program-support li{font-size:calc(1.65 * var(--du));padding:calc(.55 * var(--du)) 0 calc(.55 * var(--du)) calc(1.8 * var(--du))}
  #kcs-app .program-learning{font-size:calc(1.15 * var(--du));margin-top:calc(1.4 * var(--du))}
- #kcs-app .director-program-ask{gap:calc(3 * var(--du));padding:calc(1.6 * var(--du)) calc(2 * var(--du));margin-top:calc(1.4 * var(--du))}
- #kcs-app .director-program-ask h2{font-size:calc(2 * var(--du));letter-spacing:calc(-.04 * var(--du))}
- #kcs-app .director-program-ask p{font-size:calc(1.45 * var(--du));margin-top:calc(.6 * var(--du))}
+ #kcs-app .program-participation-ask{gap:calc(3 * var(--du));padding:calc(1.6 * var(--du)) calc(2 * var(--du));margin-top:calc(1.4 * var(--du))}
+ #kcs-app .program-participation-ask h2{font-size:calc(2 * var(--du));letter-spacing:calc(-.04 * var(--du))}
+ #kcs-app .program-participation-ask p{font-size:calc(1.45 * var(--du));margin-top:calc(.6 * var(--du))}
  #kcs-app .program-source{font-size:calc(.85 * var(--du));margin-top:calc(1 * var(--du))}
 }
 @media(max-width:760px){
@@ -817,17 +817,17 @@ body{margin:0}
  #kcs-app .program-support h2{font-size:31px}
  #kcs-app .program-support li{font-size:18px}
  #kcs-app .program-learning{font-size:13px;line-height:1.7}
- #kcs-app .director-program-ask{display:block;padding:20px;margin-top:20px}
- #kcs-app .director-program-ask h2{font-size:25px}
- #kcs-app .director-program-ask p{font-size:17px}
- #kcs-app .director-program-ask .button{margin-top:20px;white-space:normal;gap:15px;text-align:left}
+ #kcs-app .program-participation-ask{display:block;padding:20px;margin-top:20px}
+ #kcs-app .program-participation-ask h2{font-size:25px}
+ #kcs-app .program-participation-ask p{font-size:17px}
+ #kcs-app .program-participation-ask .button{margin-top:20px;white-space:normal;gap:15px;text-align:left}
 }
 @media print{
  #kcs-app .program-supports{gap:28px}
  #kcs-app .program-support h2{font-size:29px}
  #kcs-app .program-support li{font-size:17px}
- #kcs-app .director-program-ask{padding:16px}
- #kcs-app .director-program-ask p{font-size:16px}
+ #kcs-app .program-participation-ask{padding:16px}
+ #kcs-app .program-participation-ask p{font-size:16px}
 }
 
 /* Three visible aims, each connecting evidence with an improvement decision. */
@@ -1052,8 +1052,8 @@ body{margin:0}
 @media(max-width:760px){#kcs-app #questions-panel>.question-outcome{font-size:17px}}
 
 /* Practice evidence, followed by a concrete test of the investment. */
-#kcs-app .director-program-ask{display:block}
-#kcs-app .director-program-ask p{max-width:90ch}
+#kcs-app .program-participation-ask{display:block}
+#kcs-app .program-participation-ask p{max-width:90ch}
 #kcs-app .investment-columns{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:32px}
 #kcs-app .investment-pillar{border-top:3px solid var(--red);padding-top:20px;display:flex;flex-direction:column;min-width:0}
 #kcs-app .investment-pillar h2{font-size:29px;letter-spacing:-.8px}
