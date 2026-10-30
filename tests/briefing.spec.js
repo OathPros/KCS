@@ -1,28 +1,29 @@
 import { test, expect } from '@playwright/test';
 import AxeBuilder from '@axe-core/playwright';
-const ids=['opportunity','case-for-change','method','daily-practice','rollout','operating-model','evidence','decisions'];
-test('all eight sections navigate with stable deep links and no runtime errors',async({page})=>{
+import { chapters, benefits, questions } from '../src/content.js';
+const ids=chapters.map(c=>c.id);
+test('all sections navigate with stable deep links and no runtime errors',async({page})=>{
  const errors=[];page.on('pageerror',e=>errors.push(e.message));
  await page.goto('./');
  for(let i=0;i<ids.length;i++){
   await expect(page.locator('.slide:visible')).toHaveCount(1);
   await expect(page.locator('.slide:visible')).toHaveAttribute('id',ids[i]);
   await expect(page.locator('.slide:visible h1')).toHaveCount(1);
-  await expect(page.locator('#current-number')).toHaveText('0'+(i+1));
-  if(i<7)await page.getByRole('button',{name:'Next section',exact:true}).click();
+  await expect(page.locator('#current-number')).toHaveText(String(i+1).padStart(2,'0'));
+  if(i<ids.length-1)await page.getByRole('button',{name:'Next section',exact:true}).click();
  }
  await expect(page.getByRole('button',{name:'Next section',exact:true})).toBeDisabled();
  await page.reload();await expect(page.locator('#decisions')).toBeVisible();expect(errors).toEqual([]);
 });
 test('overview and presenter sources work with keyboard and focus return',async({page})=>{
  await page.goto('./');await page.keyboard.press('m');await expect(page.getByRole('dialog',{name:'The briefing, at a glance.'})).toBeVisible();
- await page.getByRole('button',{name:'04 Agent Solve walkthrough'}).click();
+ await page.getByRole('button',{name:'05 Agent Solve walkthrough'}).click();
  await expect(page.locator('#daily-practice')).toBeVisible();await expect(page.locator('dialog[open]')).toHaveCount(0);
  await page.getByRole('button',{name:'Notes & sources',exact:true}).click();
  await expect(page.locator('#presenter-notes')).toContainText('Duo');
  await expect(page.locator('#presenter-notes a').first()).toHaveAttribute('href',/library.serviceinnovation.org/);
  await page.keyboard.press('Escape');await expect(page.locator('#notes-button')).toBeFocused();
- await page.locator('#presentation').focus();await page.keyboard.press('ArrowRight');await expect(page.locator('#rollout')).toBeVisible();
+ await page.locator('#presentation').focus();await page.keyboard.press('ArrowRight');await expect(page.locator('#launch-scope')).toBeVisible();
 });
 test('problem, role, evidence and rollout tabs all update their detail',async({page})=>{
  for(const [id,group,checks] of [
@@ -95,9 +96,9 @@ test('unavailable local storage does not break the briefing',async({page})=>{
 });
 test('reading and print modes include all alternative states',async({page})=>{
  await page.goto('./');await page.getByRole('button',{name:'Keyboard shortcuts and help'}).click();await page.getByRole('button',{name:'Reading & print view'}).click();
- await expect(page.locator('.slide:visible')).toHaveCount(8);await expect(page.locator('.print-supplement')).toBeVisible();
+ await expect(page.locator('.slide:visible')).toHaveCount(ids.length);await expect(page.locator('.print-supplement')).toBeVisible();
  await expect(page.locator('.print-supplement')).toContainText('Agent walkthrough: every path');
- await page.getByRole('button',{name:'Return to presentation'}).click();await page.emulateMedia({media:'print'});await expect(page.locator('.slide:visible')).toHaveCount(8);await expect(page.locator('.print-supplement')).toBeVisible();
+ await page.getByRole('button',{name:'Return to presentation'}).click();await page.emulateMedia({media:'print'});await expect(page.locator('.slide:visible')).toHaveCount(ids.length);await expect(page.locator('.print-supplement')).toBeVisible();
 });
 for(const id of ids)test(`WCAG 2.2 AA: ${id}`,async({page})=>{
  await page.goto('./#'+id);await page.emulateMedia({reducedMotion:'reduce'});
@@ -112,13 +113,13 @@ test('walkthrough branch choices and dialogs are accessible',async({page})=>{
   await page.keyboard.press('Escape');
  }
 });
-for(const width of [375,768,1366])test(`responsive layout at ${width}px has no horizontal overflow`,async({page})=>{
+for(const width of [320,375,768,1024,1366])test(`responsive layout at ${width}px has no horizontal overflow`,async({page})=>{
  await page.setViewportSize({width,height:width>1000?768:900});
  for(const id of ids){await page.goto('./#'+id);await page.emulateMedia({reducedMotion:'reduce'});expect(await page.evaluate(()=>document.documentElement.scrollWidth<=window.innerWidth),id).toBe(true);}
 });
 test('static HTML remains readable without JavaScript',async({browser})=>{
  const context=await browser.newContext({javaScriptEnabled:false});const page=await context.newPage();await page.goto('http://127.0.0.1:4173/KCS/');
- await expect(page.locator('.slide:visible')).toHaveCount(8);await expect(page.locator('.noscript')).toBeVisible();await context.close();
+ await expect(page.locator('.slide:visible')).toHaveCount(ids.length);await expect(page.locator('.noscript')).toBeVisible();await context.close();
 });
 
 test('default slides have a presentation-sized word budget',async({page})=>{
@@ -139,9 +140,9 @@ for(const size of [{width:1280,height:720},{width:1366,height:768},{width:1600,h
 });
 test('presentation remote and space navigation work after interactions',async({page})=>{
  await page.goto('./#rollout');await page.locator('#stages-tab-1').click();
- await page.keyboard.press('PageDown');await expect(page.locator('#operating-model')).toBeVisible();
+ await page.keyboard.press('PageDown');await expect(page.locator('#enablement')).toBeVisible();
  await page.keyboard.press('PageUp');await expect(page.locator('#rollout')).toBeVisible();
- await page.locator('#presentation').focus();await page.keyboard.press('Space');await expect(page.locator('#operating-model')).toBeVisible();
+ await page.locator('#presentation').focus();await page.keyboard.press('Space');await expect(page.locator('#enablement')).toBeVisible();
 });
 test('discussion stays out of the slideshow until requested',async({page})=>{
  await page.goto('./#decisions');await expect(page.locator('#discussion-notes')).toBeHidden();
@@ -207,7 +208,7 @@ test('desktop presentation type grows for a full-HD screen',async({page})=>{
 });
 test('desktop reading view remains legible with all slides in normal document flow',async({page})=>{
  await page.setViewportSize({width:1920,height:1080});await page.goto('./');
- await page.keyboard.press('r');await expect(page.locator('.slide:visible')).toHaveCount(8);
+ await page.keyboard.press('r');await expect(page.locator('.slide:visible')).toHaveCount(ids.length);
  for(const slide of await page.locator('.slide').all()){
   const size=await slide.locator('h1').evaluate(e=>parseFloat(getComputedStyle(e).fontSize));expect(size).toBeGreaterThan(30);
   const box=await slide.boundingBox();expect(box.height).toBeGreaterThan(300);
@@ -218,4 +219,67 @@ test('desktop scaling keeps discussion dialog actions full-sized',async({page})=
  await page.setViewportSize({width:1920,height:1080});await page.goto('./#decisions');
  await page.getByRole('button',{name:'Capture next steps'}).click();
  const action=await page.locator('#copy-summary').boundingBox();expect(action.height).toBeGreaterThanOrEqual(44);
+});
+
+test('benefits cover every entity and horizon, with keyboard selection',async({page})=>{
+ await page.goto('./#benefits');
+ for(let i=0;i<benefits.length;i++){
+  await page.locator('#benefits-tab-'+i).click();
+  for(const [title,body] of benefits[i].outcomes){
+   await expect(page.locator('#benefits-panel')).toContainText(title);
+   await expect(page.locator('#benefits-panel')).toContainText(body);
+  }
+  await expect(page.locator('.benefit-horizon')).toHaveCount(3);
+ }
+ await page.locator('#benefits-tab-0').focus();await page.keyboard.press('ArrowRight');
+ await expect(page.locator('#benefits-tab-1')).toBeFocused();
+ await expect(page.locator('#benefits-tab-1')).toHaveAttribute('aria-selected','true');
+ await expect(page.locator('#benefits .eyebrow')).toContainText('Expected benefits');
+ await expect(page.locator('.benefit-caveat')).toContainText('requires readiness');
+ await page.keyboard.press('r'); // The tab has focus, so use the dedicated reading control.
+ await page.getByRole('button',{name:'Keyboard shortcuts and help'}).click();
+ await page.getByRole('button',{name:'Reading & print view'}).click();
+ await expect(page.locator('.benefit-table tbody tr')).toHaveCount(benefits.length);
+ await expect(page.locator('.print-supplement')).toContainText('No York percentage saving');
+});
+test('leadership questions and enablement states are available to keyboard users',async({page})=>{
+ await page.goto('./#leadership-questions');
+ for(let i=0;i<questions.length;i++){
+  await page.locator('#questions-tab-'+i).click();
+  await expect(page.locator('#questions-panel h2')).toHaveText(questions[i].question);
+  await expect(page.locator('#questions-panel')).toContainText(questions[i].answer);
+ }
+ await page.locator('#questions-tab-0').focus();await page.keyboard.press('ArrowDown');
+ await expect(page.locator('#questions-tab-1')).toBeFocused();
+ await page.goto('./#enablement');
+ for(const [i,text] of ['Brief managers','Make the first ticket','Coach with real work'].entries()){
+  await page.locator('#enablement-tab-'+i).click();await expect(page.locator('#enablement-panel')).toContainText(text);
+ }
+});
+test('launch permissions remain distinct and workflow map opens with focus return',async({page})=>{
+ await page.goto('./#launch-scope');
+ await expect(page.locator('.launch-everyone')).toContainText('All Halo agents');
+ await expect(page.locator('.launch-authors')).toContainText('Onboarded pilot participants');
+ await expect(page.locator('.pilot-roster')).toHaveText('SSB / OUR / CTS / CS');
+ await page.goto('./#daily-practice');await page.getByRole('button',{name:'View workflow map'}).click();
+ await expect(page.getByRole('dialog',{name:'Every route keeps the learning'})).toBeVisible();
+ await expect(page.locator('.workflow-map')).toBeVisible();
+ const overlaps=await page.locator('.workflow-map').evaluate(svg=>{
+  const boxes=[...svg.querySelectorAll('.map-node rect')].map(e=>({x:e.x.baseVal.value,y:e.y.baseVal.value,w:e.width.baseVal.value,h:e.height.baseVal.value}));
+  return boxes.some((a,i)=>boxes.slice(i+1).some(b=>Math.min(a.x+a.w,b.x+b.w)>Math.max(a.x,b.x)&&Math.min(a.y+a.h,b.y+b.h)>Math.max(a.y,b.y)));
+ });
+ expect(overlaps,'Workflow nodes must remain separate').toBe(false);
+ const result=await new AxeBuilder({page}).withTags(['wcag2a','wcag2aa','wcag21aa','wcag22aa']).analyze();expect(result.violations).toEqual([]);
+ await page.keyboard.press('Escape');await expect(page.locator('#workflow-button')).toBeFocused();
+});
+
+for(const size of [{width:1280,height:720},{width:1920,height:1080}])test(`all leadership alternative states fit at ${size.width}px`,async({page})=>{
+ await page.setViewportSize(size);
+ for(const [id,group] of [['benefits','benefits'],['leadership-questions','questions'],['enablement','enablement']]){
+  await page.goto('./#'+id);
+  for(const tab of await page.locator(`[data-tab="${group}"]`).all()){
+   await tab.click();
+   expect(await page.locator('.slide:visible').evaluate(e=>e.scrollHeight<=e.clientHeight+1&&e.scrollWidth<=e.clientWidth+1),await tab.innerText()).toBe(true);
+  }
+ }
 });

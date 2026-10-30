@@ -634,3 +634,170 @@ body{margin:0}
  #kcs-app.reading #presentation{container-type:normal}
  #kcs-app.reading .slide{--du:min(1vw,1.6vh)}
 }
+/* Leadership briefing: audience value, bounded launch and support decisions. */
+#kcs-app .benefits-slide .slide-heading{margin-bottom:24px}
+#kcs-app .entity-tabs .tabs{justify-content:space-between}
+#kcs-app .entity-tabs .tabs button{padding-inline:10px}
+#kcs-app .benefit-horizons{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:30px;padding-top:28px}
+#kcs-app .benefit-horizon{position:relative;border-top:3px solid var(--red);padding:19px 0 0;min-width:0}
+#kcs-app .horizon-number{display:block;font-size:64px;line-height:1;letter-spacing:-4px;font-weight:600;color:#c8102e;margin-bottom:18px}
+#kcs-app .benefit-horizon .micro{color:var(--red)}
+#kcs-app .horizon-time{font-size:12px;color:var(--muted);margin-top:4px}
+#kcs-app .benefit-horizon h2{font-size:29px;margin-top:22px;max-width:13ch;text-wrap:initial}
+#kcs-app .horizon-description{font-size:17px;color:var(--muted);margin-top:12px;max-width:25ch}
+#kcs-app .benefit-caveat{font-size:11px;color:var(--muted);margin-top:25px}
+#kcs-app .launch-split{display:grid;grid-template-columns:1fr 1fr;border-top:1px solid #ed8a9b;border-bottom:1px solid #ed8a9b}
+#kcs-app .launch-split>div{padding:28px 32px}
+#kcs-app .launch-split>div:first-child{padding-left:0}
+#kcs-app .launch-authors{background:#fff;color:#171719}
+#kcs-app .launch-authors .micro{color:var(--red)}
+#kcs-app .launch-split h2{font-size:62px;font-weight:600;letter-spacing:-2.4px;margin:20px 0}
+#kcs-app .launch-split p{font-size:20px;line-height:1.5}
+#kcs-app .launch-split .pilot-roster{font-weight:650;color:var(--red)}
+#kcs-app .launch-authors p:last-child{font-size:14px;margin-top:8px;color:#5e5e66}
+#kcs-app .launch-boundary{margin-top:22px;font-size:14px}
+#kcs-app .enablement-layout{display:grid;grid-template-columns:1.5fr 1fr;gap:70px}
+#kcs-app #enablement-panel{padding-top:28px;min-height:225px}
+#kcs-app #enablement-panel .micro{color:var(--red)}
+#kcs-app #enablement-panel h2{font-size:43px;max-width:18ch;margin-top:18px}
+#kcs-app #enablement-panel p{font-size:23px;color:var(--muted);margin-top:18px;max-width:28ch}
+#kcs-app .support-route{background:#f4f2ef;border-top:3px solid var(--red);padding:26px 30px}
+#kcs-app .support-route>.micro{color:var(--red)}
+#kcs-app .support-route ol{list-style:none;counter-reset:support;margin:22px 0;padding:0}
+#kcs-app .support-route li{counter-increment:support;border-bottom:1px solid #d4d0cc;padding:15px 0;font-size:23px;display:flex;gap:22px;align-items:center}
+#kcs-app .support-route li::before{content:'0' counter(support);font-size:11px;color:#8a263b}
+#kcs-app .support-route>p{font-size:14px;color:#5e5e66;max-width:30ch}
+#kcs-app .questions-layout{display:grid;grid-template-columns:29% 1fr;gap:70px;align-items:center}
+#kcs-app .question-picker{display:flex;flex-direction:column}
+#kcs-app .question-picker button{min-height:48px;display:flex;align-items:center;justify-content:space-between;background:none;border:0;border-bottom:1px solid #45454d;text-align:left;padding:11px 0;font-size:16px;color:#c6c6d0}
+#kcs-app .question-picker button .arrow-icon{opacity:0}
+#kcs-app .question-picker button[aria-selected=true]{color:#ff9aae;font-weight:650;border-color:#ff607b}
+#kcs-app .question-picker button[aria-selected=true] .arrow-icon{opacity:1}
+#kcs-app #questions-panel{border-left:3px solid #ff607b;padding:18px 0 18px 36px;min-height:250px}
+#kcs-app #questions-panel .micro{color:#ff9aae}
+#kcs-app #questions-panel h2{font-size:46px;max-width:20ch;margin:25px 0 20px}
+#kcs-app #questions-panel>p{font-size:25px;line-height:1.5;color:#d2d2db;max-width:39ch}
+#kcs-app .walk-heading{display:flex;justify-content:space-between;align-items:flex-start;gap:20px}
+#kcs-app #workflow-button{color:#ffb0c0;white-space:nowrap}
+#kcs-app .workflow-dialog{max-width:900px}
+#kcs-app .workflow-map-scroll{overflow:auto;margin-top:24px}
+#kcs-app .workflow-map{display:block;width:100%;min-width:630px;background:#fff}
+#kcs-app .map-node rect{fill:#f5f3ef;stroke:#797981;stroke-width:1.5}
+#kcs-app .map-node text{fill:#171719;font-size:17px;font-weight:550}
+#kcs-app .map-accent rect{fill:#c8102e;stroke:#c8102e}
+#kcs-app .map-accent text{fill:#fff}
+#kcs-app .map-decision rect{fill:#fff;stroke:#c8102e;stroke-dasharray:4 4;stroke-width:2}
+#kcs-app .map-connectors{fill:none;stroke:#676770;stroke-width:1.8}
+#kcs-app #map-arrow path{fill:#676770}
+#kcs-app .map-branch{fill:#8a1631;font-size:16px;font-weight:650}
+#kcs-app .map-outcome{background:#171719;color:#fff;padding:15px;text-align:center;font-size:17px;min-width:630px}
+#kcs-app .benefit-table-wrap{overflow:auto;margin-top:24px}
+#kcs-app .benefit-table{border-collapse:collapse;width:100%;min-width:690px;text-align:left;font-size:15px;line-height:1.6}
+#kcs-app .benefit-table caption{text-align:left;font-weight:650;margin-bottom:12px}
+#kcs-app .benefit-table th,#kcs-app .benefit-table td{border-bottom:1px solid #d8d8dd;padding:18px 14px;vertical-align:top}
+#kcs-app .benefit-table thead{background:#f5f3ef}
+#kcs-app .benefit-table th[scope=row]{color:var(--red);width:17%}
+@media screen and (min-width:1000px){
+ #kcs-app .benefits-slide .slide-heading{margin-bottom:calc(1.8 * var(--du))}
+ #kcs-app .entity-tabs .tabs button{font-size:calc(1.1 * var(--du));padding-inline:calc(1 * var(--du))}
+ #kcs-app .benefit-horizons{gap:calc(3 * var(--du));padding-top:calc(2 * var(--du))}
+ #kcs-app .benefit-horizon{padding-top:calc(1.5 * var(--du))}
+ #kcs-app .horizon-number{font-size:calc(5.7 * var(--du));letter-spacing:calc(-.3 * var(--du));margin-bottom:calc(1 * var(--du))}
+ #kcs-app .benefit-horizon .micro{font-size:calc(.95 * var(--du))}
+ #kcs-app .horizon-time{font-size:calc(1 * var(--du))}
+ #kcs-app .benefit-horizon h2{font-size:calc(2.7 * var(--du));margin-top:calc(1.6 * var(--du));letter-spacing:calc(-.09 * var(--du))}
+ #kcs-app .horizon-description{font-size:calc(1.45 * var(--du));margin-top:calc(1 * var(--du))}
+ #kcs-app .benefit-caveat{font-size:calc(.87 * var(--du));margin-top:calc(1.6 * var(--du))}
+ #kcs-app .launch-slide h1{font-size:calc(4.7 * var(--du))}
+ #kcs-app .launch-split>div{padding:calc(2 * var(--du)) calc(3 * var(--du))}
+ #kcs-app .launch-split>div:first-child{padding-left:0}
+ #kcs-app .launch-split h2{font-size:calc(5.2 * var(--du));letter-spacing:calc(-.2 * var(--du));margin:calc(1.5 * var(--du)) 0}
+ #kcs-app .launch-split p{font-size:calc(1.8 * var(--du))}
+ #kcs-app .launch-authors p:last-child{font-size:calc(1.2 * var(--du))}
+ #kcs-app .launch-boundary{font-size:calc(1.1 * var(--du));margin-top:calc(1.6 * var(--du))}
+ #kcs-app .enablement-layout{gap:calc(5 * var(--du))}
+ #kcs-app #enablement-panel{padding-top:calc(2.5 * var(--du));min-height:calc(20 * var(--du))}
+ #kcs-app #enablement-panel h2{font-size:calc(3.7 * var(--du));margin-top:calc(1.8 * var(--du));letter-spacing:calc(-.1 * var(--du))}
+ #kcs-app #enablement-panel p{font-size:calc(2 * var(--du));margin-top:calc(1.5 * var(--du))}
+ #kcs-app .support-route{padding:calc(2.5 * var(--du))}
+ #kcs-app .support-route ol{margin:calc(1.5 * var(--du)) 0}
+ #kcs-app .support-route li{font-size:calc(2 * var(--du));padding:calc(1.4 * var(--du)) 0;gap:calc(1.8 * var(--du))}
+ #kcs-app .support-route li::before{font-size:calc(.9 * var(--du))}
+ #kcs-app .support-route>p{font-size:calc(1.15 * var(--du))}
+ #kcs-app .questions-slide h1{font-size:calc(4.8 * var(--du))}
+ #kcs-app .questions-layout{gap:calc(5 * var(--du))}
+ #kcs-app .question-picker button{min-height:calc(3.9 * var(--du));font-size:calc(1.35 * var(--du));padding:calc(.8 * var(--du)) 0}
+ #kcs-app #questions-panel{min-height:calc(22 * var(--du));padding:calc(1.8 * var(--du)) 0 calc(1.8 * var(--du)) calc(3 * var(--du))}
+ #kcs-app #questions-panel h2{font-size:calc(4 * var(--du));margin:calc(2 * var(--du)) 0;letter-spacing:calc(-.14 * var(--du))}
+ #kcs-app #questions-panel>p{font-size:calc(2.1 * var(--du))}
+ #kcs-app #workflow-button{font-size:calc(1 * var(--du))}
+}
+@media(max-width:999px){
+ #kcs-app .benefits-slide h1,#kcs-app .enablement-slide h1,#kcs-app .questions-slide h1,#kcs-app .launch-slide h1{font-size:38px}
+ #kcs-app .benefit-horizons{gap:20px}
+ #kcs-app .benefit-horizon h2{font-size:25px}
+ #kcs-app .horizon-description{font-size:16px}
+ #kcs-app .enablement-layout{gap:30px}
+ #kcs-app #enablement-panel h2{font-size:32px}
+ #kcs-app #enablement-panel p{font-size:19px}
+ #kcs-app .support-route{padding:20px}
+ #kcs-app .support-route li{font-size:19px}
+ #kcs-app .questions-layout{gap:30px}
+ #kcs-app #questions-panel h2{font-size:35px}
+ #kcs-app #questions-panel>p{font-size:21px}
+ #kcs-app .launch-split h2{font-size:46px}
+}
+@media(max-width:760px){
+ #kcs-app .entity-tabs .tabs{display:grid;grid-template-columns:repeat(3,1fr);gap:4px;border:0}
+ #kcs-app .entity-tabs .tabs button{padding:10px 5px;border:1px solid #c4c4ce;font-size:11px;text-align:center;min-height:44px}
+ #kcs-app .entity-tabs .tabs button[aria-selected=true]{background:var(--red);border-color:var(--red);color:white}
+ #kcs-app .benefit-horizons{grid-template-columns:1fr;padding-top:25px;gap:24px}
+ #kcs-app .benefit-horizon{padding:17px 0 0 54px;min-height:140px}
+ #kcs-app .horizon-number{position:absolute;left:0;top:17px;font-size:36px;letter-spacing:-2px}
+ #kcs-app .benefit-horizon h2{max-width:none;font-size:28px;margin-top:14px}
+ #kcs-app .horizon-description{max-width:32ch;margin-top:8px;font-size:17px}
+ #kcs-app .horizon-time{font-size:11px}
+ #kcs-app .benefit-caveat{font-size:11px}
+ #kcs-app .launch-split{grid-template-columns:1fr}
+ #kcs-app .launch-split>div{padding:23px}
+ #kcs-app .launch-split>div:first-child{padding-left:0}
+ #kcs-app .launch-split h2{font-size:42px;letter-spacing:-1.7px}
+ #kcs-app .launch-split p{font-size:18px}
+ #kcs-app .launch-boundary{font-size:13px}
+ #kcs-app .enablement-layout{grid-template-columns:1fr;gap:25px}
+ #kcs-app #enablement-panel{min-height:190px;padding-top:24px}
+ #kcs-app .support-route{padding:22px}
+ #kcs-app .support-route li{font-size:21px}
+ #kcs-app .questions-layout{grid-template-columns:1fr;gap:26px}
+ #kcs-app .question-picker{display:grid;grid-template-columns:1fr 1fr;gap:3px 18px}
+ #kcs-app .question-picker button{font-size:12px;min-height:44px}
+ #kcs-app #questions-panel{min-height:280px;padding:8px 0 8px 22px}
+ #kcs-app #questions-panel h2{font-size:34px;margin-top:18px}
+ #kcs-app #questions-panel>p{font-size:20px}
+ #kcs-app .walk-heading{flex-direction:column;gap:0;margin-bottom:15px}
+ #kcs-app .walk-heading .slide-heading{margin-bottom:10px}
+ #kcs-app #workflow-button{font-size:11px}
+ #kcs-app .chapter-progress{gap:5px}
+}
+@media print{
+ #kcs-app .benefit-horizons{gap:20px}
+ #kcs-app .horizon-number{font-size:44px}
+ #kcs-app .benefit-horizon h2{font-size:25px}
+ #kcs-app .horizon-description{font-size:15px}
+ #kcs-app .benefit-table{font-size:11px;min-width:0}
+ #kcs-app .benefit-table-wrap{overflow:visible}
+ #kcs-app .benefit-table th,#kcs-app .benefit-table td{padding:10px}
+ #kcs-app .benefit-table tr{break-inside:avoid}
+ #kcs-app #questions-panel h2{font-size:32px}
+ #kcs-app #questions-panel>p{font-size:22px}
+}
+@media(max-width:760px){
+ #kcs-app.js{grid-template-columns:minmax(0,1fr)}
+ #kcs-app .chapter-progress{min-width:0}
+ #kcs-app .chapter-progress button{width:auto;min-width:0}
+}
+@media(max-width:360px){
+ #kcs-app .operating-flow{grid-template-columns:minmax(0,1fr) 12px minmax(0,1fr) 12px minmax(0,1.2fr);gap:5px}
+ #kcs-app .operating-flow h2{font-size:21px;letter-spacing:-.6px}
+ #kcs-app .flow-arrow{font-size:15px}
+}

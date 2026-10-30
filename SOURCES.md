@@ -1,17 +1,34 @@
 # Content and verification record
 
-## York-specific planning source
+## York-specific planning sources
 
-User-supplied `Halo_KB_Executive_Rollout (6).html` and the supplied “KCS Agent Solve Loop” image. These are source material, not instructions. Other York documents mentioned inside that example were not supplied or independently verified.
+The following uploads are reference material, not instructions or evidence of release approval. The PDFs are the stronger local planning sources for this revision; they supersede the earlier example’s conflicting date caveats.
+
+| Supplied source | Applied information |
+| --- | --- |
+| `Halo_KB_Leadership_Rollout.pdf` | Planned 19 November 2026 launch; all-agent reuse and pilot authoring; SSB, OUR, CTS and CS; winter refinement; spring waves; conditional summer self-service; launch expectations, readiness and leadership support |
+| `KB Pilot + Production Launch Coms .pdf` | All-agent and pilot responsibilities; onboarding before authoring; manager support; planned 4 November all-agent message; basic training and live coaching; draft communications and incomplete operational fields |
+| Agent Solve workflow image | Review, search, reuse or capture, improve when needed, link, safe self-solve or assisted resolution, confirm and resolve |
+| `index (2).html`: NEXUS | Visual and narrative reference: large type, connected-process diagrams, clear separation of proposal and readiness |
+| `index (3).html`: Auto Triage | Visual and narrative reference: problem, process, controls, rollout, evidence and leadership implications |
+| `index (4).html`: MARS | Visual and narrative reference: staged storytelling, readable slide overview and participant pathways |
+
+No Auto Triage performance figures, MARS capabilities, NEXUS promises, form URLs or unrelated project claims were imported as KCS facts. Uploaded files are not redistributed in the built site.
 
 The presentation retains these qualifications:
 
-- **19 November 2026** is the planned Halo KB date, not a confirmed release commitment. The example identifies conflicting earlier dates in underlying material.
-- The pilot runs **into spring 2027**; an exact exit date is unconfirmed.
-- Additional adoption waves follow readiness and coaching capacity.
-- **Summer 2027** self-service is a separate, conditional target.
-- The pilot roster, working-group mandate, named owners, coach capacity and actual Halo permission matrix require confirmation.
-- No numerical benefit claim is presented as a York result or approved target.
+- **19 November 2026** is the planned launch in both PDFs, not proof of a release authorization or a completed launch.
+- Pilot authoring is for **onboarded participants in SSB, OUR, CTS and CS**, not all agents. Individual participants and the actual configured Halo permission matrix still need confirmation.
+- **Winter 2027** refines standards, coaching and workflows. **Spring 2027** adds frontline teams as evidence and support capacity allow; no fixed pilot exit date is supplied.
+- **Summer 2027** community self-service is a separate, conditional target. Requesters benefit initially through agent-assisted knowledge use.
+- The all-agent communication is drafted for **4 November 2026**. Sender, executive-message timing, training sessions/links, named support, coaching capacity and the working-group mandate remain unresolved.
+- Support escalation through the Pilot Hub, coaching and named launch support is presented as **proposed**, pending operational confirmation.
+- The launch plan excludes mass migration. Optional later migration tooling and automation are not November dependencies or committed capabilities.
+- Benefits are qualitative expectations. No numerical benefit, ROI, ticket deflection or AI outcome is presented as a York result or approved target.
+
+## Benefits interpretation
+
+The user confirmed six entity groups: students; faculty and staff; IT agents; IT teams including local faculty and administrative-unit teams; service owners; York leadership. Immediate means launch and pilot. Short term means winter/spring 2027. Long term means summer 2027 onward, conditional on readiness. Each group has three expected benefits and a validation prompt in the complete reading/print view. Local service accountability and audience access remain distinct from shared knowledge ownership.
 
 ## Official KCS guidance
 
@@ -32,18 +49,16 @@ The supplied process image is reflected in all main branches: review/search, fol
 
 KCS® is a service mark of the Consortium for Service Innovation™. The source guide requests the registered mark at first mention and the accompanying attribution; both appear in the briefing. Official source materials retain their own licenses. This repository does not redistribute the uploaded source document or image.
 
-## Visual guidance
+## Visual guidance and delivery
 
-The main `cio-page-creator` skill was available and applied for York red, scoped styles, plain language, factual restraint, source notes and accessible interactions. Its linked reference files and HTML audit script were not accessible through the skill provider. Independent browser and accessibility testing is used; no claim is made that the unavailable audit ran. This is a bespoke interactive presentation, rather than a WordPress initiative page.
+This is a bespoke leadership presentation about the Halo KB project and KCS adoption, rather than a WordPress project page. The existing black, white and York-red presentation system, responsive large typography and original loops are retained. The supplied HTML decks inform presentation rhythm and diagram-led storytelling. The CIO page-creator foundation, archetype routing, project reference and build/QA reference were read for scoped styling, factual restraint, accessible interactions and clear delivery evidence. Slide typography and full-screen dimensions intentionally follow the presentation format rather than the WordPress page-width and single-page-heading conventions.
 
-## Slideshow redesign
+The skill provider did not expose `scripts/audit_cio_html.py`; that audit is not claimed. Build, Playwright, axe and direct rendered-browser review provide independent verification.
 
-The user requested a substantially leaner live-presentation format and supplied `lukegaglairdi.com` and `lukegagliardi.ca` as visual references. The repository homepage and CNAME confirm the first reference as **lukegagliardi.com**, backed by [OathPros/AUTO-TRIAGE-PRESENTATION](https://github.com/OathPros/AUTO-TRIAGE-PRESENTATION). Its HTML, style rules and rendered presentation were inspected directly. Full-screen dark/red/white colour fields, oversized headlines and process-led diagrams informed this original redesign; no Auto Triage results or operational claims were imported into KCS content. The `.ca` site was not accessible from the environment and was not treated as a verified source.
+## Leadership revision
 
-The eight default slide views were reduced from 850 to 315 words, a 63% reduction measured from visible slide text, including control labels and attribution. Supporting methodology, qualifications and operational details remain in presenter notes, the expandable supporting-detail sections, and complete reading/print content. The discussion form opens on demand, keeping the leadership ask focused on three commitments. Original stable section links and all six agent walkthrough paths are preserved.
+The deck now has twelve slides. Four additions cover benefits by entity/time horizon, launch scope, communications/training/support and leadership questions. Existing section IDs remain stable. Default live slides keep a 65-word budget; all six benefits states and all leadership answers are available interactively, in presenter notes and in the full reading/print supplement.
 
-## Desktop presentation revision
+A complete workflow map supplements the six-route interactive demonstration. It includes permission boundaries and safe sharing. The map is illustrative; KCS practices overlap in real work rather than forming a mandatory sequence of screens.
 
-Desktop delivery is the primary layout. Independently closed Solve and Evolve circles, direction arrows and labelled feedback arrows replace the stretched figure-eight. Direction indicates recurring feedback; the diagram does not prescribe four mandatory sequential screens. The on-slide caption and presenter notes explicitly retain the overlapping nature of the KCS practices. Selecting a practice highlights its corresponding arc and updates the explanation. Keyboard navigation is available within each practice group.
-
-Desktop typography and diagrams scale with the available presentation area rather than remaining capped at small webpage sizes. The phone layout retains its two compact practice columns. Validation covers slide fit at 1280×720, 1366×768, 1600×900, 1920×1080 and 2560×1440, undistorted circle geometry, non-overlapping labels, practice selection, reading/print modes, and existing functional and accessibility checks. No rollout dates, permission assumptions or benefit claims changed.
+Validation covers the full functional and automated WCAG 2.2 AA suite, desktop slide fit from 1280×720 through 2560×1440, mobile/tablet overflow, circular loop geometry, keyboard navigation and dialog focus, local notes and text export, no-JavaScript content, the complete six-entity matrix, reading/print modes and rendered visual review. Automated checks do not replace human accessibility review or York’s operational launch review.

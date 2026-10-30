@@ -1,4 +1,4 @@
-import { chapters, sources, problems, practices, stages, roles, evidence, arrowIcon, problemPanel, practicePanel, stagePanel, rolePanel, evidencePanel } from './content.js';
+import { chapters, sources, problems, practices, stages, roles, evidence, arrowIcon, problemPanel, practicePanel, stagePanel, rolePanel, evidencePanel, benefits, horizons, enablement, questions, benefitPanel, enablementPanel, questionPanel } from './content.js';
 const root=document.querySelector('#kcs-app');
 const $=(s)=>root.querySelector(s);
 const $$=(s)=>[...root.querySelectorAll(s)];
@@ -26,6 +26,10 @@ function goTo(index,{updateHash=true,focus=false}={}){
 function extraNotes(id){
  const entries={
   'case-for-change':problems.map(p=>[p.label,`Today: ${p.before} With KCS: ${p.after} ${p.gain}`]),
+  benefits:benefits.map(b=>[b.label,b.outcomes.map(([title,body],i)=>`${horizons[i].label}: ${title}. ${body}`).join(' ')+' How to validate: '+b.proof]),
+  'launch-scope':[['All Halo agents','Search, see suggestions, reuse, share suitable guidance and link articles available to them.'],['Onboarded pilot participants','SSB, OUR, CTS and CS create and improve after onboarding. Actual Halo permissions and launch readiness must be checked.']],
+  enablement:enablement.map(e=>[e.label,e.detail]),
+  'leadership-questions':questions.map(q=>[q.question,q.answer+' '+q.detail]),
   method:practices.map(p=>[`${p.loop} Loop: ${p.label}`,`${p.body} Example: ${p.example}`]),
   rollout:stages.map(s=>[`${s.label}: ${s.time} (${s.status})`,`${s.desc} Readiness: ${s.gate} ${s.note}`]),
   'operating-model':roles.map(r=>[r.label,`${r.body} Contribution: ${r.output}`]),
@@ -45,6 +49,7 @@ $('#next-button').addEventListener('click',()=>goTo(current+1,{focus:true}));
 $('#overview-button').addEventListener('click',()=>$('#overview-dialog').showModal());
 $('#notes-button').addEventListener('click',()=>$('#notes-dialog').showModal());
 $('#help-button').addEventListener('click',()=>$('#help-dialog').showModal());
+$('#workflow-button').addEventListener('click',()=>$('#workflow-dialog').showModal());
 $('#discussion-button').addEventListener('click',()=>$('#discussion-dialog').showModal());
 $$('dialog').forEach(d=>d.addEventListener('click',e=>{if(e.target===d){const r=d.getBoundingClientRect();if(e.clientX<r.left||e.clientX>r.right||e.clientY<r.top||e.clientY>r.bottom)d.close();}}));
 function toggleReading(){closeDialogs();reading=!reading;$('#exit-reading').hidden=!reading;root.classList.toggle('reading',reading);slides.forEach((s,i)=>s.hidden=!reading&&i!==current);$('#reading-button').textContent=reading?'Return to presentation →':'Reading & print view →';toast(reading?'Reading view: all sections and alternative states are available.':'Presentation view restored.');}
@@ -68,7 +73,7 @@ document.addEventListener('keydown',e=>{
  if(e.key.toLowerCase()==='r')toggleReading();
  if(e.key.toLowerCase()==='p'){e.preventDefault();window.print();}
 });
-const panels={problems:problemPanel,stages:stagePanel,roles:rolePanel,evidence:evidencePanel};
+const panels={problems:problemPanel,stages:stagePanel,roles:rolePanel,evidence:evidencePanel,benefits:benefitPanel,enablement:enablementPanel,questions:questionPanel};
 function selectTab(tab){const group=tab.dataset.tab;const list=tab.closest('[role="tablist"]');list.querySelectorAll('[role="tab"]').forEach(b=>{b.setAttribute('aria-selected',String(b===tab));b.tabIndex=b===tab?0:-1;});const panel=$('#'+group+'-panel');panel.innerHTML=panels[group](Number(tab.dataset.index));panel.setAttribute('aria-labelledby',tab.id);}
 $$('[role="tablist"]').forEach(list=>{
  list.addEventListener('click',e=>{const t=e.target.closest('[role="tab"]');if(t)selectTab(t);});
@@ -149,7 +154,7 @@ function refreshCount(){const n=discussion.checked.length;$('#commitment-count')
 function saveDiscussion(){discussion={checked:$$('[data-commitment]:checked').map(c=>c.dataset.commitment),notes:$('#discussion-notes').value};try{localStorage.setItem(storageKey,JSON.stringify(discussion));$('#save-status').textContent='Saved in this browser only. No formal approval is recorded.';}catch{$('#save-status').textContent='Browser storage is unavailable. Copy or download your notes to keep them.';}refreshCount();}
 $$('[data-commitment]').forEach(c=>c.addEventListener('change',saveDiscussion));
 $('#discussion-notes').addEventListener('input',saveDiscussion);
-function summary(){return `KCS AT YORK | DIRECTOR DISCUSSION\nPlanning aid, not a formal approval record.\n\nCOMMITMENTS MARKED FOR DISCUSSION\n${discussion.checked.length?discussion.checked.map(k=>'[x] '+commitmentLabels[k]).join('\n'):'None marked.'}\n\nNEXT STEPS & NOTES\n${discussion.notes||'No notes entered.'}\n\nSTILL TO CONFIRM\nFinal launch date; pilot roster; coach coverage; working-group mandate; Halo permissions.\n\nPlanned Halo KB go-live: 19 November 2026 (unconfirmed).\nSelf-service: separate summer 2027 target, subject to readiness.\n`;}
+function summary(){return `KCS AT YORK | DIRECTOR DISCUSSION\nPlanning aid, not a formal approval record.\n\nCOMMITMENTS MARKED FOR DISCUSSION\n${discussion.checked.length?discussion.checked.map(k=>'[x] '+commitmentLabels[k]).join('\n'):'None marked.'}\n\nNEXT STEPS & NOTES\n${discussion.notes||'No notes entered.'}\n\nSTILL TO CONFIRM\nLaunch readiness; individual pilot participants; training sessions; named support and coach coverage; working-group mandate; Halo permissions.\n\nPlanned Halo KB go-live: 19 November 2026 (planned; release approval not recorded here).\nPilot groups: SSB, OUR, CTS and CS; authoring follows onboarding.\nSelf-service: separate summer 2027 target, subject to readiness.\n`;}
 $('#copy-summary').addEventListener('click',async()=>{try{await navigator.clipboard.writeText(summary());toast('Discussion summary copied.');}catch{toast('Clipboard unavailable. Use Download .txt to save the summary.');}});
 $('#download-notes').addEventListener('click',()=>{const u=URL.createObjectURL(new Blob([summary()],{type:'text/plain;charset=utf-8'}));const a=document.createElement('a');a.href=u;a.download='York-KCS-director-discussion.txt';a.click();setTimeout(()=>URL.revokeObjectURL(u),1000);toast('Discussion summary downloaded.');});
 $('#clear-notes').addEventListener('click',()=>{discussion={checked:[],notes:''};$$('[data-commitment]').forEach(c=>c.checked=false);$('#discussion-notes').value='';try{localStorage.removeItem(storageKey);}catch{}refreshCount();$('#save-status').textContent='Discussion cleared from this browser. No formal approval is recorded.';toast('Local discussion cleared.');});

@@ -4,13 +4,17 @@ A slideshow for directors on York University's proposed KCS rollout. Built as a 
 
 ## Experience
 
-Eight full-screen slides cover the case for change, the two KCS loops, a branching agent Solve walkthrough, readiness gates, operating roles, evidence and director commitments. Black, white and York red backgrounds, large type and diagrams support live delivery. Each default slide has no more than 65 visible words; detailed methodology and caveats live in presenter notes and the complete reading/print view.
+Twelve full-screen slides cover the case for change, benefits by entity and time horizon, the two KCS loops, a branching agent Solve walkthrough, launch permissions, rollout gates, communications and support, ownership, evidence, leadership questions and director commitments. Black, white and York red backgrounds, large type and diagrams support live delivery. Each default slide has no more than 65 visible words; detailed methodology and caveats live in presenter notes and the complete reading/print view.
 
 Desktop presentation is the primary layout: type, controls and diagrams scale to the available slide area from 720p through QHD. Solve and Evolve use independently closed circular tracks with direction arrows and a two-way feedback connection. Selecting a practice highlights its corresponding arc; arrow keys move between practices within each loop. Phones retain the compact two-column practice layout.
 
 Use the fullscreen toolbar button, arrow keys, Space or a presentation remote (Page Up / Page Down). Section links remain stable. The director discussion form opens on demand; notes remain local with text export.
 
-The agent walkthrough includes all six combinations of missing/current/improvable knowledge and requester self-solve/agent-assisted resolution. Backtracking and restart support exploration. It performs no live Halo actions.
+The benefits explorer covers students, faculty and staff, IT agents, IT teams (including local faculty/unit teams), service owners and York leadership across launch/pilot, winter/spring 2027, and summer 2027 onward. These are expected benefits to validate, not measured savings. A complete matrix and validation prompts are included in reading/print view.
+
+The agent walkthrough includes all six combinations of missing/current/improvable knowledge and requester self-solve/agent-assisted resolution. Backtracking and restart support exploration. It performs no live Halo actions. A keyboard-accessible workflow-map dialog shows the complete branching process.
+
+The roadmap follows the supplied leadership and communications PDFs: planned 19 November 2026 agent launch; onboarded pilot authors in SSB, OUR, CTS and CS; winter refinement; spring adoption waves; conditional summer community self-service. Training sessions, named support and launch approval still require confirmation.
 
 **Dates and local operating details are proposed.** See [SOURCES.md](SOURCES.md) before presenting as an approved plan.
 
@@ -34,7 +38,11 @@ npm test
 
 Playwright uses `/usr/bin/chromium` by default. Override `CHROMIUM_PATH` with an installed Chromium executable on another machine. CI uses the Chromium or Google Chrome already installed on the GitHub-hosted runner and sets this variable automatically, avoiding redundant browser and system-package downloads.
 
-The suite exercises all sections and tab states, all six walkthrough routes, backtracking, storage persistence and unavailable storage, export contents, keyboard navigation and dialog focus, reading/print modes, no-JavaScript content, mobile/tablet/desktop overflow, fullscreen and presentation-remote controls, 1280×720 through 2560×1440 slide fit, true circular loop geometry, label separation, selected-arc highlighting, desktop reading-view legibility, a 65-word default-slide budget, and automated WCAG 2.2 AA checks with axe. Automated checks do not replace human accessibility review.
+The suite exercises all sections and tab states, the six-entity benefits matrix, leadership Q&A, the workflow-map dialog, all six walkthrough routes, backtracking, storage persistence and unavailable storage, export contents, keyboard navigation and dialog focus, reading/print modes, no-JavaScript content, mobile/tablet/desktop overflow, fullscreen and presentation-remote controls, 1280×720 through 2560×1440 slide fit, true circular loop geometry, label separation, selected-arc highlighting, desktop reading-view legibility, a 65-word default-slide budget, and automated WCAG 2.2 AA checks with axe. Automated checks do not replace human accessibility review.
+
+## Export a portable briefing
+
+After `npm run build`, run `node scripts/export.mjs` to create `artifacts/KCS-leadership-briefing.html`. The single file embeds the font, styles, script and diagram; it can be opened directly without a server. The adjacent DM Sans license accompanies distribution. The original uploaded PDFs and HTML examples are not bundled.
 
 ## Publish to GitHub Pages
 
