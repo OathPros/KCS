@@ -99,7 +99,7 @@ test('default slides have a presentation-sized word budget',async({page})=>{
  for(const id of ids){
   await page.goto('./#'+id);
   const words=(await page.locator('.slide:visible').innerText()).trim().split(/\s+/).length;
-  expect(words,`${id}: ${words} on-screen words`).toBeLessThanOrEqual(id==='enablement'?130:id==='operating-model'?120:id==='evidence'?170:id==='participation'?140:id==='program-evidence'?160:id==='leadership-questions'?110:65);
+  expect(words,`${id}: ${words} on-screen words`).toBeLessThanOrEqual(id==='pilot-hypercare'?175:id==='enablement'?130:id==='operating-model'?120:id==='evidence'?170:id==='participation'?140:id==='program-evidence'?160:id==='leadership-questions'?110:65);
  }
 });
 for(const size of [{width:1280,height:720},{width:1366,height:768},{width:1600,height:900},{width:1920,height:1080},{width:2560,height:1440}])test(`slides fit the ${size.width}×${size.height} presentation viewport`,async({page})=>{
@@ -337,7 +337,7 @@ test('uploaded edits remain intact after tab changes and reload',async({page})=>
  await page.goto('./#leadership-questions');await page.locator('#questions-tab-1').click();await page.locator('#questions-tab-0').click();
  await expect(page.locator('.question-outcome')).toContainText('Copenhagen');await expect(page.locator('.question-outcome')).toContainText('70%');
  await page.reload();await expect(page.locator('.question-outcome')).toContainText('three years');
- await expect(page.locator('#total-number')).toHaveCount(0);await expect(page.locator('.footer-slash')).toHaveText('/ 12');
+ await expect(page.locator('#total-number')).toHaveCount(0);await expect(page.locator('.footer-slash')).toHaveText('/ '+ids.length);
 });
 
 test('evidence follows coaching and the presentation ends with meaningful questions',async({page})=>{

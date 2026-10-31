@@ -30,6 +30,11 @@ export const chapters = [
     "short": "Enablement"
   },
   {
+    "id": "pilot-hypercare",
+    "label": "Pilot hypercare",
+    "short": "Pilot support"
+  },
+  {
     "id": "operating-model",
     "label": "Committing to future success",
     "short": "Ownership"
@@ -418,6 +423,16 @@ section('enablement','white',`
  <div class="rollout-resources"><div class="comms-register"><h2>Launch communications</h2><ul>${enablement.map(e=>`<li><div><h3>${e.label}</h3>${e.time?`<span>${e.time}</span>`:''}</div><p>${e.body}</p></li>`).join('')}</ul></div><div class="website-register"><h2>Supporting websites</h2><ul>${rolloutWebsites.map(w=>`<li><a href="https://www.yorku.ca${w.path}" target="_blank" rel="noopener noreferrer">${w.label} ${arrowIcon}<span>yorku.ca${w.path}</span></a><p>${w.purpose}</p></li>`).join('')}</ul></div></div>
 
  `,'enablement-slide'),
+section('pilot-hypercare','white',`
+ ${heading('pilot-hypercare','Practical support for pilot testing','Pilot hypercare')}
+ <section class="pilot-lead" aria-labelledby="pilot-lead-title"><h2 id="pilot-lead-title">Led by our Senior Digital Experience Specialist</h2><p>Holds KCS methodology and practitioner (Knowledge Program Manager) certifications</p></section>
+ <dl class="pilot-support-routes">
+  <div><dt>Virtual agent training</dt><dd>Virtual sessions for agents covering the Halo workflow and KCS practice.</dd></div>
+  <div><dt>Coaching during real work</dt><dd>In-person and virtual drop-in coaching for individual agents and teams. Work through actual tickets to understand the practice, build the habit, identify which tickets need knowledge, and learn techniques for creating it efficiently and consistently.</dd></div>
+  <div><dt>Weekly open drop-ins</dt><dd>Weekly virtual drop-ins and stand-ups for anyone with questions or who wants help.</dd></div>
+  <div><dt>Urgent questions and help</dt><dd>Our pilot lead will create and monitor the <strong>Knowledge Workers @ York</strong> Teams chat for urgent questions and requests for help.</dd></div>
+ </dl>
+`,'hypercare-slide'),
 section('operating-model','ink',`
  ${heading('operating-model','Our knowledge program','Committing to future success')}
  <div class="program-supports">${programSupports.map((support,i)=>`<div class="program-support"><h2>${support.label}</h2><ul>${support.points.map(point=>`<li>${point}</li>`).join('')}</ul></div>`).join('')}</div>

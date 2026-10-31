@@ -4,7 +4,7 @@ A slideshow announcing York University's Halo knowledge base launch and KCS pilo
 
 ## Experience
 
-Twelve slides cover purpose, the agent Solve flow, launch permissions, the rollout, communications and websites, coaching and council, participation and recognition, benefits, success aims and questions, plus the KCS practice basis for coaching, shared standards and the council. The opening contains the interactive Solve/Evolve diagram. Large type, black/white/warm neutral surfaces and York-red accents support live delivery.
+Thirteen slides cover purpose, the agent Solve flow, launch permissions, the rollout, communications and websites, practical pilot hypercare, coaching and council, participation and recognition, benefits, success aims and questions, plus the KCS practice basis for coaching, shared standards and the council. The opening contains the interactive Solve/Evolve diagram. Large type, black/white/warm neutral surfaces and York-red accents support live delivery.
 
 The latest user-edited `KCS-leadership-review (1).html` is the content baseline. Its deletions are preserved, the separate methodology slide is removed, and the voice is a colleague speaking with peers. Presenter notes, note controls, the notes keyboard shortcut and the print companion are removed from the source and HTML export. Reading and print views contain the slides only. The final commitments slide, its capture button and the now-unused local discussion form are removed. The deck ends with questions for discussion.
 
