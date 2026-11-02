@@ -427,9 +427,9 @@ section('enablement','white',`
  `,'enablement-slide'),
 section('pilot-hypercare','white',`
  ${heading('pilot-hypercare','Practical support for pilot testing','Pilot hypercare')}
- <section class="pilot-lead" aria-labelledby="pilot-lead-title"><h2 id="pilot-lead-title">Hypercare led by KCS Fundamentals and Practitioner trained staff</h2></section>
+ <p class="pilot-lead">Led by staff trained in KCS v6 Fundamentals and Practitioner practices</p>
  <dl class="pilot-support-routes">
-  <div><dt>Virtual agent training</dt><dd>Virtual sessions for agents covering the Halo workflow and KCS practice.</dd></div>
+  <div><dt>Live &amp; asynchronous KCS training for pilot participants</dt><dd>Live sessions and self-paced training covering the Halo workflow and KCS practice.</dd></div>
   <div><dt>Coaching during real work</dt><dd>In-person and virtual drop-in coaching for individual agents and teams. Work through actual tickets to understand the practice, build the habit, identify which tickets need knowledge, and learn techniques for creating it efficiently and consistently.</dd></div>
   <div><dt>Weekly open drop-ins</dt><dd>Weekly virtual stand-ups for anyone with questions or feedback. Participation will help identify candidates to become coaches or join the KCS Council.</dd></div>
   <div><dt>Urgent questions and help</dt><dd>Our pilot lead will create and monitor the <strong>Knowledge Workers @ York</strong> Teams chat for urgent questions and requests for help.</dd></div>
