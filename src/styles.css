@@ -1174,3 +1174,24 @@ body{margin:0}
  #kcs-app .pilot-support-routes{grid-template-columns:1fr}
  #kcs-app .pilot-lead{padding:16px}
 }
+
+/* Interactive illustration and requested emphasis. */
+#kcs-app .knowledge-graph-slide .slide-heading{margin-bottom:16px}
+#kcs-app .knowledge-graph{width:100%;flex:1;min-height:390px;border:0;border-radius:12px;background:#17141e}
+#kcs-app .graph-caption{font-size:13px;color:#babac4;margin-top:10px}
+#kcs-app .investment-applications{margin-top:28px;border-top:1px solid var(--line);padding-top:22px}
+#kcs-app .investment-applications>h2{font-size:18px;color:#b5122b;margin-bottom:20px}
+#kcs-app .investment-applications p{font-size:clamp(18px,1.5vw,28px);line-height:1.5}
+#kcs-app .benefit-horizon{padding:22px}
+#kcs-app .benefit-horizon.is-selected{background:#111113;color:#fff}
+#kcs-app .benefit-horizon.is-selected .horizon-number,#kcs-app .benefit-horizon.is-selected .micro{color:#ff8da1}
+#kcs-app .benefit-horizon.is-selected .horizon-time,#kcs-app .benefit-horizon.is-selected .horizon-description{color:#e0e0e5}
+@media(min-width:1000px) and (min-height:600px){
+ #kcs-app .knowledge-graph{min-height:0}
+ #kcs-app .knowledge-graph-slide .slide-heading{margin-bottom:calc(1 * var(--du))}
+ #kcs-app .knowledge-graph-slide h1{font-size:calc(4.4 * var(--du))}
+ #kcs-app .benefit-horizon{padding:calc(1.5 * var(--du))}
+}
+@media print{#kcs-app .knowledge-graph{min-height:420px}}
+
+@media(max-width:760px){#kcs-app .benefit-horizon{padding:22px 22px 22px 76px}#kcs-app .horizon-number{left:18px;top:22px}}
