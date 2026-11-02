@@ -80,3 +80,5 @@ The roadmap uses Launch, Pilot, Expand and Self-service without timeline badges.
 The interactive knowledge-value graph follows pilot hypercare, with the supplied series toggles, month ranges, scrubber and milestone explanations. It illustrates trends rather than measured York results. Practice evidence uses one shared application heading and omits the investment test. The selected benefits column uses a black background, white text and light pink accents.
 
 The knowledge-value graph expresses each series as a percentage of the combined four-series total for that month. All four shares sum to 100%; hiding a series preserves the denominator. Its vertical scale stays at 0–100% for every month range. The caption below the graph has been removed.
+
+Creation and reuse begin at month 0 with zero interactions, then rise to their original month 1 shares. The slider includes month 0, and legend percentages update live for all four series using the selected month, including fractional months.
