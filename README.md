@@ -78,3 +78,5 @@ The browser title and Open Graph/Twitter metadata use “Halo KB Launch & Pilot 
 The roadmap uses Launch, Pilot, Expand and Self-service without timeline badges. The launch panel separates all-agent reuse from onboarded pilot authoring and marks launch preparation complete with a green check. Community self-service is framed as the big win: our community can search and follow approved, maintained knowledge. Future readiness gates remain distinct.
 
 The interactive knowledge-value graph follows pilot hypercare, with the supplied series toggles, month ranges, scrubber and milestone explanations. It illustrates trends rather than measured York results. Practice evidence uses one shared application heading and omits the investment test. The selected benefits column uses a black background, white text and light pink accents.
+
+The knowledge-value graph expresses each series as a percentage of the combined four-series total for that month. All four shares sum to 100%; hiding a series preserves the denominator. Its vertical scale stays at 0–100% for every month range. The caption below the graph has been removed.

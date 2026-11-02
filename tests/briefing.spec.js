@@ -409,6 +409,13 @@ test('interactive graph follows hypercare and preserves graph controls',async({p
  await expect(page.locator('.slide:visible')).toHaveAttribute('id','knowledge-value');
  const graph=page.frameLocator('iframe.knowledge-graph');
  await expect(graph.locator('.series')).toHaveCount(4);
+ await expect(page.locator('.graph-caption')).toHaveCount(0);
+ await expect(graph.locator('.axislabel')).toContainText(['Months','Interactions (%)']);
+ const shares=await graph.locator('.end-label').allTextContents();
+ expect(shares.every(value=>value.endsWith('%'))).toBe(true);
+ expect(shares.reduce((sum,value)=>sum+parseFloat(value),0)).toBeCloseTo(100,0);
+ await expect(graph.locator('#grid')).toContainText('100%');
+
  await graph.locator('[data-series="create"]').click();await expect(graph.locator('.series')).toHaveCount(3);
  await graph.locator('[data-range="6"]').click();await expect(graph.locator('#monthReadout')).toHaveText('6 / 6');
  await graph.locator('[data-range="24"]').click();await graph.locator('[data-id="reuse"]').click();
