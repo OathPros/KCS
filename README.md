@@ -4,7 +4,7 @@ A slideshow announcing York University's Halo knowledge base launch and KCS pilo
 
 ## Experience
 
-Thirteen slides cover purpose, the agent Solve flow, launch permissions, the rollout, communications and websites, practical pilot hypercare, coaching and council, participation and recognition, benefits, success aims and questions, plus the KCS practice basis for coaching, shared standards and the council. The opening contains the interactive Solve/Evolve diagram. Large type, black/white/warm neutral surfaces and York-red accents support live delivery.
+Fourteen slides cover purpose, the agent Solve flow, launch permissions, the rollout, communications and websites, practical pilot hypercare, coaching and council, participation and recognition, benefits, success aims and questions, plus the KCS practice basis for coaching, shared standards and the council. The opening contains the interactive Solve/Evolve diagram. Large type, black/white/warm neutral surfaces and York-red accents support live delivery.
 
 The latest user-edited `KCS-leadership-review (1).html` is the content baseline. Its deletions are preserved, the separate methodology slide is removed, and the voice is a colleague speaking with peers. Presenter notes, note controls, the notes keyboard shortcut and the print companion are removed from the source and HTML export. Reading and print views contain the slides only. The final commitments slide, its capture button and the now-unused local discussion form are removed. The deck ends with questions for discussion.
 
@@ -76,3 +76,5 @@ The benefits tabs share a single continuous baseline; the active third is red, a
 The browser title and Open Graph/Twitter metadata use “Halo KB Launch & Pilot Announcement” so shared links identify the launch and pilot. Audience-role labels have been removed from presentation metadata, source code and documentation.
 
 The roadmap uses Launch, Pilot, Expand and Self-service without timeline badges. The launch panel separates all-agent reuse from onboarded pilot authoring and marks launch preparation complete with a green check. Community self-service is framed as the big win: our community can search and follow approved, maintained knowledge. Future readiness gates remain distinct.
+
+The interactive knowledge-value graph follows pilot hypercare, with the supplied series toggles, month ranges, scrubber and milestone explanations. It illustrates trends rather than measured York results. Practice evidence uses one shared application heading and omits the investment test. The selected benefits column uses a black background, white text and light pink accents.

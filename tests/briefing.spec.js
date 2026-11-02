@@ -237,7 +237,7 @@ test('all three success aims connect questions, evidence and action on one slide
 });
 
 test('presentation and workflow contain no placeholder or demo labels',async({page})=>{
- const filler=/\bdemo(?: only)?\b|\billustrative\b|\bplaceholder\b|\bunconfirmed\b|\bunresolved\b|timing to confirm|draft plan|\bproposed\b|no formal approval|still to confirm/i;
+ const filler=/\bdemo(?: only)?\b|\bplaceholder\b|\bunconfirmed\b|\bunresolved\b|timing to confirm|draft plan|\bproposed\b|no formal approval|still to confirm/i;
  for(const id of ids){
   await page.goto('./#'+id);
   expect(await page.locator('#kcs-app').textContent()).not.toMatch(filler);
@@ -348,7 +348,9 @@ test('evidence follows coaching and the presentation ends with meaningful questi
  for(const link of await page.locator('.investment-pillar>a').all()){
   await expect(link).toHaveAttribute('href',/^https:\/\/library\.serviceinnovation\.org\/KCS\//);await link.focus();await expect(link).toBeFocused();
  }
- await expect(page.locator('.investment-test')).toContainText('capacity needed to sustain');
+ await expect(page.locator('.investment-test')).toHaveCount(0);
+ await expect(page.locator('.investment-applications>h2')).toHaveText('What this means for us');
+ await expect(page.locator('.investment-applications p')).toHaveCount(3);
  await page.locator('#presentation').focus();await page.keyboard.press('End');
  await expect(page.locator('#leadership-questions')).toBeVisible();await expect(page.locator('#next-button')).toBeDisabled();
  await expect(page.locator('#decisions,#discussion-dialog,[data-open-discussion]')).toHaveCount(0);
@@ -399,4 +401,19 @@ test('roadmap distinguishes completed launch preparation from future self-servic
  await expect(page.locator('.readiness')).toHaveAttribute('data-state','pending');await expect(page.locator('.readiness-check')).toHaveCount(0);
  await expect(page.locator('.readiness .micro')).toHaveText('Readiness gate');
  await page.locator('#stages-tab-0').click();await expect(page.locator('.readiness-check')).toBeVisible();
+});
+
+test('interactive graph follows hypercare and preserves graph controls',async({page})=>{
+ const errors=[];page.on('pageerror',e=>errors.push(e.message));
+ await page.goto('./#pilot-hypercare');await page.getByRole('button',{name:'Next section',exact:true}).click();
+ await expect(page.locator('.slide:visible')).toHaveAttribute('id','knowledge-value');
+ const graph=page.frameLocator('iframe.knowledge-graph');
+ await expect(graph.locator('.series')).toHaveCount(4);
+ await graph.locator('[data-series="create"]').click();await expect(graph.locator('.series')).toHaveCount(3);
+ await graph.locator('[data-range="6"]').click();await expect(graph.locator('#monthReadout')).toHaveText('6 / 6');
+ await graph.locator('[data-range="24"]').click();await graph.locator('[data-id="reuse"]').click();
+ await expect(graph.locator('#tip')).toBeVisible();await expect(graph.locator('#tipTitle')).toHaveText('Reuse builds momentum');
+ await graph.locator('#tipClose').click();await expect(graph.locator('#tip')).toBeHidden();
+ await graph.locator('#month').fill('12');await expect(graph.locator('#monthReadout')).toHaveText('12 / 24');
+ expect(errors).toEqual([]);
 });
