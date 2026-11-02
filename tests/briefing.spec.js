@@ -408,8 +408,9 @@ test('interactive graph follows hypercare and preserves graph controls',async({p
  await page.goto('./#pilot-hypercare');await page.getByRole('button',{name:'Next section',exact:true}).click();
  await expect(page.locator('.slide:visible')).toHaveAttribute('id','knowledge-value');
  const graph=page.frameLocator('iframe.knowledge-graph');
+ await graph.locator('[data-range="24"]').click();
  await expect(graph.locator('.series')).toHaveCount(4);
- for(const series of ['create','reuse'])await expect(graph.locator('.series.'+series)).toHaveAttribute('d',/^M78,461 L/);
+ for(const series of ['create','reuse'])await expect(graph.locator('.series.'+series)).toHaveAttribute('d',/^M78,461 C/);
  await graph.locator('#month').fill('0');
  await expect(graph.locator('[data-share]')).toHaveText(['0.0%','0.0%','0.0%','0.0%']);
  await graph.locator('#month').fill('1');
@@ -432,4 +433,26 @@ test('interactive graph follows hypercare and preserves graph controls',async({p
  await graph.locator('#tipClose').click();await expect(graph.locator('#tip')).toBeHidden();
  await graph.locator('#month').fill('12');await expect(graph.locator('#monthReadout')).toHaveText('12 / 24');
  expect(errors).toEqual([]);
+});
+
+test('graph slider aligns to the axis and advances through 6, 12, 24 months',async({page})=>{
+ await page.goto('./#knowledge-value');
+ const graph=page.frameLocator('iframe.knowledge-graph');
+ await expect(graph.locator('#month')).toHaveAttribute('max','6');
+ await graph.locator('#month').fill('6');
+ await expect(graph.locator('#month')).toHaveAttribute('max','12');
+ await expect(graph.locator('#monthReadout')).toHaveText('6 / 12');
+ await graph.locator('#month').fill('12');
+ await expect(graph.locator('#month')).toHaveAttribute('max','24');
+ await expect(graph.locator('#monthReadout')).toHaveText('12 / 24');
+ await graph.locator('#month').fill('24');
+ await expect(graph.locator('#monthReadout')).toHaveText('24 / 24');
+ for(const size of [{width:1280,height:720},{width:1920,height:1080},{width:375,height:900}]){
+  await page.setViewportSize(size);
+  await expect.poll(async()=>graph.locator('#chart').evaluate(svg=>{
+   const matrix=svg.getScreenCTM(),axes=[...svg.querySelectorAll('line.axis')];
+   const axis=axes[axes.length-1],slider=document.querySelector('#month').getBoundingClientRect();
+   return Math.max(Math.abs(Number(axis.getAttribute('x1'))*matrix.a+matrix.e-(slider.left+8)),Math.abs(Number(axis.getAttribute('x2'))*matrix.a+matrix.e-(slider.right-8)));
+  })).toBeLessThan(1);
+ }
 });
