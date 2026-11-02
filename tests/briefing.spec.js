@@ -409,6 +409,15 @@ test('interactive graph follows hypercare and preserves graph controls',async({p
  await expect(page.locator('.slide:visible')).toHaveAttribute('id','knowledge-value');
  const graph=page.frameLocator('iframe.knowledge-graph');
  await expect(graph.locator('.series')).toHaveCount(4);
+ for(const series of ['create','reuse'])await expect(graph.locator('.series.'+series)).toHaveAttribute('d',/^M78,461 L/);
+ await graph.locator('#month').fill('0');
+ await expect(graph.locator('[data-share]')).toHaveText(['0.0%','0.0%','0.0%','0.0%']);
+ await graph.locator('#month').fill('1');
+ await expect(graph.locator('[data-share]')).toHaveText(['95.2%','4.8%','0.0%','0.0%']);
+ await graph.locator('#month').fill('12');
+ await expect(graph.locator('[data-share]')).toHaveText(['33.4%','51.9%','13.0%','1.7%']);
+ await graph.locator('#month').fill('24');
+
  await expect(page.locator('.graph-caption')).toHaveCount(0);
  await expect(graph.locator('.axislabel')).toContainText(['Months','Interactions (%)']);
  const shares=await graph.locator('.end-label').allTextContents();
