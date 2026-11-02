@@ -82,3 +82,5 @@ The interactive knowledge-value graph follows pilot hypercare, with the supplied
 The knowledge-value graph expresses each series as a percentage of the combined four-series total for that month. All four shares sum to 100%; hiding a series preserves the denominator. Its vertical scale stays at 0–100% for every month range. The caption below the graph has been removed.
 
 Creation and reuse begin at month 0 with zero interactions, then rise to their original month 1 shares. The slider includes month 0, and legend percentages update live for all four series using the selected month, including fractional months.
+
+The graph opens at month 0 with a six-month range. Releasing the slider at the endpoint advances 6 → 12 → 24 months while retaining the selected month. Its thumb centers align with the x-axis endpoints, and the plot expands to use its available width. Creation and reuse ease smoothly into their month 1 values.
