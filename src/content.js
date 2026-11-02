@@ -35,7 +35,7 @@ export const chapters = [
     "label": "Pilot hypercare",
     "short": "Pilot support"
   },
-  {"id":"knowledge-value","label":"Knowledge value over time","short":"Interactive graph"},
+  {"id":"knowledge-value","label":"Expected knowledge effort to value over time","short":"Interactive graph"},
   {
     "id": "operating-model",
     "label": "Committing to future success",
@@ -436,7 +436,7 @@ section('pilot-hypercare','white',`
  </dl>
 `,'hypercare-slide'),
 section('knowledge-value','ink',`
- ${heading('knowledge-value','Interactive illustration','Knowledge value over time')}
+ ${heading('knowledge-value','Interactive illustration','Expected knowledge effort to value over time')}
  <iframe class="knowledge-graph" title="Interactive knowledge value graph" srcdoc="${graphDocument.replaceAll('&','&amp;').replaceAll('"','&quot;').replaceAll('<','&lt;').replaceAll('>','&gt;')}"></iframe>
 `,'knowledge-graph-slide'),
 section('operating-model','ink',`
