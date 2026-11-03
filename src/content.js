@@ -400,7 +400,7 @@ export function stagePanel(i=0){
  const audience=Array.isArray(scope)?`<p class="stage-audiences">${scope.map(line=>`<span>${line}</span>`).join('')}</p>`:`<p>${scope}</p>`;
  return `<div class="stage-takeaway"><span class="micro">${s.status}</span><h2>${title}</h2>${audience}</div><div class="readiness" data-state="${complete?'complete':'pending'}"><span class="gate-mark" aria-hidden="true">${mark}</span><div><span class="micro">${complete?'Launch preparation complete':'Readiness gate'}</span><p>${gate}</p></div></div>`;
 }
-export function benefitPanel(i=0){return `<div class="benefit-horizons">${benefits[i].outcomes.map(([title,body],n)=>`<div class="benefit-horizon${n===i?' is-selected':''}"><span class="horizon-number" aria-hidden="true">0${n+1}</span><p class="micro">${horizons[n].label}</p><p class="horizon-time">${horizons[n].time}</p><h2>${title}</h2><p class="horizon-description">${body}</p></div>`).join('')}</div>`;}
+export function benefitPanel(i=0){return `<div class="benefit-horizons" data-entity="${i}">${benefits[i].outcomes.map(([title,body],n)=>`<div class="benefit-horizon"><span class="horizon-number" aria-hidden="true">0${n+1}</span><p class="micro">${horizons[n].label}</p><p class="horizon-time">${horizons[n].time}</p><h2>${title}</h2><p class="horizon-description">${body}</p></div>`).join('')}</div>`;}
 export function questionPanel(i=0){const q=questions[i];return `<span class="micro">Leadership question / ${String(i+1).padStart(2,'0')}</span><h2>${q.question}</h2><p>${q.answer}</p>${q.reportedOutcome?`<p class="question-outcome">${q.reportedOutcome}</p>`:''}`;}
 export function renderSlides(){return [
 section('opportunity','ink',`
@@ -427,9 +427,9 @@ section('enablement','white',`
  `,'enablement-slide'),
 section('pilot-hypercare','white',`
  ${heading('pilot-hypercare','Practical support for pilot testing','Pilot hypercare')}
- <section class="pilot-lead" aria-labelledby="pilot-lead-title"><h2 id="pilot-lead-title">Hypercare led by KCS Fundamentals and Practitioner trained staff</h2></section>
+ <p class="pilot-lead">Led by staff trained in KCS v6 Fundamentals and Practitioner practices</p>
  <dl class="pilot-support-routes">
-  <div><dt>Virtual agent training</dt><dd>Virtual sessions for agents covering the Halo workflow and KCS practice.</dd></div>
+  <div><dt>Live &amp; asynchronous KCS training for pilot participants</dt><dd>Live sessions and self-paced training covering the Halo workflow and KCS practice.</dd></div>
   <div><dt>Coaching during real work</dt><dd>In-person and virtual drop-in coaching for individual agents and teams. Work through actual tickets to understand the practice, build the habit, identify which tickets need knowledge, and learn techniques for creating it efficiently and consistently.</dd></div>
   <div><dt>Weekly open drop-ins</dt><dd>Weekly virtual stand-ups for anyone with questions or feedback. Participation will help identify candidates to become coaches or join the KCS Council.</dd></div>
   <div><dt>Urgent questions and help</dt><dd>Our pilot lead will create and monitor the <strong>Knowledge Workers @ York</strong> Teams chat for urgent questions and requests for help.</dd></div>
@@ -457,8 +457,8 @@ section('participation','white',`
 `,'participation-slide'),
 section('benefits','white',`
  ${heading('benefits','Expected benefits','Who benefits')}
- <div class="entity-tabs">${tabs('benefits',benefits)}</div>
- <div id="benefits-panel" role="tabpanel" aria-labelledby="benefits-tab-0" tabindex="0">${benefitPanel()}</div>
+ <div class="benefits-layout"><div class="entity-tabs"><div class="tabs" role="tablist" aria-label="benefits" aria-orientation="vertical">${benefits.map((entity,i)=>`<button role="tab" id="benefits-tab-${i}" aria-controls="benefits-panel" aria-selected="${i===0}" tabindex="${i===0?0:-1}" data-tab="benefits" data-index="${i}">${entity.label}</button>`).join('')}</div></div>
+ <div id="benefits-panel" role="tabpanel" aria-labelledby="benefits-tab-0" tabindex="0">${benefitPanel()}</div></div>
  `,'benefits-slide'),
 section('evidence','white',`
  ${heading('evidence','Three aims for our knowledge program','What success looks like')}
