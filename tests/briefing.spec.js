@@ -145,7 +145,7 @@ test('benefits cover the three requested groups and every horizon, with keyboard
   }
   await expect(page.locator('.benefit-horizon')).toHaveCount(3);
  }
- await page.locator('#benefits-tab-0').focus();await page.keyboard.press('ArrowRight');
+ await page.locator('#benefits-tab-0').focus();await page.keyboard.press('ArrowDown');
  await expect(page.locator('#benefits-tab-1')).toBeFocused();
  await expect(page.locator('#benefits-tab-1')).toHaveAttribute('aria-selected','true');
  await expect(page.locator('#benefits .eyebrow')).toContainText('Expected benefits');
@@ -376,16 +376,21 @@ for(const width of [768,1280,1920])test(`communications rows align across both r
   expect(Math.abs(a.y-b.y)).toBeLessThanOrEqual(1);expect(Math.abs(a.height-b.height)).toBeLessThanOrEqual(1);
  }
 });
-test('benefits use equal-width tab underlines without duplicate horizon rules',async({page})=>{
+test('benefits use a vertical entity selector with matching horizon colours',async({page})=>{
  await page.setViewportSize({width:1280,height:720});await page.goto('./#benefits');
- const tabs=page.locator('[data-tab=benefits]'),bounds=await page.locator('.entity-tabs .tabs').boundingBox();
- for(const tab of await tabs.all())expect((await tab.boundingBox()).width).toBeCloseTo(bounds.width/3,0);
+ const tabs=page.locator('[data-tab=benefits]');
+ await expect(page.locator('.entity-tabs .tabs')).toHaveAttribute('aria-orientation','vertical');
+ const colours=['rgb(107, 38, 140)','rgb(0, 104, 94)','rgb(181, 18, 43)'];
  for(let i=0;i<3;i++){
-  await tabs.nth(i).click();await expect(tabs.nth(i)).toHaveCSS('border-bottom-color','rgb(227, 24, 55)');
-  await expect(tabs.nth((i+1)%3)).not.toHaveCSS('border-bottom-color','rgb(227, 24, 55)');
+  await tabs.nth(i).click();await expect(tabs.nth(i)).toHaveCSS('color',colours[i]);
+  const tab=await tabs.nth(i).boundingBox(),panel=await page.locator('#benefits-panel').boundingBox();
+  expect(tab.x+tab.width).toBeLessThan(panel.x);
+  for(const horizon of await page.locator('.benefit-horizon').all()){
+   await expect(horizon.locator('.micro')).toHaveCSS('color',colours[i]);
+   await expect(horizon.locator('.horizon-number')).toHaveCSS('color',colours[i]);
+  }
  }
- for(const horizon of await page.locator('.benefit-horizon').all())await expect(horizon).toHaveCSS('border-top-width','0px');
- await expect(tabs.nth(2)).toHaveText('York');
+ await expect(page.locator('.benefit-horizon.is-selected')).toHaveCount(0);
 });
 
 test('roadmap distinguishes completed launch preparation from future self-service readiness',async({page})=>{

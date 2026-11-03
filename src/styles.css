@@ -1190,3 +1190,31 @@ body{margin:0}
 @media print{#kcs-app .knowledge-graph{min-height:420px}}
 
 @media(max-width:760px){#kcs-app .benefit-horizon{padding:22px 22px 22px 76px}#kcs-app .horizon-number{left:18px;top:22px}}
+
+/* Entity selection sits beside the three time horizons. */
+#kcs-app .benefits-layout{display:grid;grid-template-columns:minmax(150px,.52fr) minmax(0,3fr);gap:32px;align-items:start}
+#kcs-app .benefits-layout .entity-tabs{margin:0}
+#kcs-app .benefits-layout .tabs{display:flex;flex-direction:column;gap:12px;border:0}
+#kcs-app #benefits-tab-0,#kcs-app [data-entity="0"]{--entity-color:#6b268c;--entity-tint:#f5edf9}
+#kcs-app #benefits-tab-1,#kcs-app [data-entity="1"]{--entity-color:#00685e;--entity-tint:#eaf6f3}
+#kcs-app #benefits-tab-2,#kcs-app [data-entity="2"]{--entity-color:#b5122b;--entity-tint:#fceef0}
+#kcs-app .benefits-layout .tabs button{width:100%;min-height:60px;padding:16px;text-align:left;font-size:18px;color:var(--entity-color);border:0;border-left:4px solid var(--entity-color);background:transparent;transition:none}
+#kcs-app .benefits-layout .tabs button[aria-selected=true]{background:var(--entity-tint);color:var(--entity-color);font-weight:750}
+#kcs-app .benefits-layout .benefit-horizons{padding:0;gap:24px}
+#kcs-app .benefits-layout .benefit-horizon{padding:20px 14px;background:var(--entity-tint);border-top:3px solid var(--entity-color)}
+#kcs-app .benefits-layout .horizon-number,#kcs-app .benefits-layout .micro{color:var(--entity-color)}
+#kcs-app .benefits-layout .horizon-time,#kcs-app .benefits-layout .horizon-description{color:#50505a}
+#kcs-app .benefits-layout .benefit-horizon h2{font-size:clamp(23px,2vw,32px)}
+@media screen and (min-width:1000px){
+ #kcs-app .benefits-layout{gap:calc(2 * var(--du))}
+ #kcs-app .benefits-layout .tabs button{font-size:calc(1.4 * var(--du));padding:calc(1.2 * var(--du));min-height:calc(5 * var(--du))}
+ #kcs-app .benefits-layout .benefit-horizons{gap:calc(1.5 * var(--du))}
+ #kcs-app .benefits-layout .benefit-horizon{padding:calc(1.4 * var(--du))}
+ #kcs-app .benefits-layout .benefit-horizon h2{font-size:calc(2.4 * var(--du))}
+}
+@media(max-width:900px){
+ #kcs-app .benefits-layout{grid-template-columns:1fr;gap:24px}
+ #kcs-app .benefits-layout .tabs button{min-height:48px;font-size:17px;padding:12px 16px}
+ #kcs-app .benefits-layout .benefit-horizons{grid-template-columns:1fr}
+ #kcs-app .benefits-layout .benefit-horizon{padding:20px 20px 20px 76px}
+}

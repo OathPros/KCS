@@ -400,7 +400,7 @@ export function stagePanel(i=0){
  const audience=Array.isArray(scope)?`<p class="stage-audiences">${scope.map(line=>`<span>${line}</span>`).join('')}</p>`:`<p>${scope}</p>`;
  return `<div class="stage-takeaway"><span class="micro">${s.status}</span><h2>${title}</h2>${audience}</div><div class="readiness" data-state="${complete?'complete':'pending'}"><span class="gate-mark" aria-hidden="true">${mark}</span><div><span class="micro">${complete?'Launch preparation complete':'Readiness gate'}</span><p>${gate}</p></div></div>`;
 }
-export function benefitPanel(i=0){return `<div class="benefit-horizons">${benefits[i].outcomes.map(([title,body],n)=>`<div class="benefit-horizon${n===i?' is-selected':''}"><span class="horizon-number" aria-hidden="true">0${n+1}</span><p class="micro">${horizons[n].label}</p><p class="horizon-time">${horizons[n].time}</p><h2>${title}</h2><p class="horizon-description">${body}</p></div>`).join('')}</div>`;}
+export function benefitPanel(i=0){return `<div class="benefit-horizons" data-entity="${i}">${benefits[i].outcomes.map(([title,body],n)=>`<div class="benefit-horizon"><span class="horizon-number" aria-hidden="true">0${n+1}</span><p class="micro">${horizons[n].label}</p><p class="horizon-time">${horizons[n].time}</p><h2>${title}</h2><p class="horizon-description">${body}</p></div>`).join('')}</div>`;}
 export function questionPanel(i=0){const q=questions[i];return `<span class="micro">Leadership question / ${String(i+1).padStart(2,'0')}</span><h2>${q.question}</h2><p>${q.answer}</p>${q.reportedOutcome?`<p class="question-outcome">${q.reportedOutcome}</p>`:''}`;}
 export function renderSlides(){return [
 section('opportunity','ink',`
@@ -457,8 +457,8 @@ section('participation','white',`
 `,'participation-slide'),
 section('benefits','white',`
  ${heading('benefits','Expected benefits','Who benefits')}
- <div class="entity-tabs">${tabs('benefits',benefits)}</div>
- <div id="benefits-panel" role="tabpanel" aria-labelledby="benefits-tab-0" tabindex="0">${benefitPanel()}</div>
+ <div class="benefits-layout"><div class="entity-tabs"><div class="tabs" role="tablist" aria-label="benefits" aria-orientation="vertical">${benefits.map((entity,i)=>`<button role="tab" id="benefits-tab-${i}" aria-controls="benefits-panel" aria-selected="${i===0}" tabindex="${i===0?0:-1}" data-tab="benefits" data-index="${i}">${entity.label}</button>`).join('')}</div></div>
+ <div id="benefits-panel" role="tabpanel" aria-labelledby="benefits-tab-0" tabindex="0">${benefitPanel()}</div></div>
  `,'benefits-slide'),
 section('evidence','white',`
  ${heading('evidence','Three aims for our knowledge program','What success looks like')}
