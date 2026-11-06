@@ -99,7 +99,7 @@ test('default slides have a presentation-sized word budget',async({page})=>{
  for(const id of ids){
   await page.goto('./#'+id);
   const words=(await page.locator('.slide:visible').innerText()).trim().split(/\s+/).length;
-  expect(words,`${id}: ${words} on-screen words`).toBeLessThanOrEqual(id==='pilot-hypercare'?175:id==='enablement'?130:id==='operating-model'?120:id==='evidence'?170:id==='participation'?140:id==='program-evidence'?160:id==='leadership-questions'?110:65);
+  expect(words,`${id}: ${words} on-screen words`).toBeLessThanOrEqual(id==='pilot-hypercare'?175:id==='enablement'?130:id==='operating-model'?120:id==='evidence'?170:id==='participation'?140:id==='program-evidence'?160:id==='leadership-questions'?110:['launch-measurement','search-intelligence','kcs-scorecard'].includes(id)?145:65);
  }
 });
 for(const size of [{width:1280,height:720},{width:1366,height:768},{width:1600,height:900},{width:1920,height:1080},{width:2560,height:1440}])test(`slides fit the ${size.width}×${size.height} presentation viewport`,async({page})=>{
@@ -221,6 +221,20 @@ test('coaching and council support participation and co-creation of the standard
  await expect(page.locator('#operating-model button')).toHaveCount(0);
  await expect(page.locator('#operating-model h1')).toHaveText('Committing to future success');
 
+});
+
+
+test('launch measures use confirmed search telemetry and KCS-aligned measures',async({page})=>{
+ const next=ids.slice(ids.indexOf('evidence')+1,ids.indexOf('leadership-questions'));
+ expect(next).toEqual(['launch-measurement','search-intelligence','kcs-scorecard']);
+ await page.goto('./#launch-measurement');
+ await expect(page.locator('.measurement-card')).toHaveCount(3);
+ for(const term of ['Who is searching','Search frequency','Search terms','Day 1 deliverable','Reporting to validate'])await expect(page.locator('#launch-measurement')).toContainText(term);
+ await page.goto('./#search-intelligence');
+ await expect(page.locator('.search-insight-step')).toHaveCount(4);
+ await expect(page.locator('#search-intelligence')).toContainText('missing or hard to find');
+ await page.goto('./#kcs-scorecard');
+ for(const term of ['Ticket link rate','Link accuracy','Process Alignment Review','Content Standard','Knowledge gaps addressed','Known-issue resolution efficiency','No search, link or article-count targets'])await expect(page.locator('#kcs-scorecard')).toContainText(term);
 });
 
 test('all three success aims connect questions, evidence and action on one slide',async({page})=>{
