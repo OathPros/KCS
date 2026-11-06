@@ -63,18 +63,18 @@ export const chapters = [
   },
   {
     "id": "launch-measurement",
-    "label": "What Halo can tell us on Day 1",
-    "short": "Day 1 data"
+    "label": "Search: are agents using knowledge?",
+    "short": "Search"
   },
   {
     "id": "search-intelligence",
-    "label": "Turning searches into knowledge improvements",
-    "short": "Search insights"
+    "label": "Linkage: is the right knowledge being reused?",
+    "short": "Linkage"
   },
   {
     "id": "kcs-scorecard",
-    "label": "KCS performance scorecard",
-    "short": "KCS metrics"
+    "label": "Getting up to PAR",
+    "short": "Pilot PAR"
   },
   {
     "id": "leadership-questions",
@@ -480,34 +480,35 @@ section('evidence','white',`
  <div class="success-aims">${evidence.map((aim,i)=>`<section class="success-aim" aria-labelledby="aim-${i}"><p class="aim-number" aria-hidden="true">0${i+1}</p><h2 id="aim-${i}">${aim.label}</h2><p class="aim-question">${aim.question}</p><h3>Evidence to review</h3><ul>${aim.displaySignals.map(signal=>`<li>${signal}</li>`).join('')}</ul><div class="aim-action"><h3>What we do with it</h3><p>${aim.action}</p></div></section>`).join('')}</div>
 `,'evidence-slide'),
 section('launch-measurement','ink',`
-  ${heading('launch-measurement','Performance insight · 19 November 2026','What Halo can tell us on Day 1')}
-  <div class="measurement-lead"><p>Every search gives us evidence of how agents are using knowledge and what they need to find.</p><span class="micro">Confirmed search reporting in Halo</span></div>
+  ${heading('launch-measurement','All agents · Pilot and non-pilot','Search: are agents using knowledge?')}
+  <div class="measurement-lead"><p>Every search helps us understand adoption, support coaching and identify what agents need to find.</p><span class="micro">Confirmed search reporting in Halo</span></div>
   <div class="measurement-cards">
-    <section class="measurement-card"><span class="measurement-number">01 / WHO</span><h2>Who is searching</h2><p>Search activity by agent, with team patterns to support onboarding and coaching.</p></section>
-    <section class="measurement-card"><span class="measurement-number">02 / HOW OFTEN</span><h2>Search frequency</h2><p>Total searches, repeat activity and trends as adoption develops.</p></section>
-    <section class="measurement-card"><span class="measurement-number">03 / WHAT</span><h2>Search terms</h2><p>Actual wording, recurring questions and topics agents are trying to resolve.</p></section>
+    <section class="measurement-card"><span class="measurement-number">01 / WHO</span><h2>Who is searching?</h2><p>Participation by agent and team shows where search is becoming routine and where support may help.</p></section>
+    <section class="measurement-card"><span class="measurement-number">02 / HOW OFTEN</span><h2>Search frequency</h2><p>Total searches, repeat activity and trends show how adoption develops over time.</p></section>
+    <section class="measurement-card"><span class="measurement-number">03 / WHAT</span><h2>Search terms</h2><p>Recurring questions and customer language reveal demand and potential knowledge gaps.</p></section>
   </div>
-  <div class="measurement-delivery"><div><span class="micro">Day 1 deliverable</span><p>Start a search baseline and weekly review of participation, volume and common terms.</p></div><div><span class="micro">Reporting to validate</span><p>Ticket–article links and pilot article changes can add context once the extracts are confirmed.</p></div></div>
+  <div class="measurement-delivery"><div><span class="micro">What we do with the data</span><p>Establish a baseline; review weekly. Guide coaching and identify non-pilot teams ready to join.</p></div><div><span class="micro">How to interpret it</span><p>Search volume is a signal, not a target. Investigate changes alongside ticket demand, results and agent feedback.</p></div></div>
 `,'measurement-launch-slide'),
 section('search-intelligence','white',`
-  ${heading('search-intelligence','Knowledge demand and improvement','Search terms reveal where to act')}
-  <p class="search-insight-intro">Search behaviour shows us what agents are looking for, in the language they actually use.</p>
+  ${heading('search-intelligence','All agents · Pilot and non-pilot','Linkage: is the right knowledge being reused?')}
+  <p class="search-insight-intro">Ticket–article links connect knowledge to real demand. Their value depends on whether the article supports the work.</p>
   <div class="search-insight-flow">
-    <section class="search-insight-step"><span>01</span><h2>Find patterns</h2><p>Group recurring terms and frequently searched topics.</p></section>
-    <section class="search-insight-step"><span>02</span><h2>Review results</h2><p>Check the available answers and related tickets. Is knowledge missing or hard to find?</p></section>
-    <section class="search-insight-step"><span>03</span><h2>Make changes</h2><p>Improve titles and wording, fix articles or route genuine gaps for creation.</p></section>
-    <section class="search-insight-step"><span>04</span><h2>Check again</h2><p>Review later searches and ticket reuse to see whether the change helped.</p></section>
+    <section class="search-insight-step"><span>01</span><h2>Measure reuse</h2><p>Track the share of eligible tickets linked to knowledge, using a consistent definition and validated reporting.</p></section>
+    <section class="search-insight-step"><span>02</span><h2>Check the connection</h2><p>Sample linked tickets. Does the article match the issue and support the resolution? A link alone does not prove useful reuse.</p></section>
+    <section class="search-insight-step"><span>03</span><h2>Learn from missing links</h2><p>Was knowledge missing, hard to find, unnecessary or simply not linked? Review unlinked tickets to understand why.</p></section>
+    <section class="search-insight-step"><span>04</span><h2>Act on the evidence</h2><p>Coach linking practices, improve articles and prioritize gaps based on recurring demand.</p></section>
   </div>
-  <div class="search-insight-takeaway"><strong>High search volume signals demand.</strong><span>We investigate the results before deciding whether to create content or improve findability.</span></div>
+  <div class="search-insight-takeaway"><strong>Success means relevant, accurate reuse.</strong><span>Pair linkage rate with sampled link quality. A higher rate alone can reward the wrong behaviour.</span></div>
 `,'measurement-search-slide'),
 section('kcs-scorecard','white',`
-  ${heading('kcs-scorecard','From signals to outcomes','A scorecard built for KCS')}
+  ${heading('kcs-scorecard','Pilot knowledge workers · Process Alignment Review','Getting up to PAR <svg class="par-flag" viewBox="0 0 40 40" aria-hidden="true"><path d="M12 34V5l19 7-19 7M6 35h14"/></svg>')}
+  <p class="par-intro">PAR samples completed work to assess everyday KCS practice and identify where coaching will help.</p>
   <div class="kcs-metric-columns">
-    <section class="kcs-metric-column"><p class="metric-horizon">At launch / leading indicators</p><h2>See the behaviour</h2><ul><li>Search participation, frequency and terms</li><li>Ticket link rate, once reporting is validated</li></ul><p class="metric-purpose">Establish trends and find coaching opportunities.</p></section>
-    <section class="kcs-metric-column"><p class="metric-horizon">During the pilot / quality checks</p><h2>Test the practice</h2><ul><li>Link accuracy from sampled tickets</li><li>Process Alignment Review (PAR)</li><li>Content Standard adherence from article samples</li></ul><p class="metric-purpose">Coach judgement and improve knowledge quality.</p></section>
-    <section class="kcs-metric-column"><p class="metric-horizon">After baseline / service outcomes</p><h2>Demonstrate value</h2><ul><li>Knowledge gaps addressed</li><li>Known-issue resolution efficiency</li><li>Requester success as self-service expands</li></ul><p class="metric-purpose">Show whether shared knowledge improves service.</p></section>
+    <section class="kcs-metric-column"><p class="metric-horizon">What goes into PAR?</p><h2>Review the practice</h2><ul><li>Sample tickets and related articles: search, relevant reuse, capture, improvement and creation when appropriate.</li><li>Discuss decisions where the record is unclear.</li><li>Check article quality separately against the Content Standard.</li></ul><p class="metric-purpose">Use a shared checklist and representative samples.</p></section>
+    <section class="kcs-metric-column"><p class="metric-horizon">What investment does it take?</p><h2>Protect time</h2><ul><li>Set up the checklist, train reviewers and calibrate judgment.</li><li>Provide reliable ticket, search and article data.</li><li>Allow recurring review, coaching and follow-up time.</li></ul><p class="metric-purpose">Illustrative monthly start: five tickets × 10–15 minutes, plus 20–30 minutes of coaching. About 1–2 reviewer/coach hours per person, plus initial setup. Validate in the pilot.</p></section>
+    <section class="kcs-metric-column"><p class="metric-horizon">What is the payoff?</p><h2>Make better decisions</h2><ul><li>Distinguish meaningful adoption from dashboard activity.</li><li>Target coaching, remove workflow barriers and improve knowledge.</li><li>Use credible trends to decide when to scale.</li></ul><p class="metric-purpose">Consistent sampling, clear definitions and calibrated reviews make the data trustworthy.</p></section>
   </div>
-  <div class="kcs-metric-footer"><strong>Measure outcomes, not activity quotas.</strong><span>No search, link or article-count targets.</span><a href="https://library.serviceinnovation.org/KCS/Knowledge-Centered_Success_Practices_Guide/301-Evolve_Loop/Practice_7_Performance_Insight/Technique_7.1" target="_blank" rel="noopener noreferrer">KCS Performance Insight ↗</a></div>
+  <div class="kcs-metric-footer"><strong>Search → Linkage → PAR</strong><span>Adoption → useful reuse → quality of practice. No activity quotas.</span><a href="https://library.serviceinnovation.org/KCS/Knowledge-Centered_Success_Practices_Guide/301-Evolve_Loop/Practice_7_Performance_Insight/Technique_7.1" target="_blank" rel="noopener noreferrer">KCS Performance Insight ↗</a></div>
 `,'measurement-scorecard-slide'),
 section('leadership-questions','ink',`
  ${heading('leadership-questions','Questions before expansion','Questions for discussion')}
@@ -540,3 +541,4 @@ export function heroDoubleLoop(){
  ${group('evolve',4)}<div class="hero-loop-wheel"><svg viewBox="0 0 640 640" aria-hidden="true"><path class="hero-evolve-arc" data-hero-arc="evolve" transform="rotate(180 320 320)" d="${arc}"/><path class="hero-solve-arc" data-hero-arc="solve" d="${arc}"/></svg><div class="hero-loop-centre"><div id="hero-loop-detail" role="region" aria-label="Selected loop or practice" aria-live="polite"><p class="hero-loop-kicker">KCS</p><h2>Solve and Evolve</h2><p>Use knowledge in each ticket. Improve the system through shared learning.</p></div></div></div>${group('solve',0)}<button class="hero-loop-overview" data-hero-overview>Overview</button>
  </div>`;
 }
+
