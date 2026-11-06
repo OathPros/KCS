@@ -1785,3 +1785,21 @@ body{margin:0}
 @media(max-width:999px){#kcs-app .kpi-par .par-visual-layout{grid-template-columns:1fr}}
 @media(max-width:600px){#kcs-app .kpi-par .par-cycle{grid-template-columns:1fr}#kcs-app .kpi-par .par-cycle>div:nth-child(n){grid-column:auto;grid-row:auto}#kcs-app .kpi-par .cycle-centre{display:none}}
 #kcs-app .eyebrow>span{border-right:0}
+
+/* Each PAR step owns its detail reveal. */
+#kcs-app .kpi-par .par-cycle>div{padding:0;background:transparent;display:flex}
+#kcs-app .par-step-trigger{width:100%;border:1px solid transparent;background:var(--soft);padding:20px 24px;text-align:left;color:var(--text);display:flex;flex-direction:column;align-items:start;gap:8px}
+#kcs-app .par-step-trigger:hover{background:#eee9e3;border-color:#d9b6bd}
+#kcs-app .par-step-number{font-size:12px;color:var(--accent);font-weight:650}
+#kcs-app .par-step-title{font-size:clamp(23px,2.4vw,34px);line-height:1.1;letter-spacing:-.035em;font-weight:550}
+#kcs-app .par-step-summary{font-size:clamp(14px,1.35vw,19px);line-height:1.35;color:var(--copy)}
+#kcs-app .par-step-more{font-size:13px;color:var(--accent);margin-top:6px;display:flex;align-items:center;gap:18px}
+#kcs-app .par-step-more>span{font-size:20px;line-height:1}
+#kcs-app .cycle-centre{pointer-events:none}
+@media screen and (min-width:1000px) and (max-height:800px){
+ #kcs-app .par-step-trigger{padding:12px 16px;gap:6px}
+ #kcs-app .par-step-title{font-size:23px}
+ #kcs-app .par-step-summary{font-size:14px}
+ #kcs-app .par-step-more{margin-top:2px;font-size:12px}
+}
+@media print{#kcs-app .par-step-trigger{display:flex!important}#kcs-app .par-step-more{display:none}}

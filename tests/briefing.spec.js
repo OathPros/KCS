@@ -538,7 +538,7 @@ test('search stands alone and article feedback has its own measure',async({page}
  for(const term of ['Likes','Dislikes','response volume and reuse'])await expect(page.locator('#article-feedback')).toContainText(term);
 });
 
-test('PAR explains its full cycle inline and other reveals use More details',async({page})=>{
+test('PAR keeps details inside its clickable steps and other reveals use More details',async({page})=>{
  await page.goto('./#kcs-scorecard');await expect(page.locator('#kcs-scorecard .par-cycle>div')).toHaveCount(4);
  await expect(page.locator('#kcs-scorecard .kpi-detail-trigger')).toHaveCount(0);
  for(const term of ['representative sample','shared checklist','Content Standard','20–30 minutes','calibrated reviews'])await expect(page.locator('#kcs-scorecard')).toContainText(term);
@@ -547,4 +547,14 @@ test('PAR explains its full cycle inline and other reveals use More details',asy
 test('displayed text blocks have no terminal periods, including dynamic panels',async({page})=>{
  for(const id of ids){await page.goto('./#'+id);expect(await page.locator('#'+id+' p,#'+id+' li').allTextContents().then(texts=>texts.filter(s=>/\.\s*$/.test(s))),id).toEqual([]);}
  await page.goto('./#leadership-questions');await page.locator('#questions-tab-1').click();expect(await page.locator('#questions-panel').innerText()).not.toMatch(/\.\s*$/);
+});
+
+test('all four PAR steps reveal their own details with keyboard and focus return',async({page})=>{
+ await page.goto('./#kcs-scorecard');
+ for(const number of ['01','02','03','04']){
+  const trigger=page.locator(`[data-kpi-detail="par-step-${number}"]`),dialog=page.locator('#par-step-'+number);
+  await expect(dialog).not.toBeVisible();await trigger.focus();await page.keyboard.press('Enter');await expect(dialog).toBeVisible();
+  const scan=await new AxeBuilder({page}).include('#par-step-'+number).withTags(['wcag2a','wcag2aa','wcag21aa','wcag22aa']).analyze();expect(scan.violations).toEqual([]);
+  await page.keyboard.press('Escape');await expect(dialog).not.toBeVisible();await expect(trigger).toBeFocused();
+ }
 });
