@@ -77,6 +77,11 @@ export const chapters = [
     "short": "Linkage"
   },
   {
+    "id": "linkage-action",
+    "label": "Interpreting linkage data",
+    "short": "Linkage insight"
+  },
+  {
     "id": "kcs-scorecard",
     "label": "Getting up to PAR",
     "short": "Pilot PAR"
@@ -523,16 +528,38 @@ section('search-action','ink',`
   </div>
 `,'measurement-search-action-slide'),
 section('search-intelligence','white',`
-  ${heading('search-intelligence','All agents · Pilot and non-pilot','Linkage: is the right knowledge being reused?')}
-  <p class="search-insight-intro">Ticket–article links connect knowledge to real demand. Their value depends on whether the article supports the work.</p>
-  <div class="search-insight-flow">
-    <section class="search-insight-step"><span>01</span><h2>Measure reuse</h2><p>Track the share of eligible tickets linked to knowledge, using a consistent definition and validated reporting.</p></section>
-    <section class="search-insight-step"><span>02</span><h2>Check the connection</h2><p>Sample linked tickets. Does the article match the issue and support the resolution? A link alone does not prove useful reuse.</p></section>
-    <section class="search-insight-step"><span>03</span><h2>Learn from missing links</h2><p>Was knowledge missing, hard to find, unnecessary or simply not linked? Review unlinked tickets to understand why.</p></section>
-    <section class="search-insight-step"><span>04</span><h2>Act on the evidence</h2><p>Coach linking practices, improve articles and prioritize gaps based on recurring demand.</p></section>
+  ${heading('search-intelligence','All agents · Pilot and non-pilot','KPIs for KCS: Linkage')}
+  <p class="linkage-lead"><strong>Is the right knowledge being reused?</strong> Ticket–article links help demonstrate that existing knowledge is being used to resolve real problems. Link the solution to the problem, or the fulfillment steps to the request.</p>
+  <div class="linkage-cards">
+    <section class="linkage-card">
+      <span class="linkage-index">01 / MEASURE</span>
+      <h2>Measure reuse</h2>
+      <p>Report on which tickets are resolved with linked knowledge. We expect the share of applicable tickets with linked knowledge to increase as we generate more relevant knowledge articles, while accounting for the types of tickets we handle.</p>
+    </section>
+    <section class="linkage-card">
+      <span class="linkage-index">02 / VERIFY</span>
+      <h2>Check the connection</h2>
+      <p>Linkage alone is not an indicator of good practice. We need to sample linked tickets to ensure that the <em>right</em> knowledge is being linked. Does the article match the issue and support the resolution? It’s easy to click a button to show false adherence.</p>
+      <p>We can also compare linkage with searching and ticket context to identify patterns worth reviewing, rather than assuming someone linked without looking.</p>
+    </section>
   </div>
-  <div class="search-insight-takeaway"><strong>Success means relevant, accurate reuse.</strong><span>Pair linkage rate with sampled link quality. A higher rate alone can reward the wrong behaviour.</span></div>
-`,'measurement-search-slide'),
+`,'measurement-search-slide linkage-measure-slide'),
+section('linkage-action','white',`
+  ${heading('linkage-action','Linkage KPIs · From evidence to action','How we use linkage data')}
+  <div class="linkage-cards">
+    <section class="linkage-card">
+      <span class="linkage-index">03 / INVESTIGATE</span>
+      <h2>Learn from missing links</h2>
+      <p>As our knowledge expands, the percentage of applicable tickets without links should decrease. We can start analyzing unlinked resolutions to identify true knowledge gaps or evidence of poor practice. Why was there no linkage: was it a case where knowledge wouldn’t apply, was the knowledge poorly created and hard to find, or was it absent altogether?</p>
+    </section>
+    <section class="linkage-card">
+      <span class="linkage-index">04 / IMPROVE</span>
+      <h2>Act on the evidence</h2>
+      <p>Coach agents whose linkage rates and sampled accuracy suggest they need support. Improve articles with low linkage rates compared with the volume of related tickets. Prioritize gaps based on recurring, unlinked demand.</p>
+    </section>
+  </div>
+  <div class="linkage-conclusion"><strong>Success means relevant, accurate reuse.</strong><p>We must pair linkage rate with linkage accuracy. A higher rate alone can reward the wrong behaviour.</p></div>
+`,'measurement-linkage-action-slide'),
 section('kcs-scorecard','white',`
   ${heading('kcs-scorecard','Pilot knowledge workers · Process Alignment Review','Getting up to PAR <svg class="par-flag" viewBox="0 0 40 40" aria-hidden="true"><path d="M12 34V5l19 7-19 7M6 35h14"/></svg>')}
   <p class="par-intro">Process Alignment Review (PAR) is a coach-led review of how a knowledge worker handles real tickets. The coach samples completed tickets, uses a shared checklist to assess KCS practices, then discusses findings with the worker and agrees a coaching action to review next time.</p>
