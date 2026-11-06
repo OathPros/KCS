@@ -4,7 +4,7 @@ A slideshow announcing York University's Halo knowledge base launch and KCS pilo
 
 ## Experience
 
-Eighteen slides cover purpose, the agent Solve flow, launch permissions, the rollout, communications and websites, practical pilot hypercare, coaching and council, participation and recognition, benefits, success aims and questions, plus the KCS practice basis for coaching, shared standards and the council. The opening contains the interactive Solve/Evolve diagram. Large type, black/white/warm neutral surfaces and York-red accents support live delivery.
+Nineteen slides cover purpose, the agent Solve flow, launch permissions, the rollout, communications and websites, practical pilot hypercare, coaching and council, participation and recognition, benefits, success aims and questions, plus the KCS practice basis for coaching, shared standards and the council. The opening contains the interactive Solve/Evolve diagram. Large type, black/white/warm neutral surfaces and York-red accents support live delivery.
 
 The latest user-edited `KCS-leadership-review (1).html` is the content baseline. Its deletions are preserved, the separate methodology slide is removed, and the voice is a colleague speaking with peers. Presenter notes, note controls, the notes keyboard shortcut and the print companion are removed from the source and HTML export. Reading and print views contain the slides only. The final commitments slide, its capture button and the now-unused local discussion form are removed. The deck ends with questions for discussion.
 
@@ -84,3 +84,5 @@ The knowledge-value graph expresses each series as a percentage of the combined 
 Creation and reuse begin at month 0 with zero interactions, then rise to their original month 1 shares. The slider includes month 0, and legend percentages update live for all four series using the selected month, including fractional months.
 
 The graph opens at month 0 with a six-month range. Releasing the slider at the endpoint advances 6 → 12 → 24 months while retaining the selected month. Its thumb centers align with the x-axis endpoints, and the plot expands to use its available width. Creation and reuse ease smoothly into their month 1 values.
+
+The linkage KPI section now uses two slides: measuring whether applicable tickets have linked knowledge and sampling for accurate relevance; then investigating unlinked resolutions, targeting coaching and identifying knowledge gaps. Link counts are diagnostic, not individual productivity targets.
