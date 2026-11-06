@@ -1218,3 +1218,73 @@ body{margin:0}
  #kcs-app .benefits-layout .benefit-horizons{grid-template-columns:1fr}
  #kcs-app .benefits-layout .benefit-horizon{padding:20px 20px 20px 76px}
 }
+
+
+/* Launch measurement: the three presentation slides following success aims. */
+#kcs-app .measurement-launch-slide .slide-heading,
+#kcs-app .measurement-search-slide .slide-heading,
+#kcs-app .measurement-scorecard-slide .slide-heading{margin-bottom:clamp(16px,2.8vh,32px)}
+#kcs-app .measurement-launch-slide h1,
+#kcs-app .measurement-search-slide h1,
+#kcs-app .measurement-scorecard-slide h1{font-size:clamp(39px,4.7vw,66px)}
+#kcs-app .measurement-lead{display:flex;align-items:end;justify-content:space-between;gap:24px;margin-bottom:clamp(18px,3vh,32px)}
+#kcs-app .measurement-lead>p{font-size:clamp(19px,2.05vw,28px);line-height:1.3;max-width:37ch;letter-spacing:-.025em}
+#kcs-app .measurement-lead>.micro{color:#ff9cae;text-align:right;max-width:15ch;line-height:1.55}
+#kcs-app .measurement-cards{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:clamp(12px,1.8vw,23px)}
+#kcs-app .measurement-card{padding:clamp(18px,2vw,29px);background:#212125;border-top:3px solid #f06a84;min-width:0}
+#kcs-app .measurement-number{font-size:11px;font-weight:750;letter-spacing:.12em;color:#ffafbd}
+#kcs-app .measurement-card h2{font-size:clamp(22px,2vw,31px);line-height:1.16;margin:clamp(13px,2vh,22px) 0 9px}
+#kcs-app .measurement-card p{font-size:clamp(14px,1.25vw,18px);line-height:1.42;color:#d4d1d7}
+#kcs-app .measurement-delivery{display:grid;grid-template-columns:1.1fr 1fr;gap:clamp(20px,3vw,42px);border-top:1px solid #55525a;margin-top:clamp(19px,3vh,30px);padding-top:clamp(13px,2vh,19px)}
+#kcs-app .measurement-delivery .micro{color:#ff9eae}
+#kcs-app .measurement-delivery p{font-size:clamp(14px,1.2vw,18px);color:#e3e0e5;line-height:1.4;margin-top:7px}
+#kcs-app .search-insight-intro{font-size:clamp(19px,2vw,27px);line-height:1.32;max-width:52ch;margin-bottom:clamp(24px,4vh,45px)}
+#kcs-app .search-insight-flow{display:grid;grid-template-columns:repeat(4,minmax(0,1fr));gap:clamp(14px,1.8vw,26px)}
+#kcs-app .search-insight-step{position:relative;border-top:3px solid var(--red);padding-top:clamp(16px,2.2vh,24px);min-width:0}
+#kcs-app .search-insight-step>span{font-size:clamp(31px,3.3vw,48px);font-weight:650;line-height:1;color:var(--red);letter-spacing:-.055em}
+#kcs-app .search-insight-step h2{font-size:clamp(20px,1.85vw,28px);margin:clamp(16px,2.5vh,24px) 0 11px;font-weight:650}
+#kcs-app .search-insight-step p{font-size:clamp(14px,1.26vw,18px);line-height:1.46;color:#56565e}
+#kcs-app .search-insight-takeaway{display:flex;gap:18px;align-items:baseline;border-top:1px solid #ceced3;padding-top:clamp(16px,3vh,25px);margin-top:clamp(26px,5vh,55px);font-size:clamp(14px,1.3vw,18px);line-height:1.4}
+#kcs-app .search-insight-takeaway strong{flex-shrink:0;color:#b1122d}
+#kcs-app .search-insight-takeaway span{color:#56565e}
+#kcs-app .kcs-metric-columns{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:clamp(15px,2.3vw,33px)}
+#kcs-app .kcs-metric-column{border-top:3px solid var(--red);min-width:0;padding-top:clamp(14px,2vh,21px);display:flex;flex-direction:column}
+#kcs-app .metric-horizon{font-size:clamp(10px,.9vw,13px);text-transform:uppercase;letter-spacing:.08em;font-weight:750;color:#ad1830}
+#kcs-app .kcs-metric-column h2{font-size:clamp(22px,2.15vw,33px);margin:clamp(10px,1.7vh,18px) 0}
+#kcs-app .kcs-metric-column ul{margin:0 0 0 17px;padding:0;font-size:clamp(14px,1.26vw,18px);line-height:1.4;flex:1}
+#kcs-app .kcs-metric-column li{margin-bottom:clamp(7px,1.35vh,12px)}
+#kcs-app .kcs-metric-column li::marker{color:var(--red)}
+#kcs-app .metric-purpose{border-top:1px solid #d2d2d8;padding-top:clamp(11px,2vh,17px);margin-top:clamp(10px,2vh,18px)!important;font-size:clamp(13px,1.2vw,16px);line-height:1.38;color:#54545d}
+#kcs-app .kcs-metric-footer{display:flex;align-items:center;gap:12px 23px;flex-wrap:wrap;border-top:1px solid #d5d5da;padding-top:clamp(13px,2vh,20px);margin-top:clamp(18px,3.8vh,38px);font-size:clamp(12px,1.2vw,16px)}
+#kcs-app .kcs-metric-footer strong{color:#b5122b}
+#kcs-app .kcs-metric-footer span{color:#56565e}
+#kcs-app .kcs-metric-footer a{margin-left:auto;white-space:nowrap;text-decoration:underline;text-underline-offset:4px;font-size:clamp(12px,1vw,14px)}
+@media(max-width:999px){
+ #kcs-app .measurement-lead{align-items:start}
+ #kcs-app .measurement-cards{gap:12px}
+ #kcs-app .search-insight-flow{grid-template-columns:repeat(2,minmax(0,1fr));row-gap:28px}
+ #kcs-app .kcs-metric-columns{gap:15px}
+}
+@media(max-width:760px){
+ #kcs-app .measurement-launch-slide .slide-heading,
+ #kcs-app .measurement-search-slide .slide-heading,
+ #kcs-app .measurement-scorecard-slide .slide-heading{margin-bottom:22px}
+ #kcs-app .measurement-lead{display:block;margin-bottom:22px}
+ #kcs-app .measurement-lead>.micro{display:block;text-align:left;max-width:none;margin-top:12px}
+ #kcs-app .measurement-cards,
+ #kcs-app .measurement-delivery,
+ #kcs-app .search-insight-flow,
+ #kcs-app .kcs-metric-columns{grid-template-columns:1fr;gap:16px}
+ #kcs-app .measurement-card{padding:20px}
+ #kcs-app .measurement-card h2{margin:10px 0 7px}
+ #kcs-app .measurement-delivery{padding-top:19px;margin-top:25px;gap:18px}
+ #kcs-app .search-insight-intro{margin-bottom:26px}
+ #kcs-app .search-insight-step{padding-top:13px}
+ #kcs-app .search-insight-step h2{margin:12px 0 6px}
+ #kcs-app .search-insight-takeaway{flex-direction:column;align-items:start;gap:7px;margin-top:27px}
+ #kcs-app .kcs-metric-column{padding-top:15px}
+ #kcs-app .kcs-metric-column h2{margin:12px 0}
+ #kcs-app .metric-purpose{margin-top:10px!important}
+ #kcs-app .kcs-metric-footer{align-items:start;flex-direction:column}
+ #kcs-app .kcs-metric-footer a{margin-left:0;white-space:normal}
+}
