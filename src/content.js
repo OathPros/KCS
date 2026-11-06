@@ -427,6 +427,9 @@ export function stagePanel(i=0){
 }
 export function benefitPanel(i=0){return `<div class="benefit-horizons" data-entity="${i}">${benefits[i].outcomes.map(([title,body],n)=>`<div class="benefit-horizon"><span class="horizon-number" aria-hidden="true">0${n+1}</span><p class="micro">${horizons[n].label}</p><p class="horizon-time">${horizons[n].time}</p><h2>${title}</h2><p class="horizon-description">${body}</p></div>`).join('')}</div>`;}
 export function questionPanel(i=0){const q=questions[i];return `<span class="micro">Leadership question / ${String(i+1).padStart(2,'0')}</span><h2>${q.question}</h2><p>${q.answer}</p>${q.reportedOutcome?`<p class="question-outcome">${q.reportedOutcome}</p>`:''}`;}
+
+const kpiIcon=(name)=>{const paths={search:'<circle cx="10" cy="10" r="6"/><path d="m15 15 6 6"/>',people:'<circle cx="8" cy="7" r="3"/><circle cx="18" cy="9" r="2"/><path d="M2 21v-5c0-6 12-6 12 0v5M17 14c5 0 5 3 5 7"/>',pulse:'<path d="M1 13h5l3-8 5 15 3-7h6"/>',terms:'<path d="M3 4h18v13H9l-6 4zM7 8h10M7 12h6"/>',article:'<path d="M5 2h10l5 5v15H5zM15 2v6h5M9 12h7M9 16h7"/>',check:'<path d="m4 12 5 5L21 5"/>',ticket:'<path d="M2 6h20v5c-5 0-5 4 0 4v5H2v-5c5 0 5-4 0-4zM15 7v3m0 3v3m0 2v1"/>'};return `<svg class="kpi-icon" viewBox="0 0 24 24" aria-hidden="true">${paths[name]||paths.article}</svg>`;};
+const kpiDetail=(id,body)=>`<div class="kpi-bottom"><p>First 90 days <span>Establish a baseline. Learn. Improve.</span></p><button class="kpi-detail-trigger" data-kpi-detail="detail-${id}" aria-haspopup="dialog">Why it matters / details <span aria-hidden="true">＋</span></button></div><dialog class="kpi-detail" id="detail-${id}" aria-labelledby="detail-title-${id}"><div class="dialog-top"><h2 id="detail-title-${id}">The detail behind the signals</h2><button data-close class="close-button" aria-label="Close details">×</button></div><div class="kpi-detail-copy">${body}</div></dialog>`;
 export function renderSlides(){return [
 section('opportunity','ink',`
  <div class="hero-copy"><h1 id="title-opportunity">Knowledge is<br>coming to Halo</h1><p class="hero-date">November 2026</p></div>
@@ -490,8 +493,13 @@ section('evidence','white',`
  <div class="success-aims">${evidence.map((aim,i)=>`<section class="success-aim" aria-labelledby="aim-${i}"><p class="aim-number" aria-hidden="true">0${i+1}</p><h2 id="aim-${i}">${aim.label}</h2><p class="aim-question">${aim.question}</p><h3>Evidence to review</h3><ul>${aim.displaySignals.map(signal=>`<li>${signal}</li>`).join('')}</ul><div class="aim-action"><h3>What we do with it</h3><p>${aim.action}</p></div></section>`).join('')}</div>
 `,'evidence-slide'),
 section('launch-measurement','ink',`
-  ${heading('launch-measurement','All agents · Pilot and non-pilot','KPIs for KCS: Searching')}
-  <div class="measurement-lead"><p><strong>Are agents searching for knowledge?</strong> Every search helps us understand adoption, support coaching and identify knowledge gaps.</p></div>
+ ${heading('launch-measurement','All agents · First 90 days','Make knowledge use visible')}
+ <div class="signal-orbit"><div class="orbit-core">${kpiIcon('search')}<h2>Search</h2><p>The first adoption signal</p></div><div class="signal-spokes">
+ <div>${kpiIcon('people')}<h2>Who?</h2><p>Participation by agent &amp; team</p></div>
+ <div>${kpiIcon('pulse')}<h2>How often?</h2><p>Habits, frequency &amp; repeat searches</p></div>
+ <div>${kpiIcon('terms')}<h2>What?</h2><p>Customer language &amp; knowledge gaps</p></div></div></div>
+ <div class="signal-rail"><span>Also watch</span><strong>Article views</strong><strong>Upvotes / downvotes</strong><strong>Usage over time</strong></div>
+ ${kpiDetail('launch-measurement',`<div class="measurement-lead"><p><strong>Are agents searching for knowledge?</strong> Every search helps us understand adoption, support coaching and identify knowledge gaps.</p></div>
   <div class="measurement-cards">
     <section class="measurement-card">
       <span class="measurement-number">01 / WHO</span>
@@ -509,11 +517,15 @@ section('launch-measurement','ink',`
       <h2>Search terms</h2>
       <p>Recurring questions and customer language reveal context-aware searching and can show demand. Search terms can be compared against existing knowledge from Day 1, and increasingly as knowledge matures, to identify knowledge gaps.</p>
     </section>
-  </div>
-`,'measurement-launch-slide'),
+  </div><section class="engagement-detail"><h2>Our first 90 days</h2><p>Establish a baseline for adoption and engagement using article-to-ticket linkage, searches and views, upvotes and downvotes, and knowledge usage trends. These reports help us see how knowledge is consumed and reused across teams.</p><p>Views show lookups, rather than proof of a successful resolution. Ratings are feedback signals that help content owners investigate usefulness and quality; interpret them with the number and context of responses. Review usage over time to identify high-value content, coaching needs and knowledge gaps.</p><p>Use this evidence alongside observed practice to identify teams ready for pilot onboarding. These early indicators establish a baseline for future KCS performance measures; they do not establish service impact on their own.</p></section>`)}
+`,'kpi-visual kpi-signals'),
 section('search-action','ink',`
-  ${heading('search-action','Search KPIs · From evidence to action','How we use search data')}
-  <div class="search-action-grid">
+ ${heading('search-action','Search signals · Interpretation','One signal, two possible stories')}
+ <p class="kpi-caption">Fewer searches need context.</p>
+ <div class="scenario-pair"><section><span class="scenario-label">A habit may be slipping</span><div class="scenario-glyph"><span>Search <b><svg viewBox="0 0 40 40" role="img" aria-label="Decreasing"><path d="M5 5 35 35M14 35h21V14"/></svg></b></span><span>Tickets <b><svg viewBox="0 0 40 40" role="img" aria-label="Steady"><path d="M3 20h34M25 8l12 12-12 12"/></svg></b></span></div><div class="scenario-outcome"><span aria-hidden="true"><svg viewBox="0 0 40 40"><path d="M8 4v25h25M24 20l9 9-9 9"/></svg></span><div><h2>Investigate &amp; coach</h2><p>Check team patterns and agent feedback.</p></div></div></section>
+ <section><span class="scenario-label">Discovery may be improving</span><div class="scenario-glyph"><span>Search <b><svg viewBox="0 0 40 40" role="img" aria-label="Decreasing"><path d="M5 5 35 35M14 35h21V14"/></svg></b></span><span>Reuse <b><svg viewBox="0 0 40 40" role="img" aria-label="Increasing"><path d="M5 35 35 5M14 5h21v21"/></svg></b></span></div><div class="scenario-outcome"><span aria-hidden="true"><svg viewBox="0 0 40 40"><path d="M8 4v25h25M24 20l9 9-9 9"/></svg></span><div><h2>Check suggestions</h2><p>Useful answers may be arriving earlier.</p></div></div></section></div>
+ <p class="visual-principle">Read search alongside demand, discovery and reuse.</p>
+ ${kpiDetail('search-action',`<div class="search-action-grid">
     <section class="search-action-panel">
       <span class="search-action-index">01 / ACTION</span>
       <h2>What we do with the data</h2>
@@ -525,11 +537,13 @@ section('search-action','ink',`
       <h2>Hypothesis</h2>
       <p>Search volume is a signal that needs to be assessed alongside ticket demand, results and agent feedback. As our process improves and knowledge matures, manual searching may go down as auto-suggestions become more accurate, while knowledge discovery and reuse remain strong.</p>
     </section>
-  </div>
-`,'measurement-search-action-slide'),
+  </div>`)}
+`,'kpi-visual kpi-scenarios'),
 section('search-intelligence','white',`
-  ${heading('search-intelligence','All agents · Pilot and non-pilot','KPIs for KCS: Linkage')}
-  <p class="linkage-lead"><strong>Is the right knowledge being reused?</strong> Ticket–article links help demonstrate that existing knowledge is being used to resolve real problems. Link the solution to the problem, or the fulfillment steps to the request.</p>
+ ${heading('search-intelligence','All agents · Knowledge reuse','A link is only as good as its match')}
+ <div class="match-diagram"><div class="ticket-visual">${kpiIcon('ticket')}<span>Ticket</span><h2>The problem<br>or request</h2></div><div class="match-connector" aria-hidden="true">→</div><div class="article-options"><div class="article-option relevant">${kpiIcon('article')}<div><span>Relevant knowledge</span><h2>The solution<br>or fulfilment steps</h2></div><b aria-label="Good match">✓</b></div><div class="article-option irrelevant">${kpiIcon('article')}<span>A linked article that doesn’t help</span><b aria-label="Poor match">×</b></div></div></div>
+ <div class="paired-measures"><div><strong>Linkage rate</strong><span>How widely is knowledge reused?</span></div><b>&amp;</b><div><strong>Sampled accuracy</strong><span>Does the article support the resolution?</span></div></div>
+ ${kpiDetail('search-intelligence',`<p class="linkage-lead"><strong>Is the right knowledge being reused?</strong> Ticket–article links help demonstrate that existing knowledge is being used to resolve real problems. Link the solution to the problem, or the fulfillment steps to the request.</p>
   <div class="linkage-cards">
     <section class="linkage-card">
       <span class="linkage-index">01 / MEASURE</span>
@@ -542,11 +556,14 @@ section('search-intelligence','white',`
       <p>Linkage alone is not an indicator of good practice. We need to sample linked tickets to ensure that the <em>right</em> knowledge is being linked. Does the article match the issue and support the resolution? It’s easy to click a button to show false adherence.</p>
       <p>We can also compare linkage with searching and ticket context to identify patterns worth reviewing, rather than assuming someone linked without looking.</p>
     </section>
-  </div>
-`,'measurement-search-slide linkage-measure-slide'),
+  </div>`)}
+`,'kpi-visual kpi-match'),
 section('linkage-action','white',`
-  ${heading('linkage-action','Linkage KPIs · From evidence to action','How we use linkage data')}
-  <div class="linkage-cards">
+ ${heading('linkage-action','Linkage signals · Action','No link? Find out why')}
+ <div class="decision-root">${kpiIcon('ticket')}<strong>Unlinked ticket</strong></div>
+ <div class="decision-branches"><section><span>01</span><h2>Not applicable</h2><p>Knowledge would not help this ticket.</p><strong>No link needed</strong></section><section><span>02</span><h2>Hard to find</h2><p>A useful answer exists but is missed.</p><strong>Improve findability</strong></section><section><span>03</span><h2>Knowledge gap</h2><p>The answer is missing or incomplete.</p><strong>Capture &amp; improve</strong></section></div>
+ <p class="visual-principle">Recurring demand sets priorities. Sampled practice guides coaching.</p>
+ ${kpiDetail('linkage-action',`<div class="linkage-cards">
     <section class="linkage-card">
       <span class="linkage-index">03 / INVESTIGATE</span>
       <h2>Learn from missing links</h2>
@@ -558,18 +575,22 @@ section('linkage-action','white',`
       <p>Coach agents whose linkage rates and sampled accuracy suggest they need support. Improve articles with low linkage rates compared with the volume of related tickets. Prioritize gaps based on recurring, unlinked demand.</p>
     </section>
   </div>
-  <div class="linkage-conclusion"><strong>Success means relevant, accurate reuse.</strong><p>We must pair linkage rate with linkage accuracy. A higher rate alone can reward the wrong behaviour.</p></div>
-`,'measurement-linkage-action-slide'),
+  <div class="linkage-conclusion"><strong>Success means relevant, accurate reuse.</strong><p>We must pair linkage rate with linkage accuracy. A higher rate alone can reward the wrong behaviour.</p></div>`)}
+`,'kpi-visual kpi-decisions'),
 section('kcs-scorecard','white',`
-  ${heading('kcs-scorecard','Pilot knowledge workers · Process Alignment Review','Getting up to PAR <svg class="par-flag" viewBox="0 0 40 40" aria-hidden="true"><path d="M12 34V5l19 7-19 7M6 35h14"/></svg>')}
-  <p class="par-intro">Process Alignment Review (PAR) is a coach-led review of how a knowledge worker handles real tickets. The coach samples completed tickets, uses a shared checklist to assess KCS practices, then discusses findings with the worker and agrees a coaching action to review next time.</p>
+ ${heading('kcs-scorecard','Pilot knowledge workers · Process Alignment Review','Getting up to PAR ⚑')}
+ <p class="kpi-caption">A coach-led review of real work, followed by an agreed improvement.</p>
+ <div class="par-visual-layout"><div class="par-cycle"><div><span>01</span><h2>Sample</h2><p>Completed tickets &amp; articles</p></div><div><span>02</span><h2>Review</h2><p>Evidence against a shared checklist</p></div><div><span>03</span><h2>Coach</h2><p>Discuss findings &amp; agree an action</p></div><div><span>04</span><h2>Follow up</h2><p>Check the improvement next time</p></div><span class="cycle-centre" aria-hidden="true">↻</span></div>
+ <aside class="par-investment"><span class="scenario-label">Illustrative monthly investment</span><strong class="effort-number">1–2<span>hours</span></strong><p>Reviewer / coach time per pilot worker</p><div class="effort-equation"><b>5</b> tickets <span>+</span> coaching</div><p class="effort-note">Plus setup and reviewer calibration.<br>Validate the effort in the pilot.</p></aside></div>
+ <div class="par-payoff"><span>The payoff</span><strong>Targeted coaching</strong><strong>Better knowledge</strong><strong>Evidence to scale</strong></div>
+ ${kpiDetail('kcs-scorecard',`<p class="par-intro">Process Alignment Review (PAR) is a coach-led review of how a knowledge worker handles real tickets. The coach samples completed tickets, uses a shared checklist to assess KCS practices, then discusses findings with the worker and agrees a coaching action to review next time.</p>
   <div class="kcs-metric-columns">
     <section class="kcs-metric-column"><p class="metric-horizon">What goes into PAR?</p><h2>Review the practice</h2><ul><li>Select a small, representative sample of completed tickets and related articles.</li><li>Record evidence of search, relevant reuse, capture, improvement or creation against the checklist. Mark each practice aligned, needing coaching or not applicable.</li><li>Discuss unclear decisions, agree an improvement and follow up at the next review.</li></ul><p class="metric-purpose">Assess article quality separately against the Content Standard.</p></section>
     <section class="kcs-metric-column"><p class="metric-horizon">What investment does it take?</p><h2>Protect time</h2><ul><li>Set up the checklist, train reviewers and calibrate judgment.</li><li>Provide reliable ticket, search and article data.</li><li>Allow recurring review, coaching and follow-up time.</li></ul><p class="metric-purpose">Illustrative monthly start: five tickets × 10–15 minutes, plus 20–30 minutes of coaching. About 1–2 reviewer/coach hours per person, plus initial setup. Validate in the pilot.</p></section>
     <section class="kcs-metric-column"><p class="metric-horizon">What is the payoff?</p><h2>Make better decisions</h2><ul><li>Distinguish meaningful adoption from dashboard activity.</li><li>Target coaching, remove workflow barriers and improve knowledge.</li><li>Use credible trends to decide when to scale.</li></ul><p class="metric-purpose">Consistent sampling, clear definitions and calibrated reviews make the data trustworthy.</p></section>
   </div>
-  <div class="kcs-metric-footer"><strong>Search → Linkage → PAR</strong><a href="https://library.serviceinnovation.org/KCS/Knowledge-Centered_Success_Practices_Guide/301-Evolve_Loop/Practice_7_Performance_Insight/Technique_7.1" target="_blank" rel="noopener noreferrer">KCS Performance Insight ↗</a></div>
-`,'measurement-scorecard-slide'),
+  <div class="kcs-metric-footer"><strong>Search → Linkage → PAR</strong><a href="https://library.serviceinnovation.org/KCS/Knowledge-Centered_Success_Practices_Guide/301-Evolve_Loop/Practice_7_Performance_Insight/Technique_7.1" target="_blank" rel="noopener noreferrer">KCS Performance Insight ↗</a></div>`)}
+`,'kpi-visual kpi-par'),
 section('leadership-questions','ink',`
  ${heading('leadership-questions','Questions before expansion','Questions for discussion')}
  <div class="questions-layout"><div class="question-picker" role="tablist" aria-label="questions" aria-orientation="vertical">${questions.map((q,i)=>`<button role="tab" id="questions-tab-${i}" aria-controls="questions-panel" aria-selected="${i===0}" tabindex="${i===0?0:-1}" data-tab="questions" data-index="${i}"><span>${q.label}</span>${arrowIcon}</button>`).join('')}</div><div id="questions-panel" role="tabpanel" aria-labelledby="questions-tab-0" tabindex="0">${questionPanel()}</div></div>`,'questions-slide')

@@ -93,3 +93,5 @@ heroLoop.querySelectorAll('.hero-loop-practices').forEach(group=>group.addEventL
  e.preventDefault();buttons[next].focus();buttons[next].click();
 }));
 fromHash();
+
+root.addEventListener('click',e=>{const trigger=e.target.closest('[data-kpi-detail]');if(trigger)document.getElementById(trigger.dataset.kpiDetail).showModal();});

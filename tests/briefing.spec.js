@@ -229,14 +229,14 @@ test('launch measures use confirmed search telemetry and KCS-aligned measures',a
  expect(next).toEqual(['launch-measurement','search-action','search-intelligence','linkage-action','kcs-scorecard']);
  await page.goto('./#launch-measurement');
  await expect(page.locator('.measurement-card')).toHaveCount(3);
- for(const term of ['KPIs for KCS: Searching','Are agents searching for knowledge?','Who is searching','Search frequency','Search terms','All agents','search early and often','difficulty finding relevant knowledge','from Day 1'])await expect(page.locator('#launch-measurement')).toContainText(term);
+ for(const term of ['Make knowledge use visible','Who is searching','Search frequency','Search terms','All agents','search early and often','difficulty finding relevant knowledge','from Day 1'])await expect(page.locator('#launch-measurement')).toContainText(term);
  await page.goto('./#search-action');
  for(const term of ['What we do with the data','Hypothesis','should investigate','auto-suggestions become more accurate','knowledge discovery and reuse remain strong'])await expect(page.locator('#search-action')).toContainText(term);
  await expect(page.locator('#launch-measurement .measurement-delivery')).toHaveCount(0);
  await expect(page.locator('#search-action .search-action-panel')).toHaveCount(2);
  await page.goto('./#search-intelligence');
  await expect(page.locator('#search-intelligence .linkage-card')).toHaveCount(2);
- for(const term of ['KPIs for KCS: Linkage','Is the right knowledge being reused?','Measure reuse','Check the connection','false adherence','sample linked tickets'])await expect(page.locator('#search-intelligence')).toContainText(term);
+ for(const term of ['A link is only as good as its match','Measure reuse','Check the connection','false adherence','sample linked tickets'])await expect(page.locator('#search-intelligence')).toContainText(term);
  await page.goto('./#linkage-action');
  await expect(page.locator('#linkage-action .linkage-card')).toHaveCount(2);
  for(const term of ['Learn from missing links','Act on the evidence','applicable tickets','related tickets','Success means relevant, accurate reuse','linkage accuracy'])await expect(page.locator('#linkage-action')).toContainText(term);
@@ -511,11 +511,22 @@ for(const size of [{width:1910,height:900},{width:1536,height:730},{width:1280,h
   await page.goto('./#'+id);await page.evaluate(()=>document.fonts.ready);
   const layout=await page.locator('#'+id).evaluate(e=>{
    const stage=e.getBoundingClientRect(),inner=e.firstElementChild.getBoundingClientRect();
-   const content=[...e.querySelectorAll('h1,h2,p,li,.search-insight-takeaway,.kcs-metric-footer')].map(n=>n.getBoundingClientRect());
+   const content=[...e.querySelectorAll('h1,h2,p,li,.search-insight-takeaway,.kcs-metric-footer')].filter(n=>!n.closest('dialog')).map(n=>n.getBoundingClientRect());
    return {usesWidth:inner.width/stage.width>.9,fits:e.scrollHeight<=e.clientHeight+1&&e.scrollWidth<=e.clientWidth+1,visible:content.every(r=>r.top>=stage.top&&r.bottom<=stage.bottom)};
   });
   expect(layout,id).toEqual({usesWidth:true,fits:true,visible:true});
  }
  await expect(page.locator('#kcs-scorecard')).not.toContainText('Adoption → useful reuse');
  await expect(page.locator('body')).not.toContainText('November 19');
+});
+
+for(const id of ['launch-measurement','search-action','search-intelligence','linkage-action','kcs-scorecard'])test(`KPI detail reveal preserves depth and keyboard access: ${id}`,async({page})=>{
+ await page.goto('./#'+id);
+ const button=page.locator('#'+id+' .kpi-detail-trigger'),dialog=page.locator('#detail-'+id);
+ await expect(dialog).not.toBeVisible();
+ await button.focus();await page.keyboard.press('Enter');await expect(dialog).toBeVisible();
+ expect((await dialog.innerText()).split(/\s+/).length).toBeGreaterThan(90);
+ const scan=await new AxeBuilder({page}).include('#detail-'+id).withTags(['wcag2a','wcag2aa','wcag21aa','wcag22aa']).analyze();expect(scan.violations).toEqual([]);
+ await page.keyboard.press('Escape');await expect(dialog).not.toBeVisible();await expect(button).toBeFocused();
+ await page.getByRole('button',{name:'Keyboard shortcuts and help'}).click();await page.locator('#reading-button').click();await expect(dialog).toBeVisible();
 });
