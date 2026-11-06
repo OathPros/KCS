@@ -1344,7 +1344,7 @@ body{margin:0}
 }
 #kcs-app .measurement-launch-slide .slide-inner,
 #kcs-app .measurement-search-action-slide .slide-inner{
- max-width:1420px;
+ max-width:none;
  justify-content:center;
 }
 #kcs-app .measurement-launch-slide .slide-heading,
