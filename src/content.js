@@ -480,14 +480,30 @@ section('evidence','white',`
  <div class="success-aims">${evidence.map((aim,i)=>`<section class="success-aim" aria-labelledby="aim-${i}"><p class="aim-number" aria-hidden="true">0${i+1}</p><h2 id="aim-${i}">${aim.label}</h2><p class="aim-question">${aim.question}</p><h3>Evidence to review</h3><ul>${aim.displaySignals.map(signal=>`<li>${signal}</li>`).join('')}</ul><div class="aim-action"><h3>What we do with it</h3><p>${aim.action}</p></div></section>`).join('')}</div>
 `,'evidence-slide'),
 section('launch-measurement','ink',`
-  ${heading('launch-measurement','All agents · Pilot and non-pilot','Search: are agents using knowledge?')}
-  <div class="measurement-lead"><p>Every search helps us understand adoption, support coaching and identify what agents need to find.</p><span class="micro">Confirmed search reporting in Halo</span></div>
+  ${heading('launch-measurement','All agents · Pilot and non-pilot','KPIs for KCS: Searching')}
+  <div class="measurement-lead"><p><strong>Are agents using knowledge?</strong> Every search helps us understand adoption, support coaching and identify knowledge gaps.</p></div>
   <div class="measurement-cards">
-    <section class="measurement-card"><span class="measurement-number">01 / WHO</span><h2>Who is searching?</h2><p>Participation by agent and team shows where search is becoming routine and where support may help.</p></section>
-    <section class="measurement-card"><span class="measurement-number">02 / HOW OFTEN</span><h2>Search frequency</h2><p>Total searches, repeat activity and trends show how adoption develops over time.</p></section>
-    <section class="measurement-card"><span class="measurement-number">03 / WHAT</span><h2>Search terms</h2><p>Recurring questions and customer language reveal demand and potential knowledge gaps.</p></section>
+    <section class="measurement-card">
+      <span class="measurement-number">01 / WHO</span>
+      <h2>Who is searching?</h2>
+      <p>Participation by agent and team shows which members and teams are making search part of their workflow.</p>
+      <p>We can run reports showing KB searches and identify which agents need coaching/training to increase the “search early and often” practice.</p>
+    </section>
+    <section class="measurement-card">
+      <span class="measurement-number">02 / HOW OFTEN</span>
+      <h2>Search frequency</h2>
+      <p>Evidence of repeat searching, especially when it shows that multiple searches were performed for the same subject in a short window, identifies agents following the methodology</p>
+    </section>
+    <section class="measurement-card">
+      <span class="measurement-number">03 / WHAT</span>
+      <h2>Search terms</h2>
+      <p>Recurring questions and customer language reveal context-aware searching and can show demand. After knowledge saturation, search terms can be compared against existing knowledge to identify knowledge gaps.</p>
+    </section>
   </div>
-  <div class="measurement-delivery"><div><span class="micro">What we do with the data</span><p>Establish a baseline; review weekly. Guide coaching and identify non-pilot teams ready to join.</p></div><div><span class="micro">How to interpret it</span><p>Search volume is a signal, not a target. Investigate changes alongside ticket demand, results and agent feedback.</p></div></div>
+  <div class="measurement-delivery">
+    <div><span class="micro">What we do with the data</span><p>Monitor KB search activity to ensure agents are looking for knowledge in the course of their work. If we start seeing an activity drop at odds with ticket volume, especially from multiple agents on the same team, we know the practice is waning, and reinforcement is needed. Individual searching habits can also be compared against reuse and creation activities to determine process alignment</p></div>
+    <div><span class="micro">Hypothesis</span><p>Search volume is a signal that needs to be assessed alongside ticket demand, results and agent feedback. As our process improves and knowledge matures, searching should actually go down as auto-suggestions become more accurate.</p></div>
+  </div>
 `,'measurement-launch-slide'),
 section('search-intelligence','white',`
   ${heading('search-intelligence','All agents · Pilot and non-pilot','Linkage: is the right knowledge being reused?')}
