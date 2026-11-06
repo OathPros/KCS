@@ -67,6 +67,11 @@ export const chapters = [
     "short": "Search"
   },
   {
+    "id": "search-action",
+    "label": "Interpreting search data",
+    "short": "Search insight"
+  },
+  {
     "id": "search-intelligence",
     "label": "Linkage: is the right knowledge being reused?",
     "short": "Linkage"
@@ -481,30 +486,42 @@ section('evidence','white',`
 `,'evidence-slide'),
 section('launch-measurement','ink',`
   ${heading('launch-measurement','All agents · Pilot and non-pilot','KPIs for KCS: Searching')}
-  <div class="measurement-lead"><p><strong>Are agents using knowledge?</strong> Every search helps us understand adoption, support coaching and identify knowledge gaps.</p></div>
+  <div class="measurement-lead"><p><strong>Are agents searching for knowledge?</strong> Every search helps us understand adoption, support coaching and identify knowledge gaps.</p></div>
   <div class="measurement-cards">
     <section class="measurement-card">
       <span class="measurement-number">01 / WHO</span>
       <h2>Who is searching?</h2>
       <p>Participation by agent and team shows which members and teams are making search part of their workflow.</p>
-      <p>We can run reports showing KB searches and identify which agents need coaching/training to increase the “search early and often” practice.</p>
+      <p>We can run reports showing KB searches and identify which agents may benefit from coaching/training to increase the “search early and often” practice.</p>
     </section>
     <section class="measurement-card">
       <span class="measurement-number">02 / HOW OFTEN</span>
       <h2>Search frequency</h2>
-      <p>Evidence of repeat searching, especially when it shows that multiple searches were performed for the same subject in a short window, identifies agents following the methodology</p>
+      <p>Evidence of repeat searching, especially when multiple searches are performed for the same subject in a short window, can indicate agents are refining their searches as they learn more. It can also indicate difficulty finding relevant knowledge.</p>
     </section>
     <section class="measurement-card">
       <span class="measurement-number">03 / WHAT</span>
       <h2>Search terms</h2>
-      <p>Recurring questions and customer language reveal context-aware searching and can show demand. After knowledge saturation, search terms can be compared against existing knowledge to identify knowledge gaps.</p>
+      <p>Recurring questions and customer language reveal context-aware searching and can show demand. Search terms can be compared against existing knowledge from Day 1, and increasingly as knowledge matures, to identify knowledge gaps.</p>
     </section>
   </div>
-  <div class="measurement-delivery">
-    <div><span class="micro">What we do with the data</span><p>Monitor KB search activity to ensure agents are looking for knowledge in the course of their work. If we start seeing an activity drop at odds with ticket volume, especially from multiple agents on the same team, we know the practice is waning, and reinforcement is needed. Individual searching habits can also be compared against reuse and creation activities to determine process alignment</p></div>
-    <div><span class="micro">Hypothesis</span><p>Search volume is a signal that needs to be assessed alongside ticket demand, results and agent feedback. As our process improves and knowledge matures, searching should actually go down as auto-suggestions become more accurate.</p></div>
-  </div>
 `,'measurement-launch-slide'),
+section('search-action','ink',`
+  ${heading('search-action','Search KPIs · From evidence to action','How we use search data')}
+  <div class="search-action-grid">
+    <section class="search-action-panel">
+      <span class="search-action-index">01 / ACTION</span>
+      <h2>What we do with the data</h2>
+      <p>Monitor KB search activity to ensure agents are looking for knowledge in the course of their work. If we start seeing an activity drop at odds with ticket volume, especially from multiple agents on the same team, we should investigate whether the practice is waning and reinforcement is needed.</p>
+      <p>Individual searching habits can also be compared against reuse and creation activities to help assess process alignment.</p>
+    </section>
+    <section class="search-action-panel search-action-panel--hypothesis">
+      <span class="search-action-index">02 / HYPOTHESIS</span>
+      <h2>Hypothesis</h2>
+      <p>Search volume is a signal that needs to be assessed alongside ticket demand, results and agent feedback. As our process improves and knowledge matures, manual searching may go down as auto-suggestions become more accurate, while knowledge discovery and reuse remain strong.</p>
+    </section>
+  </div>
+`,'measurement-search-action-slide'),
 section('search-intelligence','white',`
   ${heading('search-intelligence','All agents · Pilot and non-pilot','Linkage: is the right knowledge being reused?')}
   <p class="search-insight-intro">Ticket–article links connect knowledge to real demand. Their value depends on whether the article supports the work.</p>
