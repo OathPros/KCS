@@ -1288,3 +1288,10 @@ body{margin:0}
  #kcs-app .kcs-metric-footer{align-items:start;flex-direction:column}
  #kcs-app .kcs-metric-footer a{margin-left:0;white-space:normal}
 }
+
+/* Allow the expanded slide navigator to scroll on phones without shrinking
+   individual targets below the WCAG 2.2 minimum size. */
+@media(max-width:760px){
+ #kcs-app .chapter-progress{overflow-x:auto;overflow-y:hidden;scrollbar-width:thin;overscroll-behavior-x:contain}
+ #kcs-app .chapter-progress button{flex:0 0 28px;min-width:28px;width:28px;height:27px}
+}
