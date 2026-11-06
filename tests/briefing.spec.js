@@ -99,7 +99,7 @@ test('default slides have a presentation-sized word budget',async({page})=>{
  for(const id of ids){
   await page.goto('./#'+id);
   const words=(await page.locator('.slide:visible').innerText()).trim().split(/\s+/).length;
-  expect(words,`${id}: ${words} on-screen words`).toBeLessThanOrEqual(id==='pilot-hypercare'?175:id==='enablement'?130:id==='operating-model'?120:id==='evidence'?170:id==='participation'?140:id==='program-evidence'?160:id==='leadership-questions'?110:id==='kcs-scorecard'?290:id==='launch-measurement'?175:id==='search-action'?155:id==='search-intelligence'?175:65);
+  expect(words,`${id}: ${words} on-screen words`).toBeLessThanOrEqual(id==='pilot-hypercare'?175:id==='enablement'?130:id==='operating-model'?120:id==='evidence'?170:id==='participation'?140:id==='program-evidence'?160:id==='leadership-questions'?110:id==='kcs-scorecard'?290:id==='launch-measurement'?175:id==='search-action'?155:id==='search-intelligence'?200:id==='linkage-action'?155:65);
  }
 });
 for(const size of [{width:1280,height:720},{width:1366,height:768},{width:1600,height:900},{width:1920,height:1080},{width:2560,height:1440}])test(`slides fit the ${size.width}×${size.height} presentation viewport`,async({page})=>{
@@ -226,7 +226,7 @@ test('coaching and council support participation and co-creation of the standard
 
 test('launch measures use confirmed search telemetry and KCS-aligned measures',async({page})=>{
  const next=ids.slice(ids.indexOf('evidence')+1,ids.indexOf('leadership-questions'));
- expect(next).toEqual(['launch-measurement','search-action','search-intelligence','kcs-scorecard']);
+ expect(next).toEqual(['launch-measurement','search-action','search-intelligence','linkage-action','kcs-scorecard']);
  await page.goto('./#launch-measurement');
  await expect(page.locator('.measurement-card')).toHaveCount(3);
  for(const term of ['KPIs for KCS: Searching','Are agents searching for knowledge?','Who is searching','Search frequency','Search terms','All agents','search early and often','difficulty finding relevant knowledge','from Day 1'])await expect(page.locator('#launch-measurement')).toContainText(term);
@@ -235,8 +235,11 @@ test('launch measures use confirmed search telemetry and KCS-aligned measures',a
  await expect(page.locator('#launch-measurement .measurement-delivery')).toHaveCount(0);
  await expect(page.locator('#search-action .search-action-panel')).toHaveCount(2);
  await page.goto('./#search-intelligence');
- await expect(page.locator('.search-insight-step')).toHaveCount(4);
- await expect(page.locator('#search-intelligence')).toContainText('A link alone does not prove useful reuse');
+ await expect(page.locator('#search-intelligence .linkage-card')).toHaveCount(2);
+ for(const term of ['KPIs for KCS: Linkage','Is the right knowledge being reused?','Measure reuse','Check the connection','false adherence','sample linked tickets'])await expect(page.locator('#search-intelligence')).toContainText(term);
+ await page.goto('./#linkage-action');
+ await expect(page.locator('#linkage-action .linkage-card')).toHaveCount(2);
+ for(const term of ['Learn from missing links','Act on the evidence','applicable tickets','related tickets','Success means relevant, accurate reuse','linkage accuracy'])await expect(page.locator('#linkage-action')).toContainText(term);
  await page.goto('./#kcs-scorecard');
  for(const term of ['Pilot knowledge workers','Process Alignment Review','Content Standard','1–2 reviewer/coach hours','Validate in the pilot','calibrated reviews','coach-led review'])await expect(page.locator('#kcs-scorecard')).toContainText(term);
 });
@@ -249,6 +252,17 @@ test('search KPI slides preserve full copy and do not clip key paragraphs',async
    const clips=await page.locator('#'+id+' p').evaluateAll(nodes=>nodes.filter(e=>{const cs=getComputedStyle(e);return cs.textOverflow==='ellipsis'||cs.webkitLineClamp!=='none'||cs.overflow==='hidden'}).map(e=>e.textContent));
    expect(clips,id+' should not visually truncate paragraphs').toEqual([]);
    expect(await page.evaluate(()=>document.documentElement.scrollWidth<=innerWidth),id+' should have no horizontal overflow').toBe(true);
+  }
+ }
+});
+test('linkage KPI slides preserve copy without truncated text',async({page})=>{
+ for(const viewport of [{width:1280,height:720},{width:1910,height:900},{width:375,height:850}]){
+  await page.setViewportSize(viewport);
+  for(const id of ['search-intelligence','linkage-action']){
+   await page.goto('./#'+id);
+   const cut=await page.locator('#'+id+' p').evaluateAll(nodes=>nodes.filter(e=>{const c=getComputedStyle(e);return c.textOverflow==='ellipsis'||c.webkitLineClamp!=='none'||c.overflow==='hidden'}).map(e=>e.textContent));
+   expect(cut,id+' paragraphs should remain complete').toEqual([]);
+   expect(await page.evaluate(()=>document.documentElement.scrollWidth<=window.innerWidth),id).toBe(true);
   }
  }
 });
