@@ -99,7 +99,7 @@ test('default slides have a presentation-sized word budget',async({page})=>{
  for(const id of ids){
   await page.goto('./#'+id);
   const words=(await page.locator('.slide:visible').innerText()).trim().split(/\s+/).length;
-  expect(words,`${id}: ${words} on-screen words`).toBeLessThanOrEqual(id==='pilot-hypercare'?175:id==='enablement'?130:id==='operating-model'?120:id==='evidence'?170:id==='participation'?140:id==='program-evidence'?160:id==='leadership-questions'?110:id==='kcs-scorecard'?290:id==='launch-measurement'?325:id==='search-intelligence'?175:65);
+  expect(words,`${id}: ${words} on-screen words`).toBeLessThanOrEqual(id==='pilot-hypercare'?175:id==='enablement'?130:id==='operating-model'?120:id==='evidence'?170:id==='participation'?140:id==='program-evidence'?160:id==='leadership-questions'?110:id==='kcs-scorecard'?290:id==='launch-measurement'?175:id==='search-action'?155:id==='search-intelligence'?175:65);
  }
 });
 for(const size of [{width:1280,height:720},{width:1366,height:768},{width:1600,height:900},{width:1920,height:1080},{width:2560,height:1440}])test(`slides fit the ${size.width}×${size.height} presentation viewport`,async({page})=>{
@@ -226,10 +226,14 @@ test('coaching and council support participation and co-creation of the standard
 
 test('launch measures use confirmed search telemetry and KCS-aligned measures',async({page})=>{
  const next=ids.slice(ids.indexOf('evidence')+1,ids.indexOf('leadership-questions'));
- expect(next).toEqual(['launch-measurement','search-intelligence','kcs-scorecard']);
+ expect(next).toEqual(['launch-measurement','search-action','search-intelligence','kcs-scorecard']);
  await page.goto('./#launch-measurement');
  await expect(page.locator('.measurement-card')).toHaveCount(3);
- for(const term of ['KPIs for KCS: Searching','Are agents using knowledge?','Who is searching','Search frequency','Search terms','All agents','What we do with the data','Hypothesis','auto-suggestions become more accurate'])await expect(page.locator('#launch-measurement')).toContainText(term);
+ for(const term of ['KPIs for KCS: Searching','Are agents searching for knowledge?','Who is searching','Search frequency','Search terms','All agents','search early and often','difficulty finding relevant knowledge','from Day 1'])await expect(page.locator('#launch-measurement')).toContainText(term);
+ await page.goto('./#search-action');
+ for(const term of ['What we do with the data','Hypothesis','should investigate','auto-suggestions become more accurate','knowledge discovery and reuse remain strong'])await expect(page.locator('#search-action')).toContainText(term);
+ await expect(page.locator('#launch-measurement .measurement-delivery')).toHaveCount(0);
+ await expect(page.locator('#search-action .search-action-panel')).toHaveCount(2);
  await page.goto('./#search-intelligence');
  await expect(page.locator('.search-insight-step')).toHaveCount(4);
  await expect(page.locator('#search-intelligence')).toContainText('A link alone does not prove useful reuse');
@@ -237,6 +241,17 @@ test('launch measures use confirmed search telemetry and KCS-aligned measures',a
  for(const term of ['Pilot knowledge workers','Process Alignment Review','Content Standard','1–2 reviewer/coach hours','Validate in the pilot','calibrated reviews','coach-led review'])await expect(page.locator('#kcs-scorecard')).toContainText(term);
 });
 
+test('search KPI slides preserve full copy and do not clip key paragraphs',async({page})=>{
+ for(const size of [{width:1280,height:720},{width:1920,height:1080},{width:375,height:850}]){
+  await page.setViewportSize(size);
+  for(const id of ['launch-measurement','search-action']){
+   await page.goto('./#'+id);
+   const clips=await page.locator('#'+id+' p').evaluateAll(nodes=>nodes.filter(e=>{const cs=getComputedStyle(e);return cs.textOverflow==='ellipsis'||cs.webkitLineClamp!=='none'||cs.overflow==='hidden'}).map(e=>e.textContent));
+   expect(clips,id+' should not visually truncate paragraphs').toEqual([]);
+   expect(await page.evaluate(()=>document.documentElement.scrollWidth<=innerWidth),id+' should have no horizontal overflow').toBe(true);
+  }
+ }
+});
 test('all three success aims connect questions, evidence and action on one slide',async({page})=>{
  await page.goto('./#evidence');await expect(page.locator('.success-aim')).toHaveCount(3);
  await expect(page.locator('#evidence [role=tab]')).toHaveCount(0);
