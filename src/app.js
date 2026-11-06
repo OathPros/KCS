@@ -1,4 +1,4 @@
-import { chapters, practices, arrowIcon, problemPanel, stagePanel, benefitPanel, questionPanel } from './content.js';
+import { cleanCopy, chapters, practices, arrowIcon, problemPanel, stagePanel, benefitPanel, questionPanel } from './content.js';
 const root=document.querySelector('#kcs-app');
 const $=(s)=>root.querySelector(s);
 const $$=(s)=>[...root.querySelectorAll(s)];
@@ -55,7 +55,7 @@ document.addEventListener('keydown',e=>{
  if(e.key.toLowerCase()==='p'){e.preventDefault();window.print();}
 });
 const panels={problems:problemPanel,stages:stagePanel,benefits:benefitPanel,questions:questionPanel};
-function selectTab(tab){const group=tab.dataset.tab;const list=tab.closest('[role="tablist"]');list.querySelectorAll('[role="tab"]').forEach(b=>{b.setAttribute('aria-selected',String(b===tab));b.tabIndex=b===tab?0:-1;});const panel=$('#'+group+'-panel');panel.innerHTML=panels[group](Number(tab.dataset.index));panel.setAttribute('aria-labelledby',tab.id);}
+function selectTab(tab){const group=tab.dataset.tab;const list=tab.closest('[role="tablist"]');list.querySelectorAll('[role="tab"]').forEach(b=>{b.setAttribute('aria-selected',String(b===tab));b.tabIndex=b===tab?0:-1;});const panel=$('#'+group+'-panel');panel.innerHTML=cleanCopy(panels[group](Number(tab.dataset.index)));panel.setAttribute('aria-labelledby',tab.id);}
 $$('[role="tablist"]').forEach(list=>{
  list.addEventListener('click',e=>{const t=e.target.closest('[role="tab"]');if(t)selectTab(t);});
  list.addEventListener('keydown',e=>{
@@ -77,7 +77,7 @@ function selectHeroLoop({practice=null,loop=null}={}){
  const heading=selected?selected.label:loop==='solve'?'Solve Loop':loop==='evolve'?'Evolve Loop':'Solve and Evolve';
  const summaries=['Search early, reuse relevant knowledge and link it to the ticket.','Correct useful knowledge as you reuse it, or flag gaps.','Capture the issue, context and resolution during the interaction.','Use consistent titles and clear issue, environment and resolution details.','Use reuse, failed searches and feedback to prioritise content improvements.','Make knowledge work part of ticket handling and service delivery.','Review service outcomes, content quality and observed practice together.','Build participation through coaching, leadership support and shared learning.'];
  const body=selected?summaries[practice]:loop==='solve'?'Reuse, improve, capture and structure knowledge while resolving requests.':loop==='evolve'?'Use patterns across interactions to improve content, processes and adoption.':'Use knowledge in each ticket. Improve the system through shared learning.';
- $('#hero-loop-detail').innerHTML=`<p class="hero-loop-kicker">${selected?selected.loop+' Loop':'KCS'}</p><h2>${heading}</h2><p>${body}</p>`;
+ $('#hero-loop-detail').innerHTML=cleanCopy(`<p class="hero-loop-kicker">${selected?selected.loop+' Loop':'KCS'}</p><h2>${heading}</h2><p>${body}</p>`);
 }
 heroLoop.addEventListener('click',e=>{
  const practice=e.target.closest('[data-hero-practice]');if(practice)selectHeroLoop({practice:Number(practice.dataset.heroPractice)});

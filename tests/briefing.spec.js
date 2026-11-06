@@ -141,7 +141,7 @@ test('benefits cover the three requested groups and every horizon, with keyboard
   await page.locator('#benefits-tab-'+i).click();
   for(const [title,body] of benefits[i].outcomes){
    await expect(page.locator('#benefits-panel')).toContainText(title);
-   await expect(page.locator('#benefits-panel')).toContainText(body);
+   await expect(page.locator('#benefits-panel')).toContainText(body.replace(/\.$/,''));
   }
   await expect(page.locator('.benefit-horizon')).toHaveCount(3);
  }
@@ -156,7 +156,7 @@ test('leadership questions are available to keyboard users',async({page})=>{
  for(let i=0;i<questions.length;i++){
   await page.locator('#questions-tab-'+i).click();
   await expect(page.locator('#questions-panel h2')).toHaveText(questions[i].question);
-  await expect(page.locator('#questions-panel')).toContainText(questions[i].answer);
+  await expect(page.locator('#questions-panel')).toContainText(questions[i].answer.replace(/\.$/,''));
  }
  await page.locator('#questions-tab-0').focus();await page.keyboard.press('ArrowDown');
  await expect(page.locator('#questions-tab-1')).toBeFocused();
@@ -196,14 +196,14 @@ test('rollout slide lists every communication and all three resource destination
  await expect(page.locator('.comms-register li')).toHaveCount(3);
  for(const message of enablement){
   const row=page.locator('.comms-register li').filter({hasText:message.label});
-  await expect(row).toContainText(message.time);await expect(row).toContainText(message.body);
+  await expect(row).toContainText(message.time);await expect(row).toContainText(message.body.replace(/\.$/,''));
  }
  await expect(page.locator('.website-register a')).toHaveCount(3);
  for(const site of rolloutWebsites){
   const link=page.getByRole('link',{name:new RegExp(site.label)});
   await expect(link).toHaveAttribute('href','https://www.yorku.ca'+site.path);
   await expect(link).toHaveAttribute('rel','noopener noreferrer');
-  await expect(link.locator('..')).toContainText(site.purpose);
+  await expect(link.locator('..')).toContainText(site.purpose.replace(/\.$/,''));
   await link.focus();await expect(link).toBeFocused();
  }
  await expect(page.locator('.comms-path')).toHaveCount(0);
@@ -241,7 +241,7 @@ test('launch measures use confirmed search telemetry and KCS-aligned measures',a
  await expect(page.locator('#linkage-action .linkage-card')).toHaveCount(2);
  for(const term of ['Learn from missing links','Act on the evidence','applicable tickets','related tickets','Success means relevant, accurate reuse','linkage accuracy'])await expect(page.locator('#linkage-action')).toContainText(term);
  await page.goto('./#kcs-scorecard');
- for(const term of ['Pilot knowledge workers','Process Alignment Review','Content Standard','1–2 reviewer/coach hours','Validate in the pilot','calibrated reviews','coach-led review'])await expect(page.locator('#kcs-scorecard')).toContainText(term);
+ for(const term of ['Pilot knowledge workers','Process Alignment Review','Content Standard','Reviewer / coach time per pilot worker','Validate in the pilot','calibrated reviews','coach-led review'])await expect(page.locator('#kcs-scorecard')).toContainText(term);
 });
 
 test('search KPI slides preserve full copy and do not clip key paragraphs',async({page})=>{
@@ -273,8 +273,8 @@ test('all three success aims connect questions, evidence and action on one slide
   const column=page.locator('.success-aim').nth(i);
   await expect(column.getByRole('heading',{name:aim.label,exact:true})).toBeVisible();
   await expect(column).toContainText(aim.question);
-  for(const signal of aim.displaySignals)await expect(column).toContainText(signal);
-  await expect(column.locator('.aim-action')).toContainText(aim.action);
+  for(const signal of aim.displaySignals)await expect(column).toContainText(signal.replace(/\.$/,''));
+  await expect(column.locator('.aim-action')).toContainText(aim.action.replace(/\.$/,''));
  }
  await expect(page.locator('.success-principle')).toHaveCount(0);
 });
@@ -520,7 +520,7 @@ for(const size of [{width:1910,height:900},{width:1536,height:730},{width:1280,h
  await expect(page.locator('body')).not.toContainText('November 19');
 });
 
-for(const id of ['launch-measurement','search-action','search-intelligence','linkage-action','article-feedback','kcs-scorecard'])test(`KPI detail reveal preserves depth and keyboard access: ${id}`,async({page})=>{
+for(const id of ['launch-measurement','search-action','search-intelligence','linkage-action','article-feedback'])test(`KPI detail reveal preserves depth and keyboard access: ${id}`,async({page})=>{
  await page.goto('./#'+id);
  const button=page.locator('#'+id+' .kpi-detail-trigger'),dialog=page.locator('#detail-'+id);
  await expect(dialog).not.toBeVisible();
@@ -536,4 +536,15 @@ test('search stands alone and article feedback has its own measure',async({page}
  expect(await page.locator('#launch-measurement .kpi-bottom').evaluate(e=>getComputedStyle(e).borderTopWidth)).toBe('0px');
  await page.goto('./#article-feedback');await expect(page.locator('#article-feedback h1')).toHaveText('KPIs for KCS: Article feedback');
  for(const term of ['Likes','Dislikes','response volume and reuse'])await expect(page.locator('#article-feedback')).toContainText(term);
+});
+
+test('PAR explains its full cycle inline and other reveals use More details',async({page})=>{
+ await page.goto('./#kcs-scorecard');await expect(page.locator('#kcs-scorecard .par-cycle>div')).toHaveCount(4);
+ await expect(page.locator('#kcs-scorecard .kpi-detail-trigger')).toHaveCount(0);
+ for(const term of ['representative sample','shared checklist','Content Standard','20–30 minutes','calibrated reviews'])await expect(page.locator('#kcs-scorecard')).toContainText(term);
+ await page.goto('./#launch-measurement');await expect(page.locator('#launch-measurement .kpi-detail-trigger')).toHaveText('More details ＋');
+});
+test('displayed text blocks have no terminal periods, including dynamic panels',async({page})=>{
+ for(const id of ids){await page.goto('./#'+id);expect(await page.locator('#'+id+' p,#'+id+' li').allTextContents().then(texts=>texts.filter(s=>/\.\s*$/.test(s))),id).toEqual([]);}
+ await page.goto('./#leadership-questions');await page.locator('#questions-tab-1').click();expect(await page.locator('#questions-panel').innerText()).not.toMatch(/\.\s*$/);
 });
