@@ -81,6 +81,7 @@ export const chapters = [
     "label": "Interpreting linkage data",
     "short": "Linkage insight"
   },
+  {"id":"article-feedback","label":"KPIs for KCS: Article feedback","short":"Feedback"},
   {
     "id": "kcs-scorecard",
     "label": "Getting up to PAR",
@@ -493,12 +494,11 @@ section('evidence','white',`
  <div class="success-aims">${evidence.map((aim,i)=>`<section class="success-aim" aria-labelledby="aim-${i}"><p class="aim-number" aria-hidden="true">0${i+1}</p><h2 id="aim-${i}">${aim.label}</h2><p class="aim-question">${aim.question}</p><h3>Evidence to review</h3><ul>${aim.displaySignals.map(signal=>`<li>${signal}</li>`).join('')}</ul><div class="aim-action"><h3>What we do with it</h3><p>${aim.action}</p></div></section>`).join('')}</div>
 `,'evidence-slide'),
 section('launch-measurement','ink',`
- ${heading('launch-measurement','All agents · First 90 days','Make knowledge use visible')}
+ ${heading('launch-measurement','All agents · First 90 days','KPIs for KCS: Searching')}
  <div class="signal-orbit"><div class="orbit-core">${kpiIcon('search')}<h2>Search</h2><p>The first adoption signal</p></div><div class="signal-spokes">
- <div>${kpiIcon('people')}<h2>Who?</h2><p>Participation by agent &amp; team</p></div>
+ <div>${kpiIcon('people')}<h2>Who?</h2><p>KB searches reported by agent &amp; team</p></div>
  <div>${kpiIcon('pulse')}<h2>How often?</h2><p>Habits, frequency &amp; repeat searches</p></div>
- <div>${kpiIcon('terms')}<h2>What?</h2><p>Customer language &amp; knowledge gaps</p></div></div></div>
- <div class="signal-rail"><span>Also watch</span><strong>Article views</strong><strong>Upvotes / downvotes</strong><strong>Usage over time</strong></div>
+ <div>${kpiIcon('terms')}<h2>What?</h2><p>Mine customer terms &amp; knowledge gaps</p><p class="signal-action">Improve titles, tags &amp; search metadata. Identify articles to create.</p></div></div></div>
  ${kpiDetail('launch-measurement',`<div class="measurement-lead"><p><strong>Are agents searching for knowledge?</strong> Every search helps us understand adoption, support coaching and identify knowledge gaps.</p></div>
   <div class="measurement-cards">
     <section class="measurement-card">
@@ -515,15 +515,15 @@ section('launch-measurement','ink',`
     <section class="measurement-card">
       <span class="measurement-number">03 / WHAT</span>
       <h2>Search terms</h2>
-      <p>Recurring questions and customer language reveal context-aware searching and can show demand. Search terms can be compared against existing knowledge from Day 1, and increasingly as knowledge matures, to identify knowledge gaps.</p>
+      <p>Recurring questions and customer language reveal context-aware searching and can show demand. Search terms can be compared against existing knowledge from Day 1, and increasingly as knowledge matures, to identify knowledge gaps. Mine these terms to improve article titles, tags and search metadata, and identify opportunities to create relevant articles.</p>
     </section>
   </div><section class="engagement-detail"><h2>Our first 90 days</h2><p>Establish a baseline for adoption and engagement using article-to-ticket linkage, searches and views, upvotes and downvotes, and knowledge usage trends. These reports help us see how knowledge is consumed and reused across teams.</p><p>Views show lookups, rather than proof of a successful resolution. Ratings are feedback signals that help content owners investigate usefulness and quality; interpret them with the number and context of responses. Review usage over time to identify high-value content, coaching needs and knowledge gaps.</p><p>Use this evidence alongside observed practice to identify teams ready for pilot onboarding. These early indicators establish a baseline for future KCS performance measures; they do not establish service impact on their own.</p></section>`)}
 `,'kpi-visual kpi-signals'),
 section('search-action','ink',`
  ${heading('search-action','Search signals · Interpretation','One signal, two possible stories')}
  <p class="kpi-caption">Fewer searches need context.</p>
- <div class="scenario-pair"><section><span class="scenario-label">A habit may be slipping</span><div class="scenario-glyph"><span>Search <b><svg viewBox="0 0 40 40" role="img" aria-label="Decreasing"><path d="M5 5 35 35M14 35h21V14"/></svg></b></span><span>Tickets <b><svg viewBox="0 0 40 40" role="img" aria-label="Steady"><path d="M3 20h34M25 8l12 12-12 12"/></svg></b></span></div><div class="scenario-outcome"><span aria-hidden="true"><svg viewBox="0 0 40 40"><path d="M8 4v25h25M24 20l9 9-9 9"/></svg></span><div><h2>Investigate &amp; coach</h2><p>Check team patterns and agent feedback.</p></div></div></section>
- <section><span class="scenario-label">Discovery may be improving</span><div class="scenario-glyph"><span>Search <b><svg viewBox="0 0 40 40" role="img" aria-label="Decreasing"><path d="M5 5 35 35M14 35h21V14"/></svg></b></span><span>Reuse <b><svg viewBox="0 0 40 40" role="img" aria-label="Increasing"><path d="M5 35 35 5M14 5h21v21"/></svg></b></span></div><div class="scenario-outcome"><span aria-hidden="true"><svg viewBox="0 0 40 40"><path d="M8 4v25h25M24 20l9 9-9 9"/></svg></span><div><h2>Check suggestions</h2><p>Useful answers may be arriving earlier.</p></div></div></section></div>
+ <div class="scenario-pair"><section><span class="scenario-label">A habit may be slipping</span><div class="scenario-glyph"><span>Search <b><svg class="trend-line" viewBox="0 0 120 56" role="img" aria-label="Downward search trend"><path d="M4 6 26 16 42 13 63 30 80 27 112 49M98 49h14V35"/></svg><small>Falling</small></b></span><span>Tickets <b><svg class="trend-line" viewBox="0 0 120 56" role="img" aria-label="Steady ticket demand"><path d="M4 28h108M99 15l13 13-13 13"/></svg><small>Steady</small></b></span></div><div class="scenario-outcome"><div><h2>Investigate &amp; coach</h2><p>Check team patterns and agent feedback.</p></div></div></section>
+ <section><span class="scenario-label">Discovery may be improving</span><div class="scenario-glyph"><span>Search <b><svg class="trend-line" viewBox="0 0 120 56" role="img" aria-label="Downward search trend"><path d="M4 6 26 16 42 13 63 30 80 27 112 49M98 49h14V35"/></svg><small>Falling</small></b></span><span>Reuse <b><svg class="trend-line" viewBox="0 0 120 56" role="img" aria-label="Upward reuse trend"><path d="M4 49 25 38 42 41 64 24 80 27 112 6M98 6h14v14"/></svg><small>Rising</small></b></span></div><div class="scenario-outcome"><div><h2>Check suggestions</h2><p>Useful answers may be arriving earlier.</p></div></div></section></div>
  <p class="visual-principle">Read search alongside demand, discovery and reuse.</p>
  ${kpiDetail('search-action',`<div class="search-action-grid">
     <section class="search-action-panel">
@@ -577,6 +577,13 @@ section('linkage-action','white',`
   </div>
   <div class="linkage-conclusion"><strong>Success means relevant, accurate reuse.</strong><p>We must pair linkage rate with linkage accuracy. A higher rate alone can reward the wrong behaviour.</p></div>`)}
 `,'kpi-visual kpi-decisions'),
+section('article-feedback','white',`
+ ${heading('article-feedback','All agents · First 90 days','KPIs for KCS: Article feedback')}
+ <div class="feedback-pair"><section><svg class="feedback-thumb" viewBox="0 0 24 24" aria-hidden="true"><path d="M8 10 12 3c1-2 3-1 3 1v5h5c2 0 2 2 1 4l-2 7H8zM3 10h5v11H3z"/></svg><h2>Likes</h2><p>What’s working?</p></section><section><svg class="feedback-thumb feedback-thumb-down" viewBox="0 0 24 24" aria-hidden="true"><path d="M8 10 12 3c1-2 3-1 3 1v5h5c2 0 2 2 1 4l-2 7H8zM3 10h5v11H3z"/></svg><h2>Dislikes</h2><p>What needs attention?</p></section></div>
+ <div class="feedback-actions"><span>Review context</span><span>Improve articles</span><span>Watch the trend</span></div>
+ <p class="visual-principle">Read ratings alongside response volume and reuse.</p>
+ ${kpiDetail('article-feedback',`<section><h2>What we measure</h2><p>Use Halo’s article upvotes and downvotes to track positive and negative feedback by article and over time. Review the number of ratings as well as the balance between likes and dislikes. A few responses provide a limited view; no ratings do not mean an article is poor.</p></section><section><h2>What the feedback tells us</h2><p>Likes suggest that readers found an article useful. Dislikes identify articles worth investigating for missing steps, unclear wording, outdated guidance or a mismatch with the reader’s issue. Ratings are signals for review, rather than proof of accuracy or successful resolution.</p></section><section><h2>How we act</h2><p>Read feedback alongside article views, ticket reuse and available comments or ticket context. Ask the content owner to investigate patterns, improve the article where needed, then check whether later feedback and reuse suggest the change helped. Use repeated patterns to prioritize content improvements and coaching.</p></section>`)}
+`,'kpi-visual kpi-feedback'),
 section('kcs-scorecard','white',`
  ${heading('kcs-scorecard','Pilot knowledge workers · Process Alignment Review','Getting up to PAR ⚑')}
  <p class="kpi-caption">A coach-led review of real work, followed by an agreed improvement.</p>

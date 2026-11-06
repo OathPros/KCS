@@ -226,10 +226,10 @@ test('coaching and council support participation and co-creation of the standard
 
 test('launch measures use confirmed search telemetry and KCS-aligned measures',async({page})=>{
  const next=ids.slice(ids.indexOf('evidence')+1,ids.indexOf('leadership-questions'));
- expect(next).toEqual(['launch-measurement','search-action','search-intelligence','linkage-action','kcs-scorecard']);
+ expect(next).toEqual(['launch-measurement','search-action','search-intelligence','linkage-action','article-feedback','kcs-scorecard']);
  await page.goto('./#launch-measurement');
  await expect(page.locator('.measurement-card')).toHaveCount(3);
- for(const term of ['Make knowledge use visible','Who is searching','Search frequency','Search terms','All agents','search early and often','difficulty finding relevant knowledge','from Day 1'])await expect(page.locator('#launch-measurement')).toContainText(term);
+ for(const term of ['KPIs for KCS: Searching','Who is searching','Search frequency','Search terms','All agents','search early and often','difficulty finding relevant knowledge','from Day 1'])await expect(page.locator('#launch-measurement')).toContainText(term);
  await page.goto('./#search-action');
  for(const term of ['What we do with the data','Hypothesis','should investigate','auto-suggestions become more accurate','knowledge discovery and reuse remain strong'])await expect(page.locator('#search-action')).toContainText(term);
  await expect(page.locator('#launch-measurement .measurement-delivery')).toHaveCount(0);
@@ -507,7 +507,7 @@ test('graph slider aligns to the axis and advances through 6, 12, 24 months',asy
 
 for(const size of [{width:1910,height:900},{width:1536,height:730},{width:1280,height:600}])test(`KPI slides use the stage without clipping at ${size.width}×${size.height}`,async({page})=>{
  await page.setViewportSize(size);
- for(const id of ['launch-measurement','search-intelligence','kcs-scorecard']){
+ for(const id of ['launch-measurement','search-action','search-intelligence','linkage-action','article-feedback','kcs-scorecard']){
   await page.goto('./#'+id);await page.evaluate(()=>document.fonts.ready);
   const layout=await page.locator('#'+id).evaluate(e=>{
    const stage=e.getBoundingClientRect(),inner=e.firstElementChild.getBoundingClientRect();
@@ -520,7 +520,7 @@ for(const size of [{width:1910,height:900},{width:1536,height:730},{width:1280,h
  await expect(page.locator('body')).not.toContainText('November 19');
 });
 
-for(const id of ['launch-measurement','search-action','search-intelligence','linkage-action','kcs-scorecard'])test(`KPI detail reveal preserves depth and keyboard access: ${id}`,async({page})=>{
+for(const id of ['launch-measurement','search-action','search-intelligence','linkage-action','article-feedback','kcs-scorecard'])test(`KPI detail reveal preserves depth and keyboard access: ${id}`,async({page})=>{
  await page.goto('./#'+id);
  const button=page.locator('#'+id+' .kpi-detail-trigger'),dialog=page.locator('#detail-'+id);
  await expect(dialog).not.toBeVisible();
@@ -529,4 +529,11 @@ for(const id of ['launch-measurement','search-action','search-intelligence','lin
  const scan=await new AxeBuilder({page}).include('#detail-'+id).withTags(['wcag2a','wcag2aa','wcag21aa','wcag22aa']).analyze();expect(scan.violations).toEqual([]);
  await page.keyboard.press('Escape');await expect(dialog).not.toBeVisible();await expect(button).toBeFocused();
  await page.getByRole('button',{name:'Keyboard shortcuts and help'}).click();await page.locator('#reading-button').click();await expect(dialog).toBeVisible();
+});
+
+test('search stands alone and article feedback has its own measure',async({page})=>{
+ await page.goto('./#launch-measurement');await expect(page.locator('#launch-measurement .signal-rail')).toHaveCount(0);
+ expect(await page.locator('#launch-measurement .kpi-bottom').evaluate(e=>getComputedStyle(e).borderTopWidth)).toBe('0px');
+ await page.goto('./#article-feedback');await expect(page.locator('#article-feedback h1')).toHaveText('KPIs for KCS: Article feedback');
+ for(const term of ['Likes','Dislikes','response volume and reuse'])await expect(page.locator('#article-feedback')).toContainText(term);
 });
