@@ -1361,7 +1361,8 @@ body{margin:0}
  margin-bottom:clamp(14px,2.4vh,25px);
 }
 #kcs-app .measurement-launch-slide .measurement-lead>p{
- max-width:76ch;
+ width:100%;
+ max-width:none;
  font-size:clamp(18px,1.7vw,24px);
  line-height:1.35;
  letter-spacing:normal;
