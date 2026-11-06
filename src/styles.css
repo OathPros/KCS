@@ -1333,3 +1333,41 @@ body{margin:0}
  #kcs-app .measurement-scorecard-slide .metric-purpose{font-size:calc(1.35 * var(--kpi-unit));padding-top:calc(1.2 * var(--kpi-unit));margin-top:calc(1.2 * var(--kpi-unit))!important}
  #kcs-app .measurement-scorecard-slide .kcs-metric-footer{margin-top:calc(1.7 * var(--kpi-unit));padding-top:calc(1.2 * var(--kpi-unit))}
 }
+
+
+/* Slide 14: full-copy search KPI layout. Preserve all text; use the wider stage. */
+#kcs-app .measurement-launch-slide{padding-block:clamp(14px,2.6vh,27px)}
+#kcs-app .measurement-launch-slide .slide-inner{justify-content:center}
+#kcs-app .measurement-launch-slide .slide-heading{margin-bottom:clamp(8px,1.5vh,14px)}
+#kcs-app .measurement-launch-slide .eyebrow{margin-bottom:clamp(5px,1vh,12px)}
+#kcs-app .measurement-launch-slide h1{font-size:clamp(31px,3vw,55px);letter-spacing:-.045em}
+#kcs-app .measurement-launch-slide .measurement-lead{display:block;margin-bottom:clamp(11px,1.7vh,19px)}
+#kcs-app .measurement-launch-slide .measurement-lead>p{font-size:clamp(15px,1.38vw,21px);line-height:1.28;max-width:none;letter-spacing:normal}
+#kcs-app .measurement-launch-slide .measurement-lead strong{font-weight:700;color:#ffafbd}
+#kcs-app .measurement-launch-slide .measurement-cards{grid-template-columns:1.18fr .9fr 1fr;align-items:stretch;gap:clamp(9px,1.35vw,19px)}
+#kcs-app .measurement-launch-slide .measurement-card{padding:clamp(12px,1.4vw,22px);display:flex;flex-direction:column;gap:0}
+#kcs-app .measurement-launch-slide .measurement-card h2{font-size:clamp(18px,1.7vw,27px);line-height:1.12;margin:clamp(6px,.85vh,11px) 0 clamp(6px,.8vh,10px)}
+#kcs-app .measurement-launch-slide .measurement-card p{font-size:clamp(12.5px,1.08vw,17px);line-height:1.32;overflow-wrap:break-word}
+#kcs-app .measurement-launch-slide .measurement-card p+p{margin-top:clamp(6px,1.1vh,13px)}
+#kcs-app .measurement-launch-slide .measurement-delivery{grid-template-columns:1.27fr 1fr;gap:clamp(17px,2.6vw,36px);margin-top:clamp(10px,1.8vh,20px);padding-top:clamp(10px,1.5vh,18px)}
+#kcs-app .measurement-launch-slide .measurement-delivery p{font-size:clamp(12.5px,1.06vw,16px);line-height:1.35;margin-top:6px;overflow-wrap:break-word}
+#kcs-app .measurement-launch-slide .measurement-delivery .micro{font-size:clamp(10px,.85vw,12px);letter-spacing:1.2px}
+@media(min-width:761px) and (max-width:999px){
+ #kcs-app .measurement-launch-slide .measurement-card{padding:14px}
+ #kcs-app .measurement-launch-slide .measurement-card p{font-size:13px}
+ #kcs-app .measurement-launch-slide .measurement-delivery p{font-size:13px}
+}
+@media(max-width:760px){
+ #kcs-app .measurement-launch-slide{padding-block:26px}
+ #kcs-app .measurement-launch-slide .slide-inner{height:auto;min-height:100%;justify-content:start}
+ #kcs-app .measurement-launch-slide h1{font-size:clamp(32px,9vw,44px)}
+ #kcs-app .measurement-launch-slide .measurement-lead{margin-bottom:22px}
+ #kcs-app .measurement-launch-slide .measurement-lead>p{font-size:18px;line-height:1.38}
+ #kcs-app .measurement-launch-slide .measurement-cards{grid-template-columns:1fr;gap:14px}
+ #kcs-app .measurement-launch-slide .measurement-card{padding:20px}
+ #kcs-app .measurement-launch-slide .measurement-card h2{font-size:24px;margin:9px 0 12px}
+ #kcs-app .measurement-launch-slide .measurement-card p{font-size:16px;line-height:1.48}
+ #kcs-app .measurement-launch-slide .measurement-delivery{grid-template-columns:1fr;gap:22px;margin-top:22px;padding-top:23px}
+ #kcs-app .measurement-launch-slide .measurement-delivery p{font-size:16px;line-height:1.5;margin-top:10px}
+ #kcs-app .measurement-launch-slide .measurement-delivery .micro{font-size:11px}
+}
