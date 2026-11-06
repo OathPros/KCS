@@ -1309,3 +1309,27 @@ body{margin:0}
  #kcs-app .measurement-search-slide .search-insight-step h2{margin:14px 0 8px}
  #kcs-app .measurement-search-slide .search-insight-takeaway{margin-top:24px;padding-top:16px}
 }
+
+/* KPI slides use the complete stage width; type and spacing respect stage height. */
+@media screen and (min-width:1000px){
+ #kcs-app .measurement-launch-slide,
+ #kcs-app .measurement-search-slide,
+ #kcs-app .measurement-scorecard-slide{--kpi-unit:min(1cqw,1.5cqh);padding-inline:clamp(28px,4vw,76px)}
+ #kcs-app .measurement-launch-slide .slide-inner,
+ #kcs-app .measurement-search-slide .slide-inner,
+ #kcs-app .measurement-scorecard-slide .slide-inner{max-width:none;justify-content:center}
+ #kcs-app .measurement-launch-slide h1,
+ #kcs-app .measurement-search-slide h1,
+ #kcs-app .measurement-scorecard-slide h1{font-size:calc(5.5 * var(--kpi-unit));text-wrap:pretty;max-width:none}
+ #kcs-app .measurement-search-slide .search-insight-intro,
+ #kcs-app .measurement-scorecard-slide .par-intro{max-width:none;font-size:calc(2 * var(--kpi-unit));margin-bottom:calc(2 * var(--kpi-unit))}
+ #kcs-app .measurement-search-slide .search-insight-step h2{font-size:calc(2.5 * var(--kpi-unit));text-wrap:pretty;margin:calc(1.5 * var(--kpi-unit)) 0 calc(.8 * var(--kpi-unit))}
+ #kcs-app .measurement-search-slide .search-insight-step p,
+ #kcs-app .measurement-scorecard-slide .kcs-metric-column ul{font-size:calc(1.7 * var(--kpi-unit));line-height:1.4}
+ #kcs-app .measurement-search-slide .search-insight-step>span{font-size:calc(3.5 * var(--kpi-unit))}
+ #kcs-app .measurement-search-slide .search-insight-takeaway{margin-top:calc(2.2 * var(--kpi-unit));padding-top:calc(1.5 * var(--kpi-unit));font-size:calc(1.45 * var(--kpi-unit));flex-wrap:wrap;gap:8px 18px}
+ #kcs-app .measurement-scorecard-slide .kcs-metric-column h2{font-size:calc(2.5 * var(--kpi-unit));margin:calc(1.2 * var(--kpi-unit)) 0}
+ #kcs-app .measurement-scorecard-slide .kcs-metric-column li{margin-bottom:calc(.8 * var(--kpi-unit))}
+ #kcs-app .measurement-scorecard-slide .metric-purpose{font-size:calc(1.35 * var(--kpi-unit));padding-top:calc(1.2 * var(--kpi-unit));margin-top:calc(1.2 * var(--kpi-unit))!important}
+ #kcs-app .measurement-scorecard-slide .kcs-metric-footer{margin-top:calc(1.7 * var(--kpi-unit));padding-top:calc(1.2 * var(--kpi-unit))}
+}

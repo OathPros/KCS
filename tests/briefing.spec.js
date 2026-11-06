@@ -99,7 +99,7 @@ test('default slides have a presentation-sized word budget',async({page})=>{
  for(const id of ids){
   await page.goto('./#'+id);
   const words=(await page.locator('.slide:visible').innerText()).trim().split(/\s+/).length;
-  expect(words,`${id}: ${words} on-screen words`).toBeLessThanOrEqual(id==='pilot-hypercare'?175:id==='enablement'?130:id==='operating-model'?120:id==='evidence'?170:id==='participation'?140:id==='program-evidence'?160:id==='leadership-questions'?110:id==='kcs-scorecard'?255:['launch-measurement','search-intelligence'].includes(id)?175:65);
+  expect(words,`${id}: ${words} on-screen words`).toBeLessThanOrEqual(id==='pilot-hypercare'?175:id==='enablement'?130:id==='operating-model'?120:id==='evidence'?170:id==='participation'?140:id==='program-evidence'?160:id==='leadership-questions'?110:id==='kcs-scorecard'?290:['launch-measurement','search-intelligence'].includes(id)?175:65);
  }
 });
 for(const size of [{width:1280,height:720},{width:1366,height:768},{width:1600,height:900},{width:1920,height:1080},{width:2560,height:1440}])test(`slides fit the ${size.width}×${size.height} presentation viewport`,async({page})=>{
@@ -234,7 +234,7 @@ test('launch measures use confirmed search telemetry and KCS-aligned measures',a
  await expect(page.locator('.search-insight-step')).toHaveCount(4);
  await expect(page.locator('#search-intelligence')).toContainText('A link alone does not prove useful reuse');
  await page.goto('./#kcs-scorecard');
- for(const term of ['Pilot knowledge workers','Process Alignment Review','Content Standard','1–2 reviewer/coach hours','Validate in the pilot','calibrated reviews','No activity quotas'])await expect(page.locator('#kcs-scorecard')).toContainText(term);
+ for(const term of ['Pilot knowledge workers','Process Alignment Review','Content Standard','1–2 reviewer/coach hours','Validate in the pilot','calibrated reviews','coach-led review'])await expect(page.locator('#kcs-scorecard')).toContainText(term);
 });
 
 test('all three success aims connect questions, evidence and action on one slide',async({page})=>{
@@ -274,8 +274,8 @@ test('standalone walkthrough is responsive and self-contained',async({page})=>{
 test('opening contains only the announcement and date on the left and a working double loop on the right',async({page})=>{
  await page.goto('./');
  await expect(page.locator('.hero-copy h1')).toHaveText('Knowledge iscoming to Halo');
- await expect(page.locator('.hero-date')).toHaveText('November 19');
- expect((await page.locator('.hero-copy').innerText()).replace(/\s+/g,' ').trim()).toBe('Knowledge is coming to Halo November 19');
+ await expect(page.locator('.hero-date')).toHaveText('November 2026');
+ expect((await page.locator('.hero-copy').innerText()).replace(/\s+/g,' ').trim()).toBe('Knowledge is coming to Halo November 2026');
  await expect(page.locator('.hero-copy button')).toHaveCount(0);
  const region=page.locator('#hero-loop-detail');
  for(const [loop,text] of [['solve','Solve Loop'],['evolve','Evolve Loop']]){
@@ -476,3 +476,17 @@ test('graph slider aligns to the axis and advances through 6, 12, 24 months',asy
  }
 });
 
+for(const size of [{width:1910,height:900},{width:1536,height:730},{width:1280,height:600}])test(`KPI slides use the stage without clipping at ${size.width}×${size.height}`,async({page})=>{
+ await page.setViewportSize(size);
+ for(const id of ['launch-measurement','search-intelligence','kcs-scorecard']){
+  await page.goto('./#'+id);await page.evaluate(()=>document.fonts.ready);
+  const layout=await page.locator('#'+id).evaluate(e=>{
+   const stage=e.getBoundingClientRect(),inner=e.firstElementChild.getBoundingClientRect();
+   const content=[...e.querySelectorAll('h1,h2,p,li,.search-insight-takeaway,.kcs-metric-footer')].map(n=>n.getBoundingClientRect());
+   return {usesWidth:inner.width/stage.width>.9,fits:e.scrollHeight<=e.clientHeight+1&&e.scrollWidth<=e.clientWidth+1,visible:content.every(r=>r.top>=stage.top&&r.bottom<=stage.bottom)};
+  });
+  expect(layout,id).toEqual({usesWidth:true,fits:true,visible:true});
+ }
+ await expect(page.locator('#kcs-scorecard')).not.toContainText('Adoption → useful reuse');
+ await expect(page.locator('body')).not.toContainText('November 19');
+});

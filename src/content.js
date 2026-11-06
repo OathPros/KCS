@@ -141,7 +141,7 @@ export const practices = [
 export const stages = [
   {
     "label": "Launch",
-    "time": "19 Nov 2026",
+    "time": "November 2026",
     "status": "Launch + pilot",
     "preparationComplete": true
   },
@@ -419,7 +419,7 @@ export function benefitPanel(i=0){return `<div class="benefit-horizons" data-ent
 export function questionPanel(i=0){const q=questions[i];return `<span class="micro">Leadership question / ${String(i+1).padStart(2,'0')}</span><h2>${q.question}</h2><p>${q.answer}</p>${q.reportedOutcome?`<p class="question-outcome">${q.reportedOutcome}</p>`:''}`;}
 export function renderSlides(){return [
 section('opportunity','ink',`
- <div class="hero-copy"><h1 id="title-opportunity">Knowledge is<br>coming to Halo</h1><p class="hero-date">November 19</p></div>
+ <div class="hero-copy"><h1 id="title-opportunity">Knowledge is<br>coming to Halo</h1><p class="hero-date">November 2026</p></div>
  ${heroDoubleLoop()}`,'hero-slide'),
 section('case-for-change','white',`
  <div class="case-intro">${heading('case-for-change','Our purpose','Why share knowledge')}<p class="purpose-statement">Make service knowledge available in ticket work so our community gets consistent help, agents avoid repeat investigation and York retains what its teams learn.</p><div class="problem-picker" role="tablist" aria-label="problems" aria-orientation="vertical">${problems.map((p,i)=>`<button role="tab" id="problems-tab-${i}" aria-controls="problems-panel" aria-selected="${i===0}" tabindex="${i===0?0:-1}" data-tab="problems" data-index="${i}">${p.label}<span aria-hidden="true">${arrowIcon}</span></button>`).join('')}</div></div><div id="problems-panel" role="tabpanel" aria-labelledby="problems-tab-0" tabindex="0">${problemPanel()}</div>`,'case-slide'),
@@ -428,7 +428,7 @@ section('daily-practice','ink',`
  <div class="solve-flow" role="region" aria-label="Complete agent Solve Loop flow" tabindex="0">${solveFlow()}</div>
  `,'walk-slide static-solve-slide'),
 section('launch-scope','white',`
- ${heading('launch-scope','19 November 2026','Launch access')}
+ ${heading('launch-scope','November 2026','Launch access')}
  <div class="launch-split"><div class="launch-everyone"><span class="micro">All Halo agents</span><h2>Search, reuse<br>share and link</h2><p>Search available knowledge.<br>See ticket suggestions.</p></div><div class="launch-authors"><span class="micro">Onboarded pilot participants</span><h2>Create and improve</h2><p class="pilot-roster">SSB / OUR / CTS / CS</p><p>Training + authoring permissions</p></div></div>
  `,'launch-slide'),
 section('rollout','white',`
@@ -502,13 +502,13 @@ section('search-intelligence','white',`
 `,'measurement-search-slide'),
 section('kcs-scorecard','white',`
   ${heading('kcs-scorecard','Pilot knowledge workers · Process Alignment Review','Getting up to PAR <svg class="par-flag" viewBox="0 0 40 40" aria-hidden="true"><path d="M12 34V5l19 7-19 7M6 35h14"/></svg>')}
-  <p class="par-intro">PAR samples completed work to assess everyday KCS practice and identify where coaching will help.</p>
+  <p class="par-intro">Process Alignment Review (PAR) is a coach-led review of how a knowledge worker handles real tickets. The coach samples completed tickets, uses a shared checklist to assess KCS practices, then discusses findings with the worker and agrees a coaching action to review next time.</p>
   <div class="kcs-metric-columns">
-    <section class="kcs-metric-column"><p class="metric-horizon">What goes into PAR?</p><h2>Review the practice</h2><ul><li>Sample tickets and related articles: search, relevant reuse, capture, improvement and creation when appropriate.</li><li>Discuss decisions where the record is unclear.</li><li>Check article quality separately against the Content Standard.</li></ul><p class="metric-purpose">Use a shared checklist and representative samples.</p></section>
+    <section class="kcs-metric-column"><p class="metric-horizon">What goes into PAR?</p><h2>Review the practice</h2><ul><li>Select a small, representative sample of completed tickets and related articles.</li><li>Record evidence of search, relevant reuse, capture, improvement or creation against the checklist. Mark each practice aligned, needing coaching or not applicable.</li><li>Discuss unclear decisions, agree an improvement and follow up at the next review.</li></ul><p class="metric-purpose">Assess article quality separately against the Content Standard.</p></section>
     <section class="kcs-metric-column"><p class="metric-horizon">What investment does it take?</p><h2>Protect time</h2><ul><li>Set up the checklist, train reviewers and calibrate judgment.</li><li>Provide reliable ticket, search and article data.</li><li>Allow recurring review, coaching and follow-up time.</li></ul><p class="metric-purpose">Illustrative monthly start: five tickets × 10–15 minutes, plus 20–30 minutes of coaching. About 1–2 reviewer/coach hours per person, plus initial setup. Validate in the pilot.</p></section>
     <section class="kcs-metric-column"><p class="metric-horizon">What is the payoff?</p><h2>Make better decisions</h2><ul><li>Distinguish meaningful adoption from dashboard activity.</li><li>Target coaching, remove workflow barriers and improve knowledge.</li><li>Use credible trends to decide when to scale.</li></ul><p class="metric-purpose">Consistent sampling, clear definitions and calibrated reviews make the data trustworthy.</p></section>
   </div>
-  <div class="kcs-metric-footer"><strong>Search → Linkage → PAR</strong><span>Adoption → useful reuse → quality of practice. No activity quotas.</span><a href="https://library.serviceinnovation.org/KCS/Knowledge-Centered_Success_Practices_Guide/301-Evolve_Loop/Practice_7_Performance_Insight/Technique_7.1" target="_blank" rel="noopener noreferrer">KCS Performance Insight ↗</a></div>
+  <div class="kcs-metric-footer"><strong>Search → Linkage → PAR</strong><a href="https://library.serviceinnovation.org/KCS/Knowledge-Centered_Success_Practices_Guide/301-Evolve_Loop/Practice_7_Performance_Insight/Technique_7.1" target="_blank" rel="noopener noreferrer">KCS Performance Insight ↗</a></div>
 `,'measurement-scorecard-slide'),
 section('leadership-questions','ink',`
  ${heading('leadership-questions','Questions before expansion','Questions for discussion')}
@@ -541,4 +541,3 @@ export function heroDoubleLoop(){
  ${group('evolve',4)}<div class="hero-loop-wheel"><svg viewBox="0 0 640 640" aria-hidden="true"><path class="hero-evolve-arc" data-hero-arc="evolve" transform="rotate(180 320 320)" d="${arc}"/><path class="hero-solve-arc" data-hero-arc="solve" d="${arc}"/></svg><div class="hero-loop-centre"><div id="hero-loop-detail" role="region" aria-label="Selected loop or practice" aria-live="polite"><p class="hero-loop-kicker">KCS</p><h2>Solve and Evolve</h2><p>Use knowledge in each ticket. Improve the system through shared learning.</p></div></div></div>${group('solve',0)}<button class="hero-loop-overview" data-hero-overview>Overview</button>
  </div>`;
 }
-
